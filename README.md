@@ -1,0 +1,1 @@
+npx autoskills@latest

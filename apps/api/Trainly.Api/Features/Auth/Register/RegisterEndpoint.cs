@@ -14,6 +14,7 @@ public sealed class AuthEndpoint : ControllerBase
   }
 
   [HttpPost]
+  [Microsoft.AspNetCore.Authorization.AllowAnonymous]
   public async Task<ActionResult<Response>> Create(Request request, CancellationToken cancellationToken)
   {
     var response = await _handler.HandleAsync(request, cancellationToken);

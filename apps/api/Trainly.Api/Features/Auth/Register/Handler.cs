@@ -10,11 +10,13 @@ public sealed class Handler
 {
   private readonly AppDbContext _db;
   private readonly IPasswordHasher _passwordHasher;
+  private readonly ITokenService _tokenService;
 
-  public Handler(AppDbContext db, IPasswordHasher passwordHasher)
+  public Handler(AppDbContext db, IPasswordHasher passwordHasher, ITokenService tokenService)
   {
     _db = db;
     _passwordHasher = passwordHasher;
+    _tokenService = tokenService;
   }
 
   public async Task<Response> HandleAsync(Request request, CancellationToken cancellationToken)
@@ -40,9 +42,12 @@ public sealed class Handler
 
     await _db.SaveChangesAsync(cancellationToken);
 
+    var token = _tokenService.GenerateToken(user);
+
     return new Response
     {
-      Id = user.Id
+      Id = user.Id,
+      Token = token
     };
   }
 }
