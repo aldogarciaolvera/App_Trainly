@@ -1,20 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Trainly.Api.Database;
-
 namespace Trainly.Api.Configuration;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.Configure<DatabaseOptions>(configuration.GetSection("Database"));
-
-        services.AddDbContext<AppDbContext>((sp, options) =>
-        {
-            var dbOptions = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
-            options.UseNpgsql(dbOptions.BuildConnectionString());
-        });
+        services.AddScoped<Features.Users.CreateUser.Handler>();
+        services.AddScoped<Features.Users.GetUserById.Handler>();
 
         return services;
     }
