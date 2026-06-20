@@ -14,7 +14,6 @@ builder.Services.AddControllers();
 
 //Validations
 builder.Services.AddFluentValidationAutoValidation();
-
 builder.Services.AddValidatorsFromAssemblyContaining<Trainly.Api.Features.Users.CreateUser.RequestValidator>();
 
 // Database

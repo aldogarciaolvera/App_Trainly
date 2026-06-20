@@ -14,13 +14,9 @@ public sealed class Endpoint : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Response>> Create(
-        Request request,
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<Response>> Create(Request request, CancellationToken cancellationToken)
     {
-        var response = await _handler.HandleAsync(
-            request,
-            cancellationToken);
+        var response = await _handler.HandleAsync(request, cancellationToken);
 
         return Ok(response);
     }

@@ -14,9 +14,7 @@ public sealed class Handler
         _db = db;
     }
 
-    public async Task<Response> HandleAsync(
-        Request request,
-        CancellationToken cancellationToken)
+    public async Task<Response> HandleAsync(Request request, CancellationToken cancellationToken)
     {
         var emailExists = await _db.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
         
@@ -30,10 +28,9 @@ public sealed class Handler
             Id = Guid.NewGuid(),
             Name = request.Name,
             Email = request.Email,
-
             // Temporal
             PasswordHash = request.Password,
-
+            // End Temporal
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
