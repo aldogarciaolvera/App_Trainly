@@ -1,4 +1,4 @@
-# Project Rules - Trainly
+# AI Project Rules - Trainly
 
 ## Project Overview
 
@@ -53,6 +53,22 @@ El proyecto debe soportar:
 * Entity Framework Core 10
 * PostgreSQL 18
 * JWT Authentication
+
+---
+
+## API Documentation
+
+Official API documentation:
+
+* OpenAPI
+* Scalar.AspNetCore
+
+Do not use:
+
+* Swashbuckle
+* Swagger UI
+
+All endpoints must be exposed through OpenAPI and viewable from Scalar.
 
 ---
 
@@ -125,6 +141,7 @@ APP_TRAINLY/
 │   └── utils/
 │
 ├── docs/
+│   └── AI_Project_Rules.md
 │
 ├── package.json
 ├── pnpm-workspace.yaml
@@ -319,13 +336,6 @@ Formato:
 useSomething.ts
 ```
 
-Ejemplos:
-
-```text
-useAuth.ts
-useWorkout.ts
-```
-
 ---
 
 ## Services
@@ -334,13 +344,6 @@ Formato:
 
 ```text
 entity.service.ts
-```
-
-Ejemplos:
-
-```text
-auth.service.ts
-workout.service.ts
 ```
 
 ---
@@ -353,20 +356,11 @@ Formato:
 entity.types.ts
 ```
 
-Ejemplos:
-
-```text
-user.types.ts
-diet.types.ts
-```
-
 ---
 
 # State Management
 
 Se utilizará exclusivamente Zustand.
-
-Estructura:
 
 ```text
 store/
@@ -400,7 +394,7 @@ Cada funcionalidad debe ser autocontenida.
 # API Structure
 
 ```text
-apps/api/
+apps/api/Trainly.Api/
 │
 ├── Features/
 ├── Infrastructure/
@@ -411,7 +405,7 @@ apps/api/
 │
 ├── Program.cs
 ├── appsettings.json
-└── GymTracker.Api.csproj
+└── Trainly.Api.csproj
 ```
 
 ---
@@ -466,9 +460,33 @@ Cada operación debe ser independiente.
 
 ---
 
-## Required Fields
+# Configuration Rules
 
-Todas las entidades deben incluir:
+Never store:
+
+* Database passwords
+* JWT secrets
+* API keys
+* SMTP credentials
+
+inside:
+
+* appsettings.json
+* appsettings.Development.json
+
+Development:
+
+* User Secrets
+
+Production:
+
+* Environment Variables
+
+---
+
+# Entity Rules
+
+All entities must include:
 
 ```csharp
 public Guid Id { get; set; }
@@ -477,6 +495,20 @@ public DateTime CreatedAt { get; set; }
 
 public DateTime UpdatedAt { get; set; }
 ```
+
+CreatedAt should be assigned automatically when the entity is created.
+
+UpdatedAt should be updated automatically when the entity changes.
+
+---
+
+# Entity Framework Rules
+
+All database schema changes must be created through EF Core Migrations.
+
+Never modify the database schema manually.
+
+Every migration must be committed to source control.
 
 ---
 
@@ -546,7 +578,14 @@ No agregar configuraciones de despliegue, Docker, Kubernetes o servicios cloud h
 
 # AI Development Rules
 
-Cualquier IA que genere código para este proyecto debe:
+Antes de crear cualquier archivo nuevo:
+
+1. Buscar una implementación existente.
+2. Reutilizar si es posible.
+3. Extender si es necesario.
+4. Crear únicamente si no existe una solución reutilizable.
+
+Además:
 
 1. Respetar esta estructura.
 2. No crear carpetas arbitrarias.
