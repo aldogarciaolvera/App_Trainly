@@ -12,7 +12,7 @@ using Trainly.Api.Database;
 namespace Trainly.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260620023429_InitialCreate")]
+    [Migration("20260620071653_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

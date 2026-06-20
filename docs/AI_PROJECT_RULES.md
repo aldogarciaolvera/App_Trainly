@@ -568,11 +568,22 @@ Toda nueva funcionalidad debe incluir:
 
 ---
 
-# Deployment
+# Environment Configuration
 
-Pendiente de definición.
+Use environment variables for:
 
-No agregar configuraciones de despliegue, Docker, Kubernetes o servicios cloud hasta que se defina la estrategia de infraestructura.
+- Database credentials
+- JWT secrets
+- API keys
+- SMTP credentials
+
+Development:
+- .env file
+
+Production:
+- Docker environment variables
+
+Never store secrets in appsettings.json.
 
 ---
 

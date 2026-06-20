@@ -1,6 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using Trainly.Api.Database;
 using Scalar.AspNetCore;
+using DotNetEnv;
+using Trainly.Api.Configuration;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,12 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Database
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    );
-});
+builder.Services.AddDatabase(builder.Configuration);
 
 // OpenAPI
 builder.Services.AddOpenApi();
