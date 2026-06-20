@@ -1,6 +1,9 @@
 using Scalar.AspNetCore;
 using DotNetEnv;
 using Trainly.Api.Configuration;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Trainly.Api.Middleware;
 
 Env.Load();
 
@@ -8,6 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Controllers
 builder.Services.AddControllers();
+
+//Validations
+builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddValidatorsFromAssemblyContaining<Trainly.Api.Features.Users.CreateUser.RequestValidator>();
 
 // Database
 builder.Services.AddDatabase(builder.Configuration);
@@ -39,6 +47,8 @@ if (app.Environment.IsDevelopment())
         options.DisableMcp();
     });
 }
+
+app.UseGlobalExceptionHandling();
 
 app.UseHttpsRedirection();
 

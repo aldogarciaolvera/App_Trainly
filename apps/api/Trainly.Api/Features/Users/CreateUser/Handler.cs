@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Trainly.Api.Common.Exceptions;
 using Trainly.Api.Database;
 using Trainly.Api.Features.Users.Models;
 
@@ -16,6 +18,13 @@ public sealed class Handler
         Request request,
         CancellationToken cancellationToken)
     {
+        var emailExists = await _db.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
+        
+        if (emailExists)
+        {
+            throw new ConflictException("Email already exists");
+        }
+
         var user = new User
         {
             Id = Guid.NewGuid(),
