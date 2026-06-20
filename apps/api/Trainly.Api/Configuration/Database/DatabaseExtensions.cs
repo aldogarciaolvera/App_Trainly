@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Trainly.Api.Database;
 
-namespace Trainly.Api.Configuration;
+namespace Trainly.Api.Configuration.Database;
 
 public static class DatabaseExtensions
 {

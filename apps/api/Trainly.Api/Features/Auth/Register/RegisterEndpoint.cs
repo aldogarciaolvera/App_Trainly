@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Trainly.Api.Features.Users.CreateUser;
+namespace Trainly.Api.Features.Auth.Register;
 
 [ApiController]
-[Route("api/CreateUser")]
-public sealed class Endpoint : ControllerBase
+[Route("api/auth/Register")]
+public sealed class AuthEndpoint : ControllerBase
 {
   private readonly Handler _handler;
 
-  public Endpoint(Handler handler)
+  public AuthEndpoint(Handler handler)
   {
     _handler = handler;
   }

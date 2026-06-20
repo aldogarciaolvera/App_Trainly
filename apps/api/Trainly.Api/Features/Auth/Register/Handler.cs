@@ -4,7 +4,7 @@ using Trainly.Api.Database;
 using Trainly.Api.Features.Users.Models;
 using Trainly.Api.Common.Security;
 
-namespace Trainly.Api.Features.Users.CreateUser;
+namespace Trainly.Api.Features.Auth.Register;
 
 public sealed class Handler
 {

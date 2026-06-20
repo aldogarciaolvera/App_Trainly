@@ -1,4 +1,4 @@
-namespace Trainly.Api.Configuration;
+namespace Trainly.Api.Configuration.Database;
 
 public class DatabaseOptions
 {

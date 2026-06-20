@@ -1,8 +1,7 @@
-using Scalar.AspNetCore;
 using DotNetEnv;
+using Trainly.Api.Configuration.Database;
+using Trainly.Api.Configuration.Validation;
 using Trainly.Api.Configuration;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Trainly.Api.Middleware;
 
 Env.Load();
@@ -13,39 +12,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 //Validations
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddValidatorsFromAssemblyContaining<Trainly.Api.Features.Users.CreateUser.RequestValidator>();
+builder.Services.AddValidation();
 
 // Database
 builder.Services.AddDatabase(builder.Configuration);
 
-// OpenAPI
-builder.Services.AddOpenApi();
-
 //Servicios
 builder.Services.AddApplicationServices();
+
+// OpenAPI
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
 // Development tools
-if (app.Environment.IsDevelopment())
-{
-  app.MapOpenApi();
-  app.MapScalarApiReference("/", options =>
-  {
-    options.WithTitle("Trainly API");
-    options.Layout = ScalarLayout.Modern;
-    options.DarkMode = true;
-    options.ShowSidebar = true;
-    options.PersistentAuthentication = true;
-    options.DocumentDownloadType = DocumentDownloadType.None;
-    options.HideModels = true;
-    options.HideSearch = true;
-    options.HideClientButton = true;
-    options.ShowDeveloperTools = DeveloperToolsVisibility.Never;
-    options.DisableMcp();
-  });
-}
+app.UseOpenApiDocumentation();
 
 app.UseGlobalExceptionHandling();
 

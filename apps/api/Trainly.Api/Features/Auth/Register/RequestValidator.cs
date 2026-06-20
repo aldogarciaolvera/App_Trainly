@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Trainly.Api.Features.Users.CreateUser;
+namespace Trainly.Api.Features.Auth.Register;
 
 public sealed class RequestValidator : AbstractValidator<Request>
 {
