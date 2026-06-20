@@ -6,18 +6,18 @@ namespace Trainly.Api.Features.Users.CreateUser;
 [Route("api/users")]
 public sealed class Endpoint : ControllerBase
 {
-    private readonly Handler _handler;
+  private readonly Handler _handler;
 
-    public Endpoint(Handler handler)
-    {
-        _handler = handler;
-    }
+  public Endpoint(Handler handler)
+  {
+    _handler = handler;
+  }
 
-    [HttpPost]
-    public async Task<ActionResult<Response>> Create(Request request, CancellationToken cancellationToken)
-    {
-        var response = await _handler.HandleAsync(request, cancellationToken);
+  [HttpPost]
+  public async Task<ActionResult<Response>> Create(Request request, CancellationToken cancellationToken)
+  {
+    var response = await _handler.HandleAsync(request, cancellationToken);
 
-        return Ok(response);
-    }
+    return Ok(response);
+  }
 }

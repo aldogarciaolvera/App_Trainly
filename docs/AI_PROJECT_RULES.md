@@ -4,17 +4,17 @@
 
 Trainly es una aplicación multiplataforma para:
 
-* Seguimiento de rutinas de gimnasio
-* Seguimiento nutricional
-* Registro de progreso físico
-* Gestión de usuarios
-* Estadísticas y reportes
+- Seguimiento de rutinas de gimnasio
+- Seguimiento nutricional
+- Registro de progreso físico
+- Gestión de usuarios
+- Estadísticas y reportes
 
 El proyecto debe soportar:
 
-* Android
-* iOS
-* Web
+- Android
+- iOS
+- Web
 
 ---
 
@@ -22,7 +22,7 @@ El proyecto debe soportar:
 
 ## Monorepo
 
-* pnpm Workspaces
+- pnpm Workspaces
 
 ---
 
@@ -30,29 +30,29 @@ El proyecto debe soportar:
 
 ### Mobile
 
-* React Native (última versión estable)
-* Expo (última versión estable compatible)
-* TypeScript (última versión estable)
+- React Native (última versión estable)
+- Expo (última versión estable compatible)
+- TypeScript (última versión estable)
 
 ### Web
 
-* React Native Web (última versión estable compatible)
-* React
-* TypeScript (última versión estable)
+- React Native Web (última versión estable compatible)
+- React
+- TypeScript (última versión estable)
 
 ### State Management
 
-* Zustand
+- Zustand
 
 ---
 
 ## Backend
 
-* ASP.NET Core 10
-* C#
-* Entity Framework Core 10
-* PostgreSQL 18
-* JWT Authentication
+- ASP.NET Core 10
+- C#
+- Entity Framework Core 10
+- PostgreSQL 18
+- JWT Authentication
 
 ---
 
@@ -60,13 +60,13 @@ El proyecto debe soportar:
 
 Official API documentation:
 
-* OpenAPI
-* Scalar.AspNetCore
+- OpenAPI
+- Scalar.AspNetCore
 
 Do not use:
 
-* Swashbuckle
-* Swagger UI
+- Swashbuckle
+- Swagger UI
 
 All endpoints must be exposed through OpenAPI and viewable from Scalar.
 
@@ -103,7 +103,7 @@ Todo el proyecto debe utilizar TypeScript estricto.
 No utilizar:
 
 ```ts
-any
+any;
 ```
 
 Salvo justificación documentada.
@@ -116,9 +116,9 @@ Cada archivo debe tener una única responsabilidad.
 
 Si un archivo supera aproximadamente 300 líneas:
 
-* dividir lógica
-* dividir componentes
-* dividir servicios
+- dividir lógica
+- dividir componentes
+- dividir servicios
 
 ---
 
@@ -163,10 +163,10 @@ Todos los paquetes compartidos deberán declararse dentro del workspace.
 
 No crear repositorios independientes para:
 
-* UI
-* Hooks
-* Types
-* Services
+- UI
+- Hooks
+- Types
+- Services
 
 Todo debe mantenerse dentro del monorepo.
 
@@ -452,11 +452,11 @@ Cada operación debe ser independiente.
 
 ## Database Engine
 
-* PostgreSQL 18
+- PostgreSQL 18
 
 ## ORM
 
-* Entity Framework Core 10
+- Entity Framework Core 10
 
 ---
 
@@ -464,23 +464,23 @@ Cada operación debe ser independiente.
 
 Never store:
 
-* Database passwords
-* JWT secrets
-* API keys
-* SMTP credentials
+- Database passwords
+- JWT secrets
+- API keys
+- SMTP credentials
 
 inside:
 
-* appsettings.json
-* appsettings.Development.json
+- appsettings.json
+- appsettings.Development.json
 
 Development:
 
-* User Secrets
+- User Secrets
 
 Production:
 
-* Environment Variables
+- Environment Variables
 
 ---
 
@@ -516,8 +516,8 @@ Every migration must be committed to source control.
 
 Sistema base:
 
-* JWT Access Token
-* Refresh Token
+- JWT Access Token
+- Refresh Token
 
 No implementar OAuth ni proveedores externos hasta que exista una necesidad real.
 
@@ -527,15 +527,15 @@ No implementar OAuth ni proveedores externos hasta que exista una necesidad real
 
 Todos los errores deben:
 
-* registrarse en logs
-* devolver códigos HTTP correctos
-* devolver mensajes amigables
+- registrarse en logs
+- devolver códigos HTTP correctos
+- devolver mensajes amigables
 
 Nunca exponer:
 
-* stack traces
-* connection strings
-* información sensible
+- stack traces
+- connection strings
+- información sensible
 
 ---
 
@@ -545,12 +545,12 @@ Nunca exponer:
 
 Toda nueva funcionalidad debe incluir:
 
-* Pantalla
-* Tipos
-* Servicio
-* Estado global (si aplica)
-* Validaciones
-* Manejo de errores
+- Pantalla
+- Tipos
+- Servicio
+- Estado global (si aplica)
+- Validaciones
+- Manejo de errores
 
 ---
 
@@ -558,13 +558,13 @@ Toda nueva funcionalidad debe incluir:
 
 Toda nueva funcionalidad debe incluir:
 
-* Request
-* Response
-* Handler
-* Endpoint
-* Validaciones
-* Persistencia
-* Manejo de errores
+- Request
+- Response
+- Handler
+- Endpoint
+- Validaciones
+- Persistencia
+- Manejo de errores
 
 ---
 
@@ -578,9 +578,11 @@ Use environment variables for:
 - SMTP credentials
 
 Development:
+
 - .env file
 
 Production:
+
 - Docker environment variables
 
 Never store secrets in appsettings.json.
@@ -622,15 +624,15 @@ Además:
 
 Una funcionalidad se considera terminada únicamente cuando incluye:
 
-* UI
-* Tipos TypeScript
-* Servicio API
-* Estado global (si aplica)
-* Endpoint backend
-* Persistencia en PostgreSQL
-* Validaciones
-* Manejo de errores
-* Pruebas básicas
-* Documentación mínima
+- UI
+- Tipos TypeScript
+- Servicio API
+- Estado global (si aplica)
+- Endpoint backend
+- Persistencia en PostgreSQL
+- Validaciones
+- Manejo de errores
+- Pruebas básicas
+- Documentación mínima
 
 Si alguno de estos elementos falta, la funcionalidad NO está terminada.

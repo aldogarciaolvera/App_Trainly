@@ -7,41 +7,41 @@ namespace Trainly.Api.Features.Users.CreateUser;
 
 public sealed class Handler
 {
-    private readonly AppDbContext _db;
+  private readonly AppDbContext _db;
 
-    public Handler(AppDbContext db)
+  public Handler(AppDbContext db)
+  {
+    _db = db;
+  }
+
+  public async Task<Response> HandleAsync(Request request, CancellationToken cancellationToken)
+  {
+    var emailExists = await _db.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
+
+    if (emailExists)
     {
-        _db = db;
+      throw new ConflictException("Email ya existe.");
     }
 
-    public async Task<Response> HandleAsync(Request request, CancellationToken cancellationToken)
+    var user = new User
     {
-        var emailExists = await _db.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
-        
-        if (emailExists)
-        {
-            throw new ConflictException("Email ya existe.");
-        }
+      Id = Guid.NewGuid(),
+      Name = request.Name,
+      Email = request.Email,
+      // Temporal
+      PasswordHash = request.Password,
+      // End Temporal
+      CreatedAt = DateTime.UtcNow,
+      UpdatedAt = DateTime.UtcNow
+    };
 
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            Name = request.Name,
-            Email = request.Email,
-            // Temporal
-            PasswordHash = request.Password,
-            // End Temporal
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        };
+    _db.Users.Add(user);
 
-        _db.Users.Add(user);
+    await _db.SaveChangesAsync(cancellationToken);
 
-        await _db.SaveChangesAsync(cancellationToken);
-
-        return new Response
-        {
-            Id = user.Id
-        };
-    }
+    return new Response
+    {
+      Id = user.Id
+    };
+  }
 }

@@ -6,16 +6,16 @@ namespace Trainly.Api.Configuration;
 
 public static class DatabaseExtensions
 {
-    public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+  public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+  {
+    services.Configure<DatabaseOptions>(configuration.GetSection("Database"));
+
+    services.AddDbContext<AppDbContext>((sp, options) =>
     {
-        services.Configure<DatabaseOptions>(configuration.GetSection("Database"));
+      var dbOptions = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+      options.UseNpgsql(dbOptions.BuildConnectionString());
+    });
 
-        services.AddDbContext<AppDbContext>((sp, options) =>
-        {
-            var dbOptions = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
-            options.UseNpgsql(dbOptions.BuildConnectionString());
-        });
-
-        return services;
-    }
+    return services;
+  }
 }
