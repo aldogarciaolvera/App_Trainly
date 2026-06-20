@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Trainly.Api.Features.Users.CreateUser;
 
 [ApiController]
-[Route("api/users")]
+[Route("api/CreateUser")]
 public sealed class Endpoint : ControllerBase
 {
   private readonly Handler _handler;

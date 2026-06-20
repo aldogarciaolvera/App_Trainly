@@ -2,16 +2,19 @@ using Microsoft.EntityFrameworkCore;
 using Trainly.Api.Common.Exceptions;
 using Trainly.Api.Database;
 using Trainly.Api.Features.Users.Models;
+using Trainly.Api.Common.Security;
 
 namespace Trainly.Api.Features.Users.CreateUser;
 
 public sealed class Handler
 {
   private readonly AppDbContext _db;
+  private readonly IPasswordHasher _passwordHasher;
 
-  public Handler(AppDbContext db)
+  public Handler(AppDbContext db, IPasswordHasher passwordHasher)
   {
     _db = db;
+    _passwordHasher = passwordHasher;
   }
 
   public async Task<Response> HandleAsync(Request request, CancellationToken cancellationToken)
@@ -28,9 +31,7 @@ public sealed class Handler
       Id = Guid.NewGuid(),
       Name = request.Name,
       Email = request.Email,
-      // Temporal
-      PasswordHash = request.Password,
-      // End Temporal
+      PasswordHash = _passwordHasher.Hash(request.Password),
       CreatedAt = DateTime.UtcNow,
       UpdatedAt = DateTime.UtcNow
     };
