@@ -24,6 +24,7 @@ builder.Services.AddOpenApi();
 
 //Temporal 
 builder.Services.AddScoped<Trainly.Api.Features.Users.CreateUser.Handler>();
+builder.Services.AddScoped<Trainly.Api.Features.Users.GetUserById.Handler>();
 
 var app = builder.Build();
 

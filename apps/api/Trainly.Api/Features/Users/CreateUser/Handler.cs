@@ -20,7 +20,7 @@ public sealed class Handler
         
         if (emailExists)
         {
-            throw new ConflictException("Email already exists");
+            throw new ConflictException("Email ya existe.");
         }
 
         var user = new User
