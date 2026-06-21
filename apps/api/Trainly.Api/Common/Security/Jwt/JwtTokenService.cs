@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Trainly.Api.Configuration.Authentication;
-using Trainly.Api.Features.Users.Models;
+using Trainly.Api.Features.Models;
 
 namespace Trainly.Api.Common.Security;
 

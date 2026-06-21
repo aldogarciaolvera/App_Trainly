@@ -8,8 +8,10 @@ public static class ServiceCollectionExtensions
   {
     services.AddScoped<IPasswordHasher, PasswordHasher>();
     services.AddScoped<ITokenService, JwtTokenService>();
+    services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
     services.AddScoped<Features.Auth.Register.RegisterHandler>();
     services.AddScoped<Features.Auth.Login.LoginHandler>();
+    services.AddScoped<Features.Auth.RefreshToken.RTHandler>();
     services.AddScoped<Features.Users.GetUserById.GetUserByIdHandler>();
     services.AddScoped<Features.Users.GetUsers.GetUsersHandler>();
 

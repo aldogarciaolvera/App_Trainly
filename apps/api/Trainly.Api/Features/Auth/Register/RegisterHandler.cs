@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Trainly.Api.Common.Exceptions;
 using Trainly.Api.Database;
-using Trainly.Api.Features.Users.Models;
 using Trainly.Api.Common.Security;
 
 namespace Trainly.Api.Features.Auth.Register;
@@ -28,7 +27,7 @@ public sealed class RegisterHandler
       throw new ConflictException("Email ya existe.");
     }
 
-    var user = new User
+    var user = new Models.User
     {
       Id = Guid.NewGuid(),
       Name = request.Name,

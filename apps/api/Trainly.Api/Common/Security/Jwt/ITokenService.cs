@@ -1,4 +1,4 @@
-using Trainly.Api.Features.Users.Models;
+using Trainly.Api.Features.Models;
 
 namespace Trainly.Api.Common.Security;
 

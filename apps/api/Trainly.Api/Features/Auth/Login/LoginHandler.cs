@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 using Trainly.Api.Common.Security;
 using Trainly.Api.Database;
 
@@ -10,12 +9,18 @@ public sealed class LoginHandler
   private readonly AppDbContext _db;
   private readonly IPasswordHasher _passwordHasher;
   private readonly ITokenService _jwtProvider;
+  private readonly IRefreshTokenGenerator _refreshTokenGenerator;
 
-  public LoginHandler(AppDbContext db, IPasswordHasher passwordHasher, ITokenService jwtProvider)
+  public LoginHandler(
+    AppDbContext db,
+    IPasswordHasher passwordHasher,
+    ITokenService jwtProvider,
+    IRefreshTokenGenerator refreshTokenGenerator)
   {
     _db = db;
     _passwordHasher = passwordHasher;
     _jwtProvider = jwtProvider;
+    _refreshTokenGenerator = refreshTokenGenerator;
   }
 
   public async Task<LoginResponse> HandleAsync(LoginRequest request, CancellationToken cancellationToken)
@@ -35,8 +40,29 @@ public sealed class LoginHandler
     }
 
     var token = _jwtProvider.GenerateToken(user);
-    
-    var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+
+    var refreshToken = _refreshTokenGenerator.GenerateRefreshToken();
+
+    var refreshTokenBD = new Models.RefreshToken
+    {
+      Id = Guid.NewGuid(),
+
+      UserId = user.Id,
+
+      Token = refreshToken,
+
+      ExpiresAt = DateTime.UtcNow.AddDays(30),
+
+      IsRevoked = false,
+
+      CreatedAt = DateTime.UtcNow,
+
+      UpdatedAt = DateTime.UtcNow
+    };
+
+    _db.RefreshTokens.Add(refreshTokenBD);
+
+    await _db.SaveChangesAsync(cancellationToken);
 
     return new LoginResponse
     {
