@@ -57,6 +57,15 @@ public sealed class ExceptionMiddleware
         Message = ex.Message
       });
     }
+    catch (UnauthorizedAccessException ex)
+    {
+      context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+      await context.Response.WriteAsJsonAsync(new
+      {
+        error = ex.Message
+      });
+    }
     catch (Exception)
     {
       context.Response.StatusCode = StatusCodes.Status500InternalServerError;

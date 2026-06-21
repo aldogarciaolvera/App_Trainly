@@ -1,6 +1,6 @@
 namespace Trainly.Api.Features.Auth.Register;
 
-public sealed class Request
+public sealed class RegisterRequest
 {
   public string Name { get; set; } = string.Empty;
   public string Email { get; set; } = string.Empty;

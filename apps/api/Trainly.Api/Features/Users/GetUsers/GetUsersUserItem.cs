@@ -1,6 +1,6 @@
 namespace Trainly.Api.Features.Users.GetUsers;
 
-public sealed class UserItem
+public sealed class GetUsersUserItem
   {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;

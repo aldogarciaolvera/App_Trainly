@@ -3,16 +3,16 @@ using Trainly.Api.Database;
 
 namespace Trainly.Api.Features.Users.GetUsers;
 
-public sealed class Handler
+public sealed class GetUsersHandler
 {
   private readonly AppDbContext _db;
 
-  public Handler(AppDbContext db)
+  public GetUsersHandler(AppDbContext db)
   {
     _db = db;
   }
 
-  public async Task<Response> HandleAsync(Request request, CancellationToken cancellationToken)
+  public async Task<GetUsersResponse> HandleAsync(GetUsersRequest request, CancellationToken cancellationToken)
   {
     var query = _db.Users.AsNoTracking();
 
@@ -22,7 +22,7 @@ public sealed class Handler
         .OrderBy(x => x.Name)
         .Skip((request.Page - 1) * request.PageSize)
         .Take(request.PageSize)
-        .Select(x => new UserItem
+        .Select(x => new GetUsersUserItem
         {
           Id = x.Id,
           Name = x.Name,
@@ -30,7 +30,7 @@ public sealed class Handler
         })
         .ToListAsync(cancellationToken);
 
-    return new Response
+    return new GetUsersResponse
     {
       Items = users,
       Total = total,

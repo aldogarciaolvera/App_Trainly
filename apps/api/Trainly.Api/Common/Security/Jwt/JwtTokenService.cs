@@ -1,5 +1,3 @@
-namespace Trainly.Api.Common.Security;
-
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -7,6 +5,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Trainly.Api.Configuration.Authentication;
 using Trainly.Api.Features.Users.Models;
+
+namespace Trainly.Api.Common.Security;
 
 public sealed class JwtTokenService : ITokenService
 {
@@ -17,7 +17,7 @@ public sealed class JwtTokenService : ITokenService
     _options = options;
   }
 
-  public string GenerateToken(User user)
+  public TokenResult GenerateToken(User user)
   {
     var opts = _options.Value;
     var claims = new List<Claim>
@@ -39,6 +39,10 @@ public sealed class JwtTokenService : ITokenService
       signingCredentials: creds
     );
 
-    return new JwtSecurityTokenHandler().WriteToken(token);
+    return new TokenResult
+    {
+      AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+      ExpiresAt = token.ValidTo
+    };
   }
 }

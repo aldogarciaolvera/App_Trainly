@@ -1,6 +1,6 @@
 namespace Trainly.Api.Features.Users.GetUserById;
 
-public sealed class Response
+public sealed class GetUserByIDResponse
 {
 	public Guid Id { get; set; }
 	public string Name { get; set; } = string.Empty;

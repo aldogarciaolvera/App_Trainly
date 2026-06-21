@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace Trainly.Api.Features.Auth.Register;
 
-public sealed class RequestValidator : AbstractValidator<Request>
+public sealed class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {
-  public RequestValidator()
+  public RegisterRequestValidator()
   {
     RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
     RuleFor(x => x.Email).NotEmpty().EmailAddress();

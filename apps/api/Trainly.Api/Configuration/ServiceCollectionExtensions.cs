@@ -8,9 +8,10 @@ public static class ServiceCollectionExtensions
   {
     services.AddScoped<IPasswordHasher, PasswordHasher>();
     services.AddScoped<ITokenService, JwtTokenService>();
-    services.AddScoped<Features.Auth.Register.Handler>();
-    services.AddScoped<Features.Users.GetUserById.Handler>();
-    services.AddScoped<Features.Users.GetUsers.Handler>();
+    services.AddScoped<Features.Auth.Register.RegisterHandler>();
+    services.AddScoped<Features.Auth.Login.LoginHandler>();
+    services.AddScoped<Features.Users.GetUserById.GetUserByIdHandler>();
+    services.AddScoped<Features.Users.GetUsers.GetUsersHandler>();
 
     return services;
   }

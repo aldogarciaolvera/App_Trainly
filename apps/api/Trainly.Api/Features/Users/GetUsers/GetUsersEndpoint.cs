@@ -6,15 +6,15 @@ namespace Trainly.Api.Features.Users.GetUsers;
 [Route("api/users/GetUsers")]
 public sealed class UsersEndpoint : ControllerBase
 {
-  private readonly Handler _handler;
+  private readonly GetUsersHandler _handler;
 
-  public UsersEndpoint(Handler handler)
+  public UsersEndpoint(GetUsersHandler handler)
   {
     _handler = handler;
   }
 
   [HttpGet]
-  public async Task<ActionResult<Response>> Get([FromQuery] Request request, CancellationToken cancellationToken)
+  public async Task<ActionResult<GetUsersResponse>> Get([FromQuery] GetUsersRequest request, CancellationToken cancellationToken)
   {
     var response = await _handler.HandleAsync(request, cancellationToken);
 

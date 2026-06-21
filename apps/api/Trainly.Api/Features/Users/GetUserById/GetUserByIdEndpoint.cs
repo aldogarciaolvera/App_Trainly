@@ -6,15 +6,15 @@ namespace Trainly.Api.Features.Users.GetUserById;
 [Route("api/users/GetUserById")]
 public sealed class UsersEndpoint : ControllerBase
 {
-  private readonly Handler _handler;
+  private readonly GetUserByIdHandler _handler;
 
-  public UsersEndpoint(Handler handler)
+  public UsersEndpoint(GetUserByIdHandler handler)
   {
     _handler = handler;
   }
 
   [HttpGet("{id:guid}")]
-  public async Task<ActionResult<Response>> GetById(Guid id, CancellationToken cancellationToken)
+  public async Task<ActionResult<GetUserByIDResponse>> GetById(Guid id, CancellationToken cancellationToken)
   {
     var response = await _handler.HandleAsync(id, cancellationToken);
 

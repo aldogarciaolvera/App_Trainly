@@ -6,20 +6,20 @@ using Trainly.Api.Common.Security;
 
 namespace Trainly.Api.Features.Auth.Register;
 
-public sealed class Handler
+public sealed class RegisterHandler
 {
   private readonly AppDbContext _db;
   private readonly IPasswordHasher _passwordHasher;
   private readonly ITokenService _tokenService;
 
-  public Handler(AppDbContext db, IPasswordHasher passwordHasher, ITokenService tokenService)
+  public RegisterHandler(AppDbContext db, IPasswordHasher passwordHasher, ITokenService tokenService)
   {
     _db = db;
     _passwordHasher = passwordHasher;
     _tokenService = tokenService;
   }
 
-  public async Task<Response> HandleAsync(Request request, CancellationToken cancellationToken)
+  public async Task<RegisterResponse> HandleAsync(RegisterRequest request, CancellationToken cancellationToken)
   {
     var emailExists = await _db.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
 
@@ -44,10 +44,10 @@ public sealed class Handler
 
     var token = _tokenService.GenerateToken(user);
 
-    return new Response
+    return new RegisterResponse
     {
       Id = user.Id,
-      Token = token
+      Token = token.AccessToken
     };
   }
 }

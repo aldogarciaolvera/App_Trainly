@@ -29,6 +29,7 @@ public static class OpenApiExtensions
         options.HideClientButton = true;
         options.ShowDeveloperTools = DeveloperToolsVisibility.Never;
         options.DisableMcp();
+        options.ExpandAllResponses();
       });
     }
 
