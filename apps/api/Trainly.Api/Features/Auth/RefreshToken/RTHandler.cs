@@ -47,13 +47,10 @@ public sealed class RTHandler
 
     var newRefreshToken = new Models.RefreshToken
     {
-      Id = Guid.NewGuid(),
       UserId = refreshToken.UserId,
       Token = newRefreshTokenValue,
       ExpiresAt = DateTime.UtcNow.AddDays(30),
       IsRevoked = false,
-      CreatedAt = DateTime.UtcNow,
-      UpdatedAt = DateTime.UtcNow
     };
 
     _db.RefreshTokens.Add(newRefreshToken);

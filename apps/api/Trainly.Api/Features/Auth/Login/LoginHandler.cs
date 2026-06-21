@@ -45,19 +45,10 @@ public sealed class LoginHandler
 
     var refreshTokenBD = new Models.RefreshToken
     {
-      Id = Guid.NewGuid(),
-
       UserId = user.Id,
-
       Token = refreshToken,
-
       ExpiresAt = DateTime.UtcNow.AddDays(30),
-
       IsRevoked = false,
-
-      CreatedAt = DateTime.UtcNow,
-
-      UpdatedAt = DateTime.UtcNow
     };
 
     _db.RefreshTokens.Add(refreshTokenBD);

@@ -29,12 +29,9 @@ public sealed class RegisterHandler
 
     var user = new Models.User
     {
-      Id = Guid.NewGuid(),
       Name = request.Name,
       Email = request.Email,
       PasswordHash = _passwordHasher.Hash(request.Password),
-      CreatedAt = DateTime.UtcNow,
-      UpdatedAt = DateTime.UtcNow
     };
 
     _db.Users.Add(user);
