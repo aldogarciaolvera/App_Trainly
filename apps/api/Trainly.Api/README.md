@@ -147,10 +147,13 @@ dotnet build --no-restore
 dotnet test ../Trainly.Api.Tests/Trainly.Api.Tests.csproj
 ```
 
-`Trainly.Api.Tests` contiene pruebas básicas de los handlers del CRUD de Workouts,
-el perfil autenticado y los flujos de Register, Login, Refresh Token y Logout.
-El siguiente paso es agregar pruebas de integración del contrato HTTP para cubrir
-rutas, model binding, validación, middleware y políticas `401/403`.
+`Trainly.Api.Tests` contiene pruebas de handlers para Workouts, perfil y Auth,
+además de pruebas de integración del contrato HTTP. Estas últimas arrancan la API
+con `WebApplicationFactory`, sustituyen PostgreSQL por EF InMemory y JWT por una
+identidad controlada exclusivamente desde los tests.
+
+La suite cubre rutas, paginación, model binding, validación, middleware, códigos
+del CRUD y políticas `401/403`. No modifica `.env` ni la base PostgreSQL local.
 
 ## Seguridad pendiente
 

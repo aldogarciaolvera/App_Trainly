@@ -83,7 +83,6 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Agregar pruebas de integración para endpoints HTTP y autorización.
-2. Implementar persistencia y emisión del rol administrativo.
-3. Implementar Exercises y su relación con Workouts.
-4. Iniciar tipos, servicios y estado compartido para mobile/web.
+1. Implementar persistencia y emisión del rol administrativo.
+2. Implementar Exercises y su relación con Workouts.
+3. Iniciar tipos, servicios y estado compartido para mobile/web.
