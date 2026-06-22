@@ -76,6 +76,10 @@ Authorization: Bearer <access-token>
 Los workouts nunca aceptan `userId` desde el cliente. La propiedad y los filtros
 se obtienen desde el identificador firmado dentro del JWT.
 
+Los usuarios tienen rol `User` o `Admin`. El rol persistido se emite dentro del
+JWT durante Login y Refresh Token. Register siempre crea usuarios con rol `User`
+y no acepta el rol desde el cliente.
+
 ## Endpoints
 
 ### Auth
@@ -157,7 +161,7 @@ del CRUD y políticas `401/403`. No modifica `.env` ni la base PostgreSQL local.
 
 ## Seguridad pendiente
 
-Las consultas globales de Users exigen el rol `Admin`, pero el modelo de usuarios
-y la emisión de JWT todavía no administran roles. Por ello quedan bloqueadas para
-usuarios normales hasta implementar el módulo administrativo. El perfil propio
-se consulta de forma segura mediante `/api/users/me`.
+Las consultas globales de Users exigen el rol `Admin`; el perfil propio se consulta
+mediante `/api/users/me`. No existe un endpoint público para elevar privilegios.
+Todos los usuarios existentes y los creados por Register tienen rol `User` hasta
+que se implemente un mecanismo controlado para aprovisionar administradores.

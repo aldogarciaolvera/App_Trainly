@@ -32,6 +32,7 @@ public sealed class RegisterHandler
       Name = request.Name,
       Email = request.Email,
       PasswordHash = _passwordHasher.Hash(request.Password),
+      Role = Models.UserRole.User
     };
 
     _db.Users.Add(user);

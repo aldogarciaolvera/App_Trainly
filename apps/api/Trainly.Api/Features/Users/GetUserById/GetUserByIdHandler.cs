@@ -27,6 +27,7 @@ public sealed class GetUserByIdHandler
       Id = user.Id,
       Name = user.Name,
       Email = user.Email,
+      Role = user.Role.ToString(),
       CreatedAt = user.CreatedAt,
       UpdatedAt = user.UpdatedAt
     };

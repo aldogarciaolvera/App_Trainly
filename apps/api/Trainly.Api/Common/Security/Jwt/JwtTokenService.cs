@@ -24,7 +24,8 @@ public sealed class JwtTokenService : ITokenService
     {
       new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
       new Claim(ClaimTypes.Name, user.Name ?? string.Empty),
-      new Claim(ClaimTypes.Email, user.Email ?? string.Empty)
+      new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
+      new Claim(ClaimTypes.Role, user.Role.ToString())
     };
 
     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(opts.Key ?? string.Empty));

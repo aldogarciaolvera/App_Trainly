@@ -40,6 +40,17 @@ public sealed class ApiContractTests : IClassFixture<TrainlyApiFactory>
   }
 
   [Fact]
+  public async Task Admin_endpoint_returns_200_for_admin_role()
+  {
+    await _factory.ResetDatabaseAsync();
+    using var client = _factory.CreateAuthenticatedClient(Guid.NewGuid(), "Admin");
+
+    var response = await client.GetAsync("/api/users");
+
+    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+  }
+
+  [Fact]
   public async Task Invalid_workout_returns_400_from_automatic_validation()
   {
     await _factory.ResetDatabaseAsync();

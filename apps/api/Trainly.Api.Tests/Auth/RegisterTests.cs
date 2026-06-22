@@ -29,6 +29,7 @@ public sealed class RegisterTests
     var user = await db.Users.SingleAsync();
     Assert.Equal(user.Id, response.Id);
     Assert.Equal("hashed:password123", user.PasswordHash);
+    Assert.Equal(UserRole.User, user.Role);
     Assert.Equal($"access-token:{user.Id}", response.Token);
   }
 

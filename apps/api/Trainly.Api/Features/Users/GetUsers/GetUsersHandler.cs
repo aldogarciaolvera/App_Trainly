@@ -26,7 +26,8 @@ public sealed class GetUsersHandler
         {
           Id = x.Id,
           Name = x.Name,
-          Email = x.Email
+          Email = x.Email,
+          Role = x.Role.ToString()
         })
         .ToListAsync(cancellationToken);
 

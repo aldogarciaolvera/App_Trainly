@@ -12,7 +12,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
     builder.Property(x => x.Email).IsRequired().HasMaxLength(255);
     builder.Property(x => x.PasswordHash).IsRequired();
+    builder.Property(x => x.Role)
+      .HasConversion<string>().HasMaxLength(20)
+      .HasDefaultValue(UserRole.User).IsRequired();
     builder.HasIndex(x => x.Email).IsUnique();
-    builder.HasMany(x => x.RefreshTokens).WithOne(x => x.User).HasForeignKey(x => x.UserId);
+    builder.HasMany(x => x.RefreshTokens)
+      .WithOne(x => x.User).HasForeignKey(x => x.UserId);
   }
 }

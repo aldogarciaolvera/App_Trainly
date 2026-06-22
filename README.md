@@ -9,6 +9,7 @@ pnpm Workspaces.
 El desarrollo activo está concentrado en la API:
 
 - autenticación con JWT y refresh tokens;
+- roles `User`/`Admin` persistidos y emitidos en JWT;
 - registro, login, renovación de sesión y logout;
 - perfil del usuario autenticado y consultas administrativas protegidas;
 - CRUD paginado de workouts asociado al usuario autenticado;
@@ -83,6 +84,6 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Implementar persistencia y emisión del rol administrativo.
+1. Definir el aprovisionamiento controlado del primer administrador.
 2. Implementar Exercises y su relación con Workouts.
 3. Iniciar tipos, servicios y estado compartido para mobile/web.
