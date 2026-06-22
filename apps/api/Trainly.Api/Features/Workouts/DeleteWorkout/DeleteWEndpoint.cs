@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Trainly.Api.Features.Workouts.DeleteWorkout;
 
 [ApiController]
-[Route("api/workouts/DeleteWorkout")]
+[Route("api/workouts")]
 public sealed class WorkoutEndpoint : ControllerBase
 {
   private readonly DeleteWHandler _handler;
@@ -14,10 +14,10 @@ public sealed class WorkoutEndpoint : ControllerBase
   }
 
   [HttpDelete("{id:guid}")]
-  public async Task<ActionResult<DeleteWResponse>> Delete(Guid id, CancellationToken cancellationToken)
+  public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
   {
-    var response = await _handler.HandleAsync(id, cancellationToken);
+    await _handler.HandleAsync(id, cancellationToken);
 
-    return Ok(response);
+    return NoContent();
   }
 }

@@ -1,5 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Trainly.Api.Common.Exceptions;
+using Trainly.Api.Common.Authentication;
 using Trainly.Api.Database;
 using Trainly.Api.Features.Models;
 
@@ -8,24 +7,21 @@ namespace Trainly.Api.Features.Workouts.CreateWorkout;
 public sealed class CreateWHandler
 {
 	private readonly AppDbContext _db;
+	private readonly IUserContext _userContext;
 
-	public CreateWHandler(AppDbContext db)
+	public CreateWHandler(AppDbContext db, IUserContext userContext)
 	{
 		_db = db;
+		_userContext = userContext;
 	}
 
 	public async Task<CreateWResponse> HandleAsync(CreateWRequest request, CancellationToken cancellationToken)
 	{
-		var userExists = await _db.Users.AnyAsync(x => x.Id == request.UserId, cancellationToken);
-
-		if (!userExists)
-		{
-			throw new NotFoundException("Usuario no encontrado.");
-		}
+		var userId = _userContext.GetUserId();
 
 		var workout = new Workout
 		{
-			UserId = request.UserId,
+			UserId = userId,
 			Name = request.Name,
 			Description = request.Description
 		};

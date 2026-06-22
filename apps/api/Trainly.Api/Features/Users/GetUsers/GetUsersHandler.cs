@@ -18,27 +18,6 @@ public sealed class GetUsersHandler
 
     var total = await query.CountAsync(cancellationToken);
 
-    if (request.PageSize <= 0 || request.PageSize >= total)
-    {
-      var usersAll = await query
-          .OrderBy(x => x.Name)
-          .Select(x => new GetUsersUserItem
-          {
-            Id = x.Id,
-            Name = x.Name,
-            Email = x.Email
-          })
-          .ToListAsync(cancellationToken);
-
-      return new GetUsersResponse
-      {
-        Items = usersAll,
-        Total = total,
-        Page = 1,
-        PageSize = total
-      };
-    }
-
     var users = await query
         .OrderBy(x => x.Name)
         .Skip((request.Page - 1) * request.PageSize)

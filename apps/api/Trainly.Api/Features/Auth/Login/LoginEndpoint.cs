@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Trainly.Api.Features.Auth.Login;
 
 [ApiController]
-[Route("api/auth/Login")]
+[Route("api/auth")]
 public sealed class AuthEndpoint : ControllerBase
 {
   private readonly LoginHandler _handler;
@@ -13,7 +13,7 @@ public sealed class AuthEndpoint : ControllerBase
     _handler = handler;
   }
 
-  [HttpPost]
+  [HttpPost("login")]
   [Microsoft.AspNetCore.Authorization.AllowAnonymous]
   public async Task<ActionResult<LoginResponse>> Login(LoginRequest request, CancellationToken cancellationToken)
   {

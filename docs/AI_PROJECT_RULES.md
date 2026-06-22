@@ -72,6 +72,39 @@ All endpoints must be exposed through OpenAPI and viewable from Scalar.
 
 ---
 
+# API Route Conventions
+
+Las rutas públicas deben representar recursos y mantenerse consistentes,
+predecibles y en minúsculas.
+
+## CRUD resources
+
+Para operaciones CRUD, el verbo HTTP expresa la acción. No duplicar acciones
+como `Create`, `Get`, `Update` o `Delete` dentro de la URL.
+
+```text
+POST   /api/workouts       -> crear
+GET    /api/workouts       -> listar
+GET    /api/workouts/{id}  -> obtener por ID
+PUT    /api/workouts/{id}  -> actualizar
+DELETE /api/workouts/{id}  -> eliminar
+```
+
+Reglas:
+
+- Usar sustantivos plurales para colecciones: `/api/users`, `/api/workouts`.
+- Usar `/{id}` para identificar un recurso individual.
+- Usar segmentos en minúsculas.
+- Las distintas Vertical Slices de un recurso deben compartir la misma ruta base.
+- Las rutas de comandos no CRUD se permiten cuando representan una operación
+  del dominio, por ejemplo `/api/auth/login`, `/api/auth/refresh` y
+  `/api/auth/logout`.
+- Utilizar códigos HTTP semánticos: `201 Created` al crear, `200 OK` al consultar
+  o actualizar, `204 No Content` al eliminar y códigos `4xx` para errores del cliente.
+- Todo cambio de contrato HTTP debe actualizar OpenAPI y la documentación de la API.
+
+---
+
 # Architectural Principles
 
 ## 1. Mobile First

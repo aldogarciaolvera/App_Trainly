@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Trainly.Api.Features.Auth.RefreshToken;
 
 [ApiController]
-[Route("api/auth/RefreshToken")]
+[Route("api/auth")]
 public sealed class AuthEndpoint : ControllerBase
 {
   private readonly RTHandler _handler;
@@ -13,7 +13,7 @@ public sealed class AuthEndpoint : ControllerBase
     _handler = handler;
   }
 
-  [HttpPost]
+  [HttpPost("refresh")]
   [Microsoft.AspNetCore.Authorization.AllowAnonymous]
   public async Task<ActionResult<RTResponse>> RefreshToken(RTRequest request, CancellationToken cancellationToken)
   {

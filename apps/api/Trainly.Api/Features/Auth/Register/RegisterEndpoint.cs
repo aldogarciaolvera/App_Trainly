@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Trainly.Api.Features.Auth.Register;
 
 [ApiController]
-[Route("api/auth/Register")]
+[Route("api/auth")]
 public sealed class AuthEndpoint : ControllerBase
 {
   private readonly RegisterHandler _handler;
@@ -13,12 +13,12 @@ public sealed class AuthEndpoint : ControllerBase
     _handler = handler;
   }
 
-  [HttpPost]
+  [HttpPost("register")]
   [Microsoft.AspNetCore.Authorization.AllowAnonymous]
   public async Task<ActionResult<RegisterResponse>> Create(RegisterRequest request, CancellationToken cancellationToken)
   {
     var response = await _handler.HandleAsync(request, cancellationToken);
 
-    return Ok(response);
+    return Created($"/api/users/{response.Id}", response);
   }
 }

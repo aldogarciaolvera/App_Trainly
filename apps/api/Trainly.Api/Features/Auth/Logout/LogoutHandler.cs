@@ -15,7 +15,7 @@ public sealed class LogoutHandler
     _userContext = userContext;
   }
 
-  public async Task<LogoutResponse> HandleAsync(CancellationToken cancellationToken)
+  public async Task HandleAsync(CancellationToken cancellationToken)
   {
     var userId = _userContext.GetUserId();
 
@@ -30,10 +30,5 @@ public sealed class LogoutHandler
     }
 
     await _db.SaveChangesAsync(cancellationToken);
-
-    return new LogoutResponse
-    {
-      Message = "Logout successful."
-    };
   }
 }

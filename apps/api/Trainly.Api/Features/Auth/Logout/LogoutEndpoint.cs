@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Trainly.Api.Features.Auth.Logout;
 
 [ApiController]
-[Route("api/auth/Logout")]
+[Route("api/auth")]
 public sealed class AuthEndpoint : ControllerBase
 {
   private readonly LogoutHandler _handler;
@@ -13,11 +13,11 @@ public sealed class AuthEndpoint : ControllerBase
     _handler = handler;
   }
 
-  [HttpPost]
-  public async Task<ActionResult<LogoutResponse>> Logout(CancellationToken cancellationToken)
+  [HttpPost("logout")]
+  public async Task<IActionResult> Logout(CancellationToken cancellationToken)
   {
-    var response = await _handler.HandleAsync(cancellationToken);
+    await _handler.HandleAsync(cancellationToken);
 
-    return Ok(response);
+    return NoContent();
   }
 }

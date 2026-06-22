@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Trainly.Api.Features.Workouts.CreateWorkout;
 
 [ApiController]
-[Route("api/workouts/CreateWorkout")]
+[Route("api/workouts")]
 public sealed class WorkoutEndpoint : ControllerBase
 {
 	private readonly CreateWHandler _handler;
@@ -18,6 +18,6 @@ public sealed class WorkoutEndpoint : ControllerBase
 	{
 		var response = await _handler.HandleAsync(request, cancellationToken);
 
-		return Ok(response);
+		return Created($"/api/workouts/{response.Id}", response);
 	}
 }

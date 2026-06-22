@@ -19,6 +19,11 @@ public static class ServiceCollectionExtensions
     services.AddScoped<Features.Auth.Logout.LogoutHandler>();
     services.AddScoped<Features.Users.GetUserById.GetUserByIdHandler>();
     services.AddScoped<Features.Users.GetUsers.GetUsersHandler>();
+    services.AddScoped<Features.Workouts.CreateWorkout.CreateWHandler>();
+    services.AddScoped<Features.Workouts.GetWorkouts.GetWorkoutsHandler>();
+    services.AddScoped<Features.Workouts.GetWorkoutById.GetWorkoutByIdHandler>();
+    services.AddScoped<Features.Workouts.UpdateWorkout.UpdateWHandler>();
+    services.AddScoped<Features.Workouts.DeleteWorkout.DeleteWHandler>();
 
     return services;
   }

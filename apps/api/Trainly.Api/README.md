@@ -1,68 +1,155 @@
-# Trainly.Api
+# Trainly API
 
-Trainly.Api es el servicio backend principal para la aplicación Trainly. Provee autenticación (JWT), gestión de usuarios y otras funcionalidades del dominio.
-
-## Estructura principal
-
-- `Program.cs` - configuración de la aplicación y pipeline.
-- `Configuration/` - extensiones de configuración (Base de datos, Validación, Autenticación, OpenAPI).
-- `Common/` - utilidades compartidas (seguridad, hashing, token service).
-- `Features/` - implementación por dominio (Auth, Users, etc.).
-- `Database/` - `AppDbContext` y migraciones.
-- `Middleware/` - middleware global (manejo de excepciones, etc.).
+Backend de Trainly construido con ASP.NET Core 10, Entity Framework Core 10 y
+PostgreSQL. Utiliza Vertical Slice Architecture: cada operación contiene su
+endpoint, request, response, validación y handler dentro de la funcionalidad a
+la que pertenece.
 
 ## Requisitos
 
-- .NET 10 SDK (o la versión objetivo configurada en el proyecto)
-- PNPM / Node (solo para front-end) — no requerido para correr la API
+- .NET 10 SDK
+- PostgreSQL 18
+- `dotnet-ef` para administrar migraciones
 
-## Variables de configuración y `appsettings`
+## Configuración local
 
-La configuración JWT se lee desde la sección `Jwt` en `appsettings.json` o en variables de entorno. Estructura esperada:
+Desde esta carpeta, crea el archivo local de configuración:
 
-```json
-"Jwt": {
-  "Key": "<clave-secreta-larga>",
-  "Issuer": "Trainly",
-  "Audience": "TrainlyUsers",
-  "ExpiresInMinutes": 60
-}
+```powershell
+Copy-Item .env.example .env
 ```
 
-Asegúrate de no commitear claves secretas en repositorios públicos; usa `DotNetEnv` o variables de entorno en producción.
+Variables requeridas:
 
-## Autenticación
+```dotenv
+Database__Host=localhost
+Database__Port=5432
+Database__Database=trainly
+Database__Username=postgres
+Database__Password=change-me
+Jwt__Key=use-a-long-random-secret
+Jwt__Issuer=TrainlyApi
+Jwt__Audience=TrainlyClient
+Jwt__ExpiresInMinutes=60
+```
 
-- Se configuró `AddJwtAuthentication` y se aplica autorización global en `Program.cs`.
-- Los endpoints públicos (registro/login) deben decorarse con `[AllowAnonymous]`.
-- Los endpoints protegidos requieren token JWT en la cabecera `Authorization: Bearer <token>`.
+`.env` está ignorado por Git. No guardes contraseñas, claves JWT ni otros
+secretos en `appsettings.json` o en el repositorio.
 
-## Endpoints importantes
+## Base de datos
 
-- `POST /api/auth/Register` - crea un usuario y devuelve `{ id, token }` (debe tener `[AllowAnonymous]`).
-- `GET /api/users` - ejemplo de endpoint protegido (requiere autenticación) — revisa `Features/Users`.
-
-## Cómo ejecutar localmente
-
-En la carpeta `apps/api/Trainly.Api`:
+Todos los cambios de esquema se administran mediante migraciones:
 
 ```bash
+dotnet ef database update
+```
+
+Para crear una migración nueva:
+
+```bash
+dotnet ef migrations add NombreDeLaMigracion
+```
+
+## Ejecución
+
+Ejecuta los comandos desde `apps/api/Trainly.Api`, porque `DotNetEnv` carga el
+archivo `.env` desde el directorio de ejecución:
+
+```bash
+dotnet restore
 dotnet build
 dotnet run
 ```
 
-## Notas de desarrollo
+En ambiente Development, Scalar se publica en la raíz de la aplicación y el
+documento OpenAPI está disponible en `/openapi/v1.json`.
 
-- Servicio de token: `Common/Security/JwtTokenService.cs` genera JWT a partir de `JwtOptions`.
-- Registro en DI: `Configuration/ServiceCollectionExtensions.cs` registra `ITokenService`.
-- Si Authorization global está activa, recuerda añadir `AllowAnonymous` a los endpoints que deban ser públicos.
+## Autenticación
 
-## Siguientes pasos recomendados
+La autorización se aplica globalmente. Los endpoints de registro, login y
+renovación de token permiten acceso anónimo; el resto requiere:
 
-- Añadir `AllowAnonymous` al endpoint de login (si existe).
-- Añadir pruebas unitarias e integración para flujos de autenticación.
-- Ejecutar `dotnet build` y `dotnet test` en CI.
+```http
+Authorization: Bearer <access-token>
+```
 
----
+Los workouts nunca aceptan `userId` desde el cliente. La propiedad y los filtros
+se obtienen desde el identificador firmado dentro del JWT.
 
-Si quieres, ejecuto ahora `dotnet build` y te muestro los errores o confirmo que compila correctamente.
+## Endpoints
+
+### Auth
+
+| Método | Ruta | Autenticación | Resultado |
+| --- | --- | --- | --- |
+| `POST` | `/api/auth/register` | Pública | Registra un usuario (`201`) |
+| `POST` | `/api/auth/login` | Pública | Entrega access y refresh token (`200`) |
+| `POST` | `/api/auth/refresh` | Pública | Rota el refresh token (`200`) |
+| `POST` | `/api/auth/logout` | JWT | Revoca los refresh tokens activos (`204`) |
+
+### Users
+
+| Método | Ruta | Autenticación | Resultado |
+| --- | --- | --- | --- |
+| `GET` | `/api/users?page=1&pageSize=20` | JWT | Lista usuarios paginados (`200`) |
+| `GET` | `/api/users/{id}` | JWT | Obtiene un usuario (`200`) |
+
+`page` debe ser al menos `1`; `pageSize` acepta valores entre `1` y `100`.
+
+### Workouts
+
+| Método | Ruta | Autenticación | Resultado |
+| --- | --- | --- | --- |
+| `POST` | `/api/workouts` | JWT | Crea un workout propio (`201`) |
+| `GET` | `/api/workouts` | JWT | Lista los workouts propios (`200`) |
+| `GET` | `/api/workouts/{id}` | JWT | Obtiene un workout propio (`200`) |
+| `PUT` | `/api/workouts/{id}` | JWT | Actualiza un workout propio (`200`) |
+| `DELETE` | `/api/workouts/{id}` | JWT | Elimina un workout propio (`204`) |
+
+Cuerpo para crear o actualizar:
+
+```json
+{
+  "name": "Rutina de torso",
+  "description": "Trabajo de pecho y espalda"
+}
+```
+
+## Respuestas y errores
+
+El middleware global traduce errores conocidos a códigos HTTP y registra las
+excepciones sin devolver stack traces ni información sensible:
+
+- `400 Bad Request`: validación;
+- `401 Unauthorized`: credenciales o sesión inválida;
+- `404 Not Found`: recurso inexistente o no perteneciente al usuario;
+- `409 Conflict`: conflicto de dominio;
+- `500 Internal Server Error`: error inesperado.
+
+## Estructura principal
+
+```text
+Common/          Entidades base, autenticación, excepciones y seguridad
+Configuration/   Base de datos, JWT, OpenAPI, DI y validación
+Database/        DbContext y configuraciones de Entity Framework
+Features/        Vertical slices de Auth, Users y Workouts
+Middleware/      Manejo global de excepciones
+Migrations/      Historial del esquema PostgreSQL
+```
+
+## Verificación
+
+```bash
+dotnet build --no-restore
+dotnet test
+```
+
+Actualmente no existe un proyecto de pruebas; agregar pruebas de integración
+para Auth y Workouts es el siguiente paso técnico prioritario.
+
+## Seguridad pendiente
+
+Las consultas de Users requieren JWT, pero aún no existe un sistema de roles o
+una política administrativa. Antes de exponerlas en producción se debe decidir
+si serán exclusivas para administradores o reemplazadas por un endpoint del
+perfil autenticado, como `/api/users/me`.

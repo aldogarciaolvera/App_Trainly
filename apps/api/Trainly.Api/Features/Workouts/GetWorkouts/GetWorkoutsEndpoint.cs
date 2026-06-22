@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Trainly.Api.Features.Workouts.GetWorkouts;
 
 [ApiController]
-[Route("api/workouts/GetWorkouts")]
+[Route("api/workouts")]
 public sealed class WorkoutEndpoint : ControllerBase
 {
   private readonly GetWorkoutsHandler _handler;

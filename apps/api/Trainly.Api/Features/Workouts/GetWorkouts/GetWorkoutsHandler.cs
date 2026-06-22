@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Trainly.Api.Common.Authentication;
 using Trainly.Api.Database;
 
 namespace Trainly.Api.Features.Workouts.GetWorkouts;
@@ -6,15 +7,21 @@ namespace Trainly.Api.Features.Workouts.GetWorkouts;
 public sealed class GetWorkoutsHandler
 {
   private readonly AppDbContext _db;
+  private readonly IUserContext _userContext;
 
-  public GetWorkoutsHandler(AppDbContext db)
+  public GetWorkoutsHandler(AppDbContext db, IUserContext userContext)
   {
     _db = db;
+    _userContext = userContext;
   }
 
   public async Task<GetWorkoutsResponse> HandleAsync(CancellationToken cancellationToken)
   {
-    var query = _db.Workouts.AsNoTracking();
+    var userId = _userContext.GetUserId();
+
+    var query = _db.Workouts
+      .AsNoTracking()
+      .Where(x => x.UserId == userId);
 
     var total = await query.CountAsync(cancellationToken);
 
