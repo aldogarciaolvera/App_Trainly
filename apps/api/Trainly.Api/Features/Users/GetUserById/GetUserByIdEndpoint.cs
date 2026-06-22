@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Trainly.Api.Features.Users.GetUserById;
 
 [ApiController]
+[Authorize(Roles = "Admin")]
 [Route("api/users")]
 public sealed class UsersEndpoint : ControllerBase
 {

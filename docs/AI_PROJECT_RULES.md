@@ -554,6 +554,14 @@ Sistema base:
 
 No implementar OAuth ni proveedores externos hasta que exista una necesidad real.
 
+## User data authorization
+
+- Un usuario normal debe consultar su propio perfil mediante `/api/users/me`.
+- Nunca aceptar un `UserId` del cliente para decidir la propiedad de datos privados.
+- El identificador del propietario debe obtenerse desde el JWT mediante `IUserContext`.
+- Listar usuarios o consultar perfiles ajenos requiere una política o rol administrativo.
+- Autenticación no equivale a autorización: un JWT válido no concede acceso global.
+
 ---
 
 # Error Handling

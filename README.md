@@ -10,7 +10,7 @@ El desarrollo activo está concentrado en la API:
 
 - autenticación con JWT y refresh tokens;
 - registro, login, renovación de sesión y logout;
-- consultas de usuarios;
+- perfil del usuario autenticado y consultas administrativas protegidas;
 - CRUD paginado de workouts asociado al usuario autenticado;
 - PostgreSQL mediante Entity Framework Core;
 - validaciones con FluentValidation;
@@ -83,7 +83,7 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Agregar pruebas automatizadas para autenticación y endpoints HTTP.
-2. Definir autorización administrativa para las consultas globales de usuarios.
+1. Agregar pruebas de integración para endpoints HTTP y autorización.
+2. Implementar persistencia y emisión del rol administrativo.
 3. Implementar Exercises y su relación con Workouts.
 4. Iniciar tipos, servicios y estado compartido para mobile/web.

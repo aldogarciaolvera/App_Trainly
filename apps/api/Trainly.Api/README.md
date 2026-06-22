@@ -91,8 +91,9 @@ se obtienen desde el identificador firmado dentro del JWT.
 
 | Método | Ruta | Autenticación | Resultado |
 | --- | --- | --- | --- |
-| `GET` | `/api/users?page=1&pageSize=20` | JWT | Lista usuarios paginados (`200`) |
-| `GET` | `/api/users/{id}` | JWT | Obtiene un usuario (`200`) |
+| `GET` | `/api/users/me` | JWT | Obtiene el perfil autenticado (`200`) |
+| `GET` | `/api/users?page=1&pageSize=20` | Rol `Admin` | Lista usuarios paginados (`200`) |
+| `GET` | `/api/users/{id}` | Rol `Admin` | Obtiene un usuario (`200`) |
 
 `page` debe ser al menos `1`; `pageSize` acepta valores entre `1` y `100`.
 
@@ -147,12 +148,13 @@ dotnet test ../Trainly.Api.Tests/Trainly.Api.Tests.csproj
 ```
 
 `Trainly.Api.Tests` contiene pruebas básicas de los handlers del CRUD de Workouts,
-incluyendo propiedad por usuario y paginación. El siguiente paso es cubrir Auth
-y agregar pruebas de integración del contrato HTTP.
+el perfil autenticado y los flujos de Register, Login, Refresh Token y Logout.
+El siguiente paso es agregar pruebas de integración del contrato HTTP para cubrir
+rutas, model binding, validación, middleware y políticas `401/403`.
 
 ## Seguridad pendiente
 
-Las consultas de Users requieren JWT, pero aún no existe un sistema de roles o
-una política administrativa. Antes de exponerlas en producción se debe decidir
-si serán exclusivas para administradores o reemplazadas por un endpoint del
-perfil autenticado, como `/api/users/me`.
+Las consultas globales de Users exigen el rol `Admin`, pero el modelo de usuarios
+y la emisión de JWT todavía no administran roles. Por ello quedan bloqueadas para
+usuarios normales hasta implementar el módulo administrativo. El perfil propio
+se consulta de forma segura mediante `/api/users/me`.
