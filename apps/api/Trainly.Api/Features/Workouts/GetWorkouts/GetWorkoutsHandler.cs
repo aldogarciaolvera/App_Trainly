@@ -15,7 +15,9 @@ public sealed class GetWorkoutsHandler
     _userContext = userContext;
   }
 
-  public async Task<GetWorkoutsResponse> HandleAsync(CancellationToken cancellationToken)
+  public async Task<GetWorkoutsResponse> HandleAsync(
+    GetWorkoutsRequest request,
+    CancellationToken cancellationToken)
   {
     var userId = _userContext.GetUserId();
 
@@ -27,6 +29,9 @@ public sealed class GetWorkoutsHandler
 
     var items = await query
       .OrderBy(x => x.Name)
+      .ThenBy(x => x.Id)
+      .Skip((request.Page - 1) * request.PageSize)
+      .Take(request.PageSize)
       .Select(x => new GetWorkoutsItem
       {
         Id = x.Id,
@@ -39,7 +44,9 @@ public sealed class GetWorkoutsHandler
     return new GetWorkoutsResponse
     {
       Items = items,
-      Total = total
+      Total = total,
+      Page = request.Page,
+      PageSize = request.PageSize
     };
   }
 }

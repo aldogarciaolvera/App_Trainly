@@ -11,7 +11,7 @@ El desarrollo activo está concentrado en la API:
 - autenticación con JWT y refresh tokens;
 - registro, login, renovación de sesión y logout;
 - consultas de usuarios;
-- CRUD de workouts asociado al usuario autenticado;
+- CRUD paginado de workouts asociado al usuario autenticado;
 - PostgreSQL mediante Entity Framework Core;
 - validaciones con FluentValidation;
 - documentación OpenAPI visualizada con Scalar;
@@ -83,8 +83,7 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Agregar pruebas automatizadas para autenticación y workouts.
+1. Agregar pruebas automatizadas para autenticación y endpoints HTTP.
 2. Definir autorización administrativa para las consultas globales de usuarios.
-3. Incorporar paginación al listado de workouts.
-4. Implementar Exercises y su relación con Workouts.
-5. Iniciar tipos, servicios y estado compartido para mobile/web.
+3. Implementar Exercises y su relación con Workouts.
+4. Iniciar tipos, servicios y estado compartido para mobile/web.

@@ -101,7 +101,7 @@ se obtienen desde el identificador firmado dentro del JWT.
 | Método | Ruta | Autenticación | Resultado |
 | --- | --- | --- | --- |
 | `POST` | `/api/workouts` | JWT | Crea un workout propio (`201`) |
-| `GET` | `/api/workouts` | JWT | Lista los workouts propios (`200`) |
+| `GET` | `/api/workouts?page=1&pageSize=20` | JWT | Lista workouts propios paginados (`200`) |
 | `GET` | `/api/workouts/{id}` | JWT | Obtiene un workout propio (`200`) |
 | `PUT` | `/api/workouts/{id}` | JWT | Actualiza un workout propio (`200`) |
 | `DELETE` | `/api/workouts/{id}` | JWT | Elimina un workout propio (`204`) |
@@ -114,6 +114,8 @@ Cuerpo para crear o actualizar:
   "description": "Trabajo de pecho y espalda"
 }
 ```
+
+`page` debe ser al menos `1`; `pageSize` acepta valores entre `1` y `100`.
 
 ## Respuestas y errores
 
@@ -141,11 +143,12 @@ Migrations/      Historial del esquema PostgreSQL
 
 ```bash
 dotnet build --no-restore
-dotnet test
+dotnet test ../Trainly.Api.Tests/Trainly.Api.Tests.csproj
 ```
 
-Actualmente no existe un proyecto de pruebas; agregar pruebas de integración
-para Auth y Workouts es el siguiente paso técnico prioritario.
+`Trainly.Api.Tests` contiene pruebas básicas de los handlers del CRUD de Workouts,
+incluyendo propiedad por usuario y paginación. El siguiente paso es cubrir Auth
+y agregar pruebas de integración del contrato HTTP.
 
 ## Seguridad pendiente
 

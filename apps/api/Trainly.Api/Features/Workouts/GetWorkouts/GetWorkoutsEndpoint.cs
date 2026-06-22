@@ -14,9 +14,11 @@ public sealed class WorkoutEndpoint : ControllerBase
   }
 
   [HttpGet]
-  public async Task<ActionResult<GetWorkoutsResponse>> Get(CancellationToken cancellationToken)
+  public async Task<ActionResult<GetWorkoutsResponse>> Get(
+    [FromQuery] GetWorkoutsRequest request,
+    CancellationToken cancellationToken)
   {
-    var response = await _handler.HandleAsync(cancellationToken);
+    var response = await _handler.HandleAsync(request, cancellationToken);
 
     return Ok(response);
   }
