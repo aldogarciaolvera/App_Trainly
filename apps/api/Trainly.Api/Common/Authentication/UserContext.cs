@@ -6,17 +6,14 @@ public sealed class UserContext : IUserContext
 {
   private readonly IHttpContextAccessor _httpContextAccessor;
 
-  public UserContext(
-      IHttpContextAccessor httpContextAccessor)
+  public UserContext(IHttpContextAccessor httpContextAccessor)
   {
     _httpContextAccessor = httpContextAccessor;
   }
 
   public Guid GetUserId()
   {
-    var userId =
-      _httpContextAccessor
-        .HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
     if (string.IsNullOrWhiteSpace(userId))
     {

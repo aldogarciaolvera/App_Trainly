@@ -12,10 +12,8 @@ public sealed class LoginHandler
   private readonly IRefreshTokenGenerator _refreshTokenGenerator;
 
   public LoginHandler(
-    AppDbContext db,
-    IPasswordHasher passwordHasher,
-    ITokenService jwtProvider,
-    IRefreshTokenGenerator refreshTokenGenerator)
+    AppDbContext db, IPasswordHasher passwordHasher,
+    ITokenService jwtProvider, IRefreshTokenGenerator refreshTokenGenerator)
   {
     _db = db;
     _passwordHasher = passwordHasher;
