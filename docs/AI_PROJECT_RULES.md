@@ -533,6 +533,15 @@ CreatedAt should be assigned automatically when the entity is created.
 
 UpdatedAt should be updated automatically when the entity changes.
 
+## Exercise ownership
+
+- `Exercise.UserId = null` representa un ejercicio del catálogo global.
+- `Exercise.UserId` con valor representa un ejercicio personalizado y privado.
+- Usuarios normales solo pueden leer globales y propios, y modificar o eliminar propios.
+- Solo administradores pueden crear, modificar o eliminar ejercicios globales.
+- Al eliminar un usuario, sus ejercicios personalizados deben eliminarse en cascada;
+  nunca deben convertirse automáticamente en ejercicios globales.
+
 ---
 
 # Entity Framework Rules

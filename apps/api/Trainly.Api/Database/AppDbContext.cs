@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
   public DbSet<User> Users => Set<User>();
   public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
   public DbSet<Workout> Workouts => Set<Workout>();
+  public DbSet<Exercise> Exercises => Set<Exercise>();
 
   protected override void OnModelCreating(ModelBuilder builder)
   {

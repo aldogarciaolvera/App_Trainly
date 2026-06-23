@@ -139,6 +139,24 @@ Cuerpo para crear o actualizar:
 
 `page` debe ser al menos `1`; `pageSize` acepta valores entre `1` y `100`.
 
+### Exercises
+
+El modelo de datos de ejercicios está implementado; sus endpoints todavía están
+pendientes. Un ejercicio con `UserId = null` pertenece al catálogo global. Un
+ejercicio con `UserId` pertenece exclusivamente a ese usuario.
+
+Campos actuales:
+
+- `Name`;
+- `MuscleGroup`;
+- `Description`;
+- `Instructions`;
+- `UserId` opcional.
+
+Los filtros deben usar `VisibleTo(userId)` para devolver solamente catálogo global
+más ejercicios propios. Al eliminar un usuario, sus ejercicios personalizados se
+eliminan en cascada y nunca se convierten en globales accidentalmente.
+
 ## Respuestas y errores
 
 El middleware global traduce errores conocidos a códigos HTTP y registra las
@@ -168,7 +186,7 @@ dotnet build --no-restore
 dotnet test ../Trainly.Api.Tests/Trainly.Api.Tests.csproj
 ```
 
-`Trainly.Api.Tests` contiene pruebas de handlers para Workouts, perfil y Auth,
+`Trainly.Api.Tests` contiene pruebas de handlers para Workouts, Exercises, perfil y Auth,
 además de pruebas de integración del contrato HTTP. Estas últimas arrancan la API
 con `WebApplicationFactory`, sustituyen PostgreSQL por EF InMemory y JWT por una
 identidad controlada exclusivamente desde los tests.

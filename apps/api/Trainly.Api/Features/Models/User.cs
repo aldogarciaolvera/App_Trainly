@@ -10,4 +10,5 @@ public class User : BaseEntity
   public UserRole Role { get; set; } = UserRole.User;
   public ICollection<RefreshToken> RefreshTokens { get; set; } = [];
   public ICollection<Workout> Workouts { get; set; } = [];
+  public ICollection<Exercise> Exercises { get; set; } = [];
 }
