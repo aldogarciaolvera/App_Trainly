@@ -25,6 +25,14 @@ public static class ServiceCollectionExtensions
     services.AddScoped<Features.Workouts.GetWorkoutById.GetWorkoutByIdHandler>();
     services.AddScoped<Features.Workouts.UpdateWorkout.UpdateWHandler>();
     services.AddScoped<Features.Workouts.DeleteWorkout.DeleteWHandler>();
+    services.AddScoped<Features.Exercises.GetExercises.GetExercisesHandler>();
+    services.AddScoped<Features.Exercises.GetExerciseById.GetExerciseByIdHandler>();
+    services.AddScoped<Features.Exercises.CreateExercise.CreateExerciseHandler>();
+    services.AddScoped<Features.Exercises.UpdateExercise.UpdateExerciseHandler>();
+    services.AddScoped<Features.Exercises.DeleteExercise.DeleteExerciseHandler>();
+    services.AddScoped<Features.Exercises.Admin.CreateGlobalExercise.CreateGlobalExerciseHandler>();
+    services.AddScoped<Features.Exercises.Admin.UpdateGlobalExercise.UpdateGlobalExerciseHandler>();
+    services.AddScoped<Features.Exercises.Admin.DeleteGlobalExercise.DeleteGlobalExerciseHandler>();
 
     return services;
   }

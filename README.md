@@ -13,7 +13,7 @@ El desarrollo activo está concentrado en la API:
 - registro, login, renovación de sesión y logout;
 - perfil del usuario autenticado y consultas administrativas protegidas;
 - CRUD paginado de workouts asociado al usuario autenticado;
-- modelo de ejercicios globales y personalizados con aislamiento por usuario;
+- catálogo global administrable y CRUD de ejercicios personalizados por usuario;
 - PostgreSQL mediante Entity Framework Core;
 - validaciones con FluentValidation;
 - documentación OpenAPI visualizada con Scalar;
@@ -87,6 +87,5 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Implementar endpoints CRUD para Exercises globales y personalizados.
-2. Relacionar Exercises con Workouts.
-3. Iniciar tipos, servicios y estado compartido para mobile/web.
+1. Relacionar Exercises con Workouts.
+2. Iniciar tipos, servicios y estado compartido para mobile/web.

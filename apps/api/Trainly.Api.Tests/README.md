@@ -91,6 +91,7 @@ La suite de integración comprueba actualmente:
 - validación automática `400`;
 - `/api/users/me`;
 - rutas, paginación y códigos del CRUD de Workouts.
+- visibilidad, filtros, CRUD personalizado y catálogo global administrado de Exercises.
 
 ## Patrón de una prueba
 

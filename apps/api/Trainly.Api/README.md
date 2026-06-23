@@ -141,9 +141,43 @@ Cuerpo para crear o actualizar:
 
 ### Exercises
 
-El modelo de datos de ejercicios está implementado; sus endpoints todavía están
-pendientes. Un ejercicio con `UserId = null` pertenece al catálogo global. Un
-ejercicio con `UserId` pertenece exclusivamente a ese usuario.
+Un ejercicio con `UserId = null` pertenece al catálogo global. Un ejercicio con
+`UserId` pertenece exclusivamente a ese usuario.
+
+| Método | Ruta | Autenticación | Resultado |
+| --- | --- | --- | --- |
+| `GET` | `/api/exercises` | JWT | Lista globales y propios (`200`) |
+| `GET` | `/api/exercises/{id}` | JWT | Obtiene global o propio (`200`) |
+| `POST` | `/api/exercises` | JWT | Crea un ejercicio personalizado (`201`) |
+| `PUT` | `/api/exercises/{id}` | JWT | Actualiza un ejercicio propio (`200`) |
+| `DELETE` | `/api/exercises/{id}` | JWT | Elimina un ejercicio propio (`204`) |
+
+Administración del catálogo global:
+
+| Método | Ruta | Autenticación | Resultado |
+| --- | --- | --- | --- |
+| `POST` | `/api/admin/exercises` | Rol `Admin` | Crea un ejercicio global (`201`) |
+| `PUT` | `/api/admin/exercises/{id}` | Rol `Admin` | Actualiza un global (`200`) |
+| `DELETE` | `/api/admin/exercises/{id}` | Rol `Admin` | Elimina un global (`204`) |
+
+La lectura administrativa reutiliza `GET /api/exercises?scope=global`, con los
+mismos filtros y paginación. Los handlers administrativos solo operan sobre filas
+con `UserId = null` y nunca convierten ejercicios personalizados en globales.
+
+El listado acepta:
+
+```text
+page=1
+pageSize=20
+search=press
+muscleGroup=Chest
+scope=all|global|custom
+```
+
+`pageSize` acepta de `1` a `100`. `search` filtra por nombre sin distinguir
+mayúsculas. Los valores de `MuscleGroup` disponibles son `Chest`, `Back`,
+`Shoulders`, `Biceps`, `Triceps`, `Forearms`, `Core`, `Quadriceps`, `Hamstrings`,
+`Glutes`, `Calves`, `FullBody`, `Cardio` y `Other`.
 
 Campos actuales:
 
@@ -153,9 +187,10 @@ Campos actuales:
 - `Instructions`;
 - `UserId` opcional.
 
-Los filtros deben usar `VisibleTo(userId)` para devolver solamente catálogo global
-más ejercicios propios. Al eliminar un usuario, sus ejercicios personalizados se
-eliminan en cascada y nunca se convierten en globales accidentalmente.
+Los filtros usan `VisibleTo(userId)` para devolver solamente catálogo global más
+ejercicios propios. Usuarios normales no pueden modificar globales ni ejercicios
+ajenos. Al eliminar un usuario, sus ejercicios personalizados se eliminan en
+cascada y nunca se convierten en globales accidentalmente.
 
 ## Respuestas y errores
 
