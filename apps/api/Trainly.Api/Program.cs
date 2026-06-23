@@ -35,6 +35,7 @@ builder.Services.AddApplicationServices();
 
 // Autenticación JWT
 builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddAdminBootstrap(builder.Configuration);
 
 // OpenAPI
 builder.Services.AddOpenApi();

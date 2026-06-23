@@ -561,6 +561,11 @@ No implementar OAuth ni proveedores externos hasta que exista una necesidad real
 - El identificador del propietario debe obtenerse desde el JWT mediante `IUserContext`.
 - Listar usuarios o consultar perfiles ajenos requiere una política o rol administrativo.
 - Autenticación no equivale a autorización: un JWT válido no concede acceso global.
+- Register nunca debe aceptar ni asignar un rol privilegiado desde el cliente.
+- El primer administrador se aprovisiona mediante configuración de entorno y solo
+  cuando todavía no existe ningún usuario con rol `Admin`.
+- Después del primer administrador, toda promoción requiere un flujo administrativo
+  autenticado y auditado; nunca una ruta pública.
 
 ---
 

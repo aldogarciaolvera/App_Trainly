@@ -69,6 +69,8 @@ ignorado por Git y nunca debe contenerse en un commit.
 
 La documentación detallada del backend está en
 [`apps/api/Trainly.Api/README.md`](apps/api/Trainly.Api/README.md).
+La guía de pruebas está en
+[`apps/api/Trainly.Api.Tests/README.md`](apps/api/Trainly.Api.Tests/README.md).
 
 ## Convenciones
 
@@ -84,6 +86,5 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Definir el aprovisionamiento controlado del primer administrador.
-2. Implementar Exercises y su relación con Workouts.
-3. Iniciar tipos, servicios y estado compartido para mobile/web.
+1. Implementar Exercises y su relación con Workouts.
+2. Iniciar tipos, servicios y estado compartido para mobile/web.

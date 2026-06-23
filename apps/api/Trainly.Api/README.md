@@ -31,6 +31,7 @@ Jwt__Key=use-a-long-random-secret
 Jwt__Issuer=TrainlyApi
 Jwt__Audience=TrainlyClient
 Jwt__ExpiresInMinutes=60
+AdminBootstrap__Email=correo@ejemplo.com
 ```
 
 `.env` está ignorado por Git. No guardes contraseñas, claves JWT ni otros
@@ -79,6 +80,22 @@ se obtienen desde el identificador firmado dentro del JWT.
 Los usuarios tienen rol `User` o `Admin`. El rol persistido se emite dentro del
 JWT durante Login y Refresh Token. Register siempre crea usuarios con rol `User`
 y no acepta el rol desde el cliente.
+
+### Aprovisionar el primer administrador
+
+El bootstrap solo promueve un usuario cuando todavía no existe ningún `Admin`:
+
+1. Aplicar migraciones con `dotnet ef database update`.
+2. Registrar normalmente la cuenta que será administradora.
+3. Establecer `AdminBootstrap__Email` en `.env` con el email de esa cuenta.
+4. Iniciar la API una vez y comprobar el log de aprovisionamiento exitoso.
+5. Vaciar o eliminar `AdminBootstrap__Email` y reiniciar la API.
+6. Volver a iniciar sesión o renovar el refresh token para recibir un JWT con
+   el claim `Admin`.
+
+El bootstrap no crea usuarios, no acepta roles desde HTTP y se detiene si ya
+existe cualquier administrador. Las promociones posteriores deben realizarse
+mediante un futuro flujo administrativo autenticado.
 
 ## Endpoints
 
@@ -163,5 +180,5 @@ del CRUD y políticas `401/403`. No modifica `.env` ni la base PostgreSQL local.
 
 Las consultas globales de Users exigen el rol `Admin`; el perfil propio se consulta
 mediante `/api/users/me`. No existe un endpoint público para elevar privilegios.
-Todos los usuarios existentes y los creados por Register tienen rol `User` hasta
-que se implemente un mecanismo controlado para aprovisionar administradores.
+Los usuarios existentes y los creados por Register tienen rol `User`; únicamente
+el bootstrap controlado por entorno puede aprovisionar al primer administrador.
