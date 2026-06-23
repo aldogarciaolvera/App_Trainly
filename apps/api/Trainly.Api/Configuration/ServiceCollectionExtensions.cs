@@ -33,6 +33,10 @@ public static class ServiceCollectionExtensions
     services.AddScoped<Features.Exercises.Admin.CreateGlobalExercise.CreateGlobalExerciseHandler>();
     services.AddScoped<Features.Exercises.Admin.UpdateGlobalExercise.UpdateGlobalExerciseHandler>();
     services.AddScoped<Features.Exercises.Admin.DeleteGlobalExercise.DeleteGlobalExerciseHandler>();
+    services.AddScoped<Features.WorkoutExercises.AddWorkoutExercise.AddWorkoutExerciseHandler>();
+    services.AddScoped<Features.WorkoutExercises.GetWorkoutExercises.GetWorkoutExercisesHandler>();
+    services.AddScoped<Features.WorkoutExercises.UpdateWorkoutExercise.UpdateWorkoutExerciseHandler>();
+    services.AddScoped<Features.WorkoutExercises.DeleteWorkoutExercise.DeleteWorkoutExerciseHandler>();
 
     return services;
   }

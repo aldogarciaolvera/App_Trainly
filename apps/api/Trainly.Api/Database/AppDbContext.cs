@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
   public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
   public DbSet<Workout> Workouts => Set<Workout>();
   public DbSet<Exercise> Exercises => Set<Exercise>();
+  public DbSet<WorkoutExercise> WorkoutExercises => Set<WorkoutExercise>();
 
   protected override void OnModelCreating(ModelBuilder builder)
   {

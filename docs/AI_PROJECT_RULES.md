@@ -542,6 +542,14 @@ UpdatedAt should be updated automatically when the entity changes.
 - Al eliminar un usuario, sus ejercicios personalizados deben eliminarse en cascada;
   nunca deben convertirse automáticamente en ejercicios globales.
 
+## Workout exercise ownership
+
+- Un usuario solo puede administrar ejercicios dentro de workouts propios.
+- Un workout solo puede usar ejercicios globales o personalizados del mismo usuario.
+- La posición y el ejercicio deben ser únicos dentro de cada workout.
+- Eliminar un workout o ejercicio debe eliminar en cascada sus asignaciones.
+- Las asignaciones incluyen orden, series, repeticiones, descanso y notas.
+
 ---
 
 # Entity Framework Rules

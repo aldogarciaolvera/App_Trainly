@@ -10,4 +10,5 @@ public sealed class Exercise : BaseEntity
   public string Description { get; set; } = string.Empty;
   public string Instructions { get; set; } = string.Empty;
   public User? User { get; set; }
+  public ICollection<WorkoutExercise> Workouts { get; set; } = [];
 }

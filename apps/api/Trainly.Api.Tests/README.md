@@ -35,7 +35,7 @@ dotnet test .\apps\api\Trainly.Api.Tests\Trainly.Api.Tests.csproj `
 ```text
 Auth/                Register, Login, JWT, Refresh, Logout y bootstrap Admin
 Users/               Perfil del usuario autenticado
-Workouts/            CRUD, propiedad por usuario y paginación
+Workouts/            CRUD, propiedad, paginación y relación con Exercises
 Integration/         Contrato HTTP y pipeline completo de ASP.NET Core
 TestInfrastructure/  DbContext y dobles reutilizables
 ```
@@ -91,6 +91,7 @@ La suite de integración comprueba actualmente:
 - validación automática `400`;
 - `/api/users/me`;
 - rutas, paginación y códigos del CRUD de Workouts.
+- composición ordenada de Workouts con Exercises y conflictos de duplicados.
 - visibilidad, filtros, CRUD personalizado y catálogo global administrado de Exercises.
 
 ## Patrón de una prueba

@@ -7,6 +7,7 @@ using Trainly.Api.Features.Users.GetUserById;
 using Trainly.Api.Features.Workouts.CreateWorkout;
 using Trainly.Api.Features.Workouts.GetWorkouts;
 using Trainly.Api.Features.Workouts.UpdateWorkout;
+using Trainly.Api.Features.WorkoutExercises;
 
 namespace Trainly.Api.Tests.Integration;
 
@@ -212,6 +213,60 @@ public sealed class ApiContractTests : IClassFixture<TrainlyApiFactory>
 
     var deleteResponse = await adminClient.DeleteAsync(
       $"/api/admin/exercises/{created.Id}");
+    Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
+  }
+
+  [Fact]
+  public async Task Workout_exercise_assignment_flow_respects_nested_contract()
+  {
+    await _factory.ResetDatabaseAsync();
+    var user = CreateUser("ana@trainly.test");
+    var workout = new Workout
+    {
+      Id = Guid.NewGuid(),
+      UserId = user.Id,
+      Name = "Leg day",
+      Description = string.Empty
+    };
+    var exercise = new Exercise
+    {
+      Id = Guid.NewGuid(),
+      Name = "Squat",
+      MuscleGroup = MuscleGroup.Quadriceps,
+      Description = string.Empty,
+      Instructions = string.Empty
+    };
+    await _factory.SeedAsync(user, workout, exercise);
+    using var client = _factory.CreateAuthenticatedClient(user.Id);
+    var request = new WorkoutExerciseWriteRequest
+    {
+      ExerciseId = exercise.Id,
+      Order = 1,
+      Sets = 4,
+      Reps = 8,
+      RestSeconds = 120,
+      Notes = "Warm up first"
+    };
+
+    var createResponse = await client.PostAsJsonAsync(
+      $"/api/workouts/{workout.Id}/exercises",
+      request);
+    var created = await createResponse.Content.ReadFromJsonAsync<WorkoutExerciseResponse>();
+    Assert.Equal(HttpStatusCode.Created, createResponse.StatusCode);
+    Assert.NotNull(created);
+
+    var list = await client.GetFromJsonAsync<List<WorkoutExerciseResponse>>(
+      $"/api/workouts/{workout.Id}/exercises");
+    Assert.Equal(created.Id, Assert.Single(list!).Id);
+
+    request.Sets = 5;
+    var updateResponse = await client.PutAsJsonAsync(
+      $"/api/workouts/{workout.Id}/exercises/{created.Id}",
+      request);
+    Assert.Equal(HttpStatusCode.OK, updateResponse.StatusCode);
+
+    var deleteResponse = await client.DeleteAsync(
+      $"/api/workouts/{workout.Id}/exercises/{created.Id}");
     Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
   }
 

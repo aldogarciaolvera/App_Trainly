@@ -118,6 +118,32 @@ mediante un futuro flujo administrativo autenticado.
 
 `page` debe ser al menos `1`; `pageSize` acepta valores entre `1` y `100`.
 
+### Workout Exercises
+
+| Método | Ruta | Autenticación | Resultado |
+| --- | --- | --- | --- |
+| `GET` | `/api/workouts/{workoutId}/exercises` | JWT | Lista la rutina ordenada (`200`) |
+| `POST` | `/api/workouts/{workoutId}/exercises` | JWT | Agrega un ejercicio (`201`) |
+| `PUT` | `/api/workouts/{workoutId}/exercises/{assignmentId}` | JWT | Actualiza prescripción (`200`) |
+| `DELETE` | `/api/workouts/{workoutId}/exercises/{assignmentId}` | JWT | Quita el ejercicio (`204`) |
+
+Cuerpo para agregar o actualizar:
+
+```json
+{
+  "exerciseId": "00000000-0000-0000-0000-000000000000",
+  "order": 1,
+  "sets": 4,
+  "reps": 8,
+  "restSeconds": 120,
+  "notes": "Calentamiento previo"
+}
+```
+
+El workout debe pertenecer al usuario y el ejercicio debe ser global o propio.
+Dentro de un workout, `order` y `exerciseId` son únicos. Los conflictos devuelven
+`409`; workouts, asignaciones o ejercicios no accesibles devuelven `404`.
+
 ### Workouts
 
 | Método | Ruta | Autenticación | Resultado |
@@ -221,7 +247,8 @@ dotnet build --no-restore
 dotnet test ../Trainly.Api.Tests/Trainly.Api.Tests.csproj
 ```
 
-`Trainly.Api.Tests` contiene pruebas de handlers para Workouts, Exercises, perfil y Auth,
+`Trainly.Api.Tests` contiene pruebas de handlers para Workouts, WorkoutExercises,
+Exercises, perfil y Auth,
 además de pruebas de integración del contrato HTTP. Estas últimas arrancan la API
 con `WebApplicationFactory`, sustituyen PostgreSQL por EF InMemory y JWT por una
 identidad controlada exclusivamente desde los tests.
