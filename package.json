@@ -1,4 +1,10 @@
 {
-  "name": "gym-tracker",
-  "private": true
+  "name": "Trainly",
+  "private": true,
+  "scripts": {
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3"
+  }
 }

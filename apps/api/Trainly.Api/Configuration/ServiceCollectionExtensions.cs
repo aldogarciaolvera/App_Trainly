@@ -1,27 +1,43 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Trainly.Api.Database;
+using Trainly.Api.Common.Security;
+using Trainly.Api.Common.Authentication;
 
 namespace Trainly.Api.Configuration;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddDatabase(
-        this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        services.Configure<DatabaseOptions>(
-            configuration.GetSection("Database"));
+  public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+  {
+    services.AddHttpContextAccessor();
 
-        services.AddDbContext<AppDbContext>((sp, options) =>
-        {
-            var dbOptions =
-                sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+    services.AddScoped<IUserContext, UserContext>();
+    services.AddScoped<IPasswordHasher, PasswordHasher>();
+    services.AddScoped<ITokenService, JwtTokenService>();
+    services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
+    services.AddScoped<Features.Auth.Register.RegisterHandler>();
+    services.AddScoped<Features.Auth.Login.LoginHandler>();
+    services.AddScoped<Features.Auth.RefreshToken.RTHandler>();
+    services.AddScoped<Features.Auth.Logout.LogoutHandler>();
+    services.AddScoped<Features.Users.GetUserById.GetUserByIdHandler>();
+    services.AddScoped<Features.Users.GetUsers.GetUsersHandler>();
+    services.AddScoped<Features.Users.GetCurrentUser.GetCurrentUserHandler>();
+    services.AddScoped<Features.Workouts.CreateWorkout.CreateWHandler>();
+    services.AddScoped<Features.Workouts.GetWorkouts.GetWorkoutsHandler>();
+    services.AddScoped<Features.Workouts.GetWorkoutById.GetWorkoutByIdHandler>();
+    services.AddScoped<Features.Workouts.UpdateWorkout.UpdateWHandler>();
+    services.AddScoped<Features.Workouts.DeleteWorkout.DeleteWHandler>();
+    services.AddScoped<Features.Exercises.GetExercises.GetExercisesHandler>();
+    services.AddScoped<Features.Exercises.GetExerciseById.GetExerciseByIdHandler>();
+    services.AddScoped<Features.Exercises.CreateExercise.CreateExerciseHandler>();
+    services.AddScoped<Features.Exercises.UpdateExercise.UpdateExerciseHandler>();
+    services.AddScoped<Features.Exercises.DeleteExercise.DeleteExerciseHandler>();
+    services.AddScoped<Features.Exercises.Admin.CreateGlobalExercise.CreateGlobalExerciseHandler>();
+    services.AddScoped<Features.Exercises.Admin.UpdateGlobalExercise.UpdateGlobalExerciseHandler>();
+    services.AddScoped<Features.Exercises.Admin.DeleteGlobalExercise.DeleteGlobalExerciseHandler>();
+    services.AddScoped<Features.WorkoutExercises.AddWorkoutExercise.AddWorkoutExerciseHandler>();
+    services.AddScoped<Features.WorkoutExercises.GetWorkoutExercises.GetWorkoutExercisesHandler>();
+    services.AddScoped<Features.WorkoutExercises.UpdateWorkoutExercise.UpdateWorkoutExerciseHandler>();
+    services.AddScoped<Features.WorkoutExercises.DeleteWorkoutExercise.DeleteWorkoutExerciseHandler>();
 
-            options.UseNpgsql(
-                dbOptions.BuildConnectionString());
-        });
-
-        return services;
-    }
+    return services;
+  }
 }

@@ -4,17 +4,17 @@
 
 Trainly es una aplicación multiplataforma para:
 
-* Seguimiento de rutinas de gimnasio
-* Seguimiento nutricional
-* Registro de progreso físico
-* Gestión de usuarios
-* Estadísticas y reportes
+- Seguimiento de rutinas de gimnasio
+- Seguimiento nutricional
+- Registro de progreso físico
+- Gestión de usuarios
+- Estadísticas y reportes
 
 El proyecto debe soportar:
 
-* Android
-* iOS
-* Web
+- Android
+- iOS
+- Web
 
 ---
 
@@ -22,7 +22,7 @@ El proyecto debe soportar:
 
 ## Monorepo
 
-* pnpm Workspaces
+- pnpm Workspaces
 
 ---
 
@@ -30,29 +30,29 @@ El proyecto debe soportar:
 
 ### Mobile
 
-* React Native (última versión estable)
-* Expo (última versión estable compatible)
-* TypeScript (última versión estable)
+- React Native (última versión estable)
+- Expo (última versión estable compatible)
+- TypeScript (última versión estable)
 
 ### Web
 
-* React Native Web (última versión estable compatible)
-* React
-* TypeScript (última versión estable)
+- React Native Web (última versión estable compatible)
+- React
+- TypeScript (última versión estable)
 
 ### State Management
 
-* Zustand
+- Zustand
 
 ---
 
 ## Backend
 
-* ASP.NET Core 10
-* C#
-* Entity Framework Core 10
-* PostgreSQL 18
-* JWT Authentication
+- ASP.NET Core 10
+- C#
+- Entity Framework Core 10
+- PostgreSQL 18
+- JWT Authentication
 
 ---
 
@@ -60,15 +60,48 @@ El proyecto debe soportar:
 
 Official API documentation:
 
-* OpenAPI
-* Scalar.AspNetCore
+- OpenAPI
+- Scalar.AspNetCore
 
 Do not use:
 
-* Swashbuckle
-* Swagger UI
+- Swashbuckle
+- Swagger UI
 
 All endpoints must be exposed through OpenAPI and viewable from Scalar.
+
+---
+
+# API Route Conventions
+
+Las rutas públicas deben representar recursos y mantenerse consistentes,
+predecibles y en minúsculas.
+
+## CRUD resources
+
+Para operaciones CRUD, el verbo HTTP expresa la acción. No duplicar acciones
+como `Create`, `Get`, `Update` o `Delete` dentro de la URL.
+
+```text
+POST   /api/workouts       -> crear
+GET    /api/workouts       -> listar
+GET    /api/workouts/{id}  -> obtener por ID
+PUT    /api/workouts/{id}  -> actualizar
+DELETE /api/workouts/{id}  -> eliminar
+```
+
+Reglas:
+
+- Usar sustantivos plurales para colecciones: `/api/users`, `/api/workouts`.
+- Usar `/{id}` para identificar un recurso individual.
+- Usar segmentos en minúsculas.
+- Las distintas Vertical Slices de un recurso deben compartir la misma ruta base.
+- Las rutas de comandos no CRUD se permiten cuando representan una operación
+  del dominio, por ejemplo `/api/auth/login`, `/api/auth/refresh` y
+  `/api/auth/logout`.
+- Utilizar códigos HTTP semánticos: `201 Created` al crear, `200 OK` al consultar
+  o actualizar, `204 No Content` al eliminar y códigos `4xx` para errores del cliente.
+- Todo cambio de contrato HTTP debe actualizar OpenAPI y la documentación de la API.
 
 ---
 
@@ -103,7 +136,7 @@ Todo el proyecto debe utilizar TypeScript estricto.
 No utilizar:
 
 ```ts
-any
+any;
 ```
 
 Salvo justificación documentada.
@@ -116,9 +149,9 @@ Cada archivo debe tener una única responsabilidad.
 
 Si un archivo supera aproximadamente 300 líneas:
 
-* dividir lógica
-* dividir componentes
-* dividir servicios
+- dividir lógica
+- dividir componentes
+- dividir servicios
 
 ---
 
@@ -163,10 +196,10 @@ Todos los paquetes compartidos deberán declararse dentro del workspace.
 
 No crear repositorios independientes para:
 
-* UI
-* Hooks
-* Types
-* Services
+- UI
+- Hooks
+- Types
+- Services
 
 Todo debe mantenerse dentro del monorepo.
 
@@ -452,11 +485,11 @@ Cada operación debe ser independiente.
 
 ## Database Engine
 
-* PostgreSQL 18
+- PostgreSQL 18
 
 ## ORM
 
-* Entity Framework Core 10
+- Entity Framework Core 10
 
 ---
 
@@ -464,23 +497,23 @@ Cada operación debe ser independiente.
 
 Never store:
 
-* Database passwords
-* JWT secrets
-* API keys
-* SMTP credentials
+- Database passwords
+- JWT secrets
+- API keys
+- SMTP credentials
 
 inside:
 
-* appsettings.json
-* appsettings.Development.json
+- appsettings.json
+- appsettings.Development.json
 
 Development:
 
-* User Secrets
+- User Secrets
 
 Production:
 
-* Environment Variables
+- Environment Variables
 
 ---
 
@@ -500,6 +533,23 @@ CreatedAt should be assigned automatically when the entity is created.
 
 UpdatedAt should be updated automatically when the entity changes.
 
+## Exercise ownership
+
+- `Exercise.UserId = null` representa un ejercicio del catálogo global.
+- `Exercise.UserId` con valor representa un ejercicio personalizado y privado.
+- Usuarios normales solo pueden leer globales y propios, y modificar o eliminar propios.
+- Solo administradores pueden crear, modificar o eliminar ejercicios globales.
+- Al eliminar un usuario, sus ejercicios personalizados deben eliminarse en cascada;
+  nunca deben convertirse automáticamente en ejercicios globales.
+
+## Workout exercise ownership
+
+- Un usuario solo puede administrar ejercicios dentro de workouts propios.
+- Un workout solo puede usar ejercicios globales o personalizados del mismo usuario.
+- La posición y el ejercicio deben ser únicos dentro de cada workout.
+- Eliminar un workout o ejercicio debe eliminar en cascada sus asignaciones.
+- Las asignaciones incluyen orden, series, repeticiones, descanso y notas.
+
 ---
 
 # Entity Framework Rules
@@ -516,10 +566,23 @@ Every migration must be committed to source control.
 
 Sistema base:
 
-* JWT Access Token
-* Refresh Token
+- JWT Access Token
+- Refresh Token
 
 No implementar OAuth ni proveedores externos hasta que exista una necesidad real.
+
+## User data authorization
+
+- Un usuario normal debe consultar su propio perfil mediante `/api/users/me`.
+- Nunca aceptar un `UserId` del cliente para decidir la propiedad de datos privados.
+- El identificador del propietario debe obtenerse desde el JWT mediante `IUserContext`.
+- Listar usuarios o consultar perfiles ajenos requiere una política o rol administrativo.
+- Autenticación no equivale a autorización: un JWT válido no concede acceso global.
+- Register nunca debe aceptar ni asignar un rol privilegiado desde el cliente.
+- El primer administrador se aprovisiona mediante configuración de entorno y solo
+  cuando todavía no existe ningún usuario con rol `Admin`.
+- Después del primer administrador, toda promoción requiere un flujo administrativo
+  autenticado y auditado; nunca una ruta pública.
 
 ---
 
@@ -527,15 +590,15 @@ No implementar OAuth ni proveedores externos hasta que exista una necesidad real
 
 Todos los errores deben:
 
-* registrarse en logs
-* devolver códigos HTTP correctos
-* devolver mensajes amigables
+- registrarse en logs
+- devolver códigos HTTP correctos
+- devolver mensajes amigables
 
 Nunca exponer:
 
-* stack traces
-* connection strings
-* información sensible
+- stack traces
+- connection strings
+- información sensible
 
 ---
 
@@ -545,12 +608,12 @@ Nunca exponer:
 
 Toda nueva funcionalidad debe incluir:
 
-* Pantalla
-* Tipos
-* Servicio
-* Estado global (si aplica)
-* Validaciones
-* Manejo de errores
+- Pantalla
+- Tipos
+- Servicio
+- Estado global (si aplica)
+- Validaciones
+- Manejo de errores
 
 ---
 
@@ -558,13 +621,13 @@ Toda nueva funcionalidad debe incluir:
 
 Toda nueva funcionalidad debe incluir:
 
-* Request
-* Response
-* Handler
-* Endpoint
-* Validaciones
-* Persistencia
-* Manejo de errores
+- Request
+- Response
+- Handler
+- Endpoint
+- Validaciones
+- Persistencia
+- Manejo de errores
 
 ---
 
@@ -578,9 +641,11 @@ Use environment variables for:
 - SMTP credentials
 
 Development:
+
 - .env file
 
 Production:
+
 - Docker environment variables
 
 Never store secrets in appsettings.json.
@@ -622,15 +687,15 @@ Además:
 
 Una funcionalidad se considera terminada únicamente cuando incluye:
 
-* UI
-* Tipos TypeScript
-* Servicio API
-* Estado global (si aplica)
-* Endpoint backend
-* Persistencia en PostgreSQL
-* Validaciones
-* Manejo de errores
-* Pruebas básicas
-* Documentación mínima
+- UI
+- Tipos TypeScript
+- Servicio API
+- Estado global (si aplica)
+- Endpoint backend
+- Persistencia en PostgreSQL
+- Validaciones
+- Manejo de errores
+- Pruebas básicas
+- Documentación mínima
 
 Si alguno de estos elementos falta, la funcionalidad NO está terminada.
