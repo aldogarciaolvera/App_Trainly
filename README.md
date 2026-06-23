@@ -15,13 +15,13 @@ El desarrollo activo está concentrado en la API:
 - CRUD paginado de workouts asociado al usuario autenticado;
 - catálogo global administrable y CRUD de ejercicios personalizados por usuario;
 - composición ordenada de workouts con ejercicios, series, repeticiones y descanso;
+- contratos y servicios TypeScript compartidos para todos los módulos actuales;
 - PostgreSQL mediante Entity Framework Core;
 - validaciones con FluentValidation;
 - documentación OpenAPI visualizada con Scalar;
 - manejo global y registro de excepciones.
 
-Las aplicaciones mobile/web y los paquetes TypeScript compartidos aún no están
-implementados.
+Las aplicaciones mobile/web y el estado compartido aún no están implementados.
 
 ## Estructura
 
@@ -30,7 +30,9 @@ apps/
   api/Trainly.Api/   API ASP.NET Core
   mobile/            Aplicación React Native/Expo (pendiente)
   web/               Aplicación web (pendiente)
-packages/            Código TypeScript compartido (pendiente)
+packages/
+  types/             Contratos TypeScript compartidos
+  services/          Cliente HTTP y servicios por dominio
 docs/                Reglas y decisiones del proyecto
 ```
 
@@ -73,6 +75,15 @@ La documentación detallada del backend está en
 [`apps/api/Trainly.Api/README.md`](apps/api/Trainly.Api/README.md).
 La guía de pruebas está en
 [`apps/api/Trainly.Api.Tests/README.md`](apps/api/Trainly.Api.Tests/README.md).
+Los paquetes compartidos se documentan en
+[`packages/types/README.md`](packages/types/README.md) y
+[`packages/services/README.md`](packages/services/README.md).
+
+Verificar TypeScript:
+
+```powershell
+pnpm typecheck
+```
 
 ## Convenciones
 
@@ -88,5 +99,6 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Iniciar tipos, servicios y estado compartido para mobile/web.
-2. Diseñar las primeras pantallas móviles de Auth y Workouts.
+1. Implementar almacenamiento seguro y estado de autenticación con Zustand.
+2. Crear la aplicación Expo/React Native.
+3. Diseñar las primeras pantallas móviles de Auth y Workouts.
