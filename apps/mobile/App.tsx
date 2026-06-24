@@ -16,6 +16,7 @@ import { SafeAreaView, StyleSheet, View } from "react-native";
 import { environment } from "./src/config/environment";
 import { HomeScreen } from "./src/screens/HomeScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
+import { RegisterScreen } from "./src/screens/RegisterScreen";
 import { useAuthStore } from "./src/store/auth.store";
 import { colors } from "./src/theme/tokens";
 
@@ -27,11 +28,14 @@ export default function App() {
   });
   const [interLoaded] = useInterFonts({ Inter_400Regular, Inter_600SemiBold, Inter_700Bold });
   const [demoAuthenticated, setDemoAuthenticated] = useState(false);
+  const [authScreen, setAuthScreen] = useState<"login" | "register">("login");
   const status = useAuthStore((state) => state.status);
   const user = useAuthStore((state) => state.user);
   const error = useAuthStore((state) => state.error);
   const hydrate = useAuthStore((state) => state.hydrate);
   const login = useAuthStore((state) => state.login);
+  const register = useAuthStore((state) => state.register);
+  const clearError = useAuthStore((state) => state.clearError);
 
   useEffect(() => {
     void hydrate();
@@ -47,6 +51,26 @@ export default function App() {
       <StatusBar style="light" />
       {authenticated ? (
         <HomeScreen userName={firstName} />
+      ) : authScreen === "register" ? (
+        <RegisterScreen
+          error={error}
+          loading={status === "loading"}
+          onBackToLogin={() => {
+            clearError();
+            setAuthScreen("login");
+          }}
+          onRegister={async (name, email, password) => {
+            if (environment.useDummyData) {
+              setDemoAuthenticated(true);
+              return;
+            }
+            try {
+              await register({ name, email, password });
+            } catch {
+              // The auth store exposes the API error to the screen.
+            }
+          }}
+        />
       ) : (
         <LoginScreen
           error={error}
@@ -56,7 +80,15 @@ export default function App() {
               setDemoAuthenticated(true);
               return;
             }
-            await login({ email, password });
+            try {
+              await login({ email, password });
+            } catch {
+              // The auth store exposes the API error to the screen.
+            }
+          }}
+          onSignUp={() => {
+            clearError();
+            setAuthScreen("register");
           }}
         />
       )}

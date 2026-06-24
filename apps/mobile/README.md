@@ -1,8 +1,11 @@
 # Trainly Mobile
 
 Aplicación mobile-first de Trainly basada en Expo y React Native. Incluye
-infraestructura de autenticación y las primeras pantallas Login/Home basadas en
+infraestructura de autenticación y las primeras pantallas Login/Register/Home basadas en
 `docs/DESING.md` y las referencias de `resources/`.
+
+Register valida nombre, formato de email, longitud mínima de ocho caracteres y
+confirmación de contraseña antes de enviar la solicitud a la API.
 
 ## Configuración
 
@@ -35,6 +38,10 @@ EXPO_PUBLIC_USE_DUMMY_DATA=true
 
 Con este valor, Sign In abre Home sin consultar la API y muestra datos de ejemplo.
 Usa `false` para probar el login real mediante Zustand y Trainly API.
+
+En modo dummy, tanto Sign In como Create Account abren Home sin crear datos. En
+modo real, Create Account utiliza `POST /api/auth/register`, guarda el access token
+y consulta `/api/users/me` para completar la sesión.
 
 ## Ejecutar
 

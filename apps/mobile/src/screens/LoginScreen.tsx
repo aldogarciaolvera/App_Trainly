@@ -11,9 +11,10 @@ interface LoginScreenProps {
   loading: boolean;
   error: string | null;
   onLogin: (email: string, password: string) => Promise<void>;
+  onSignUp: () => void;
 }
 
-export function LoginScreen({ loading, error, onLogin }: LoginScreenProps) {
+export function LoginScreen({ loading, error, onLogin, onSignUp }: LoginScreenProps) {
   const [email, setEmail] = useState("athlete@trainly.com");
   const [password, setPassword] = useState("password");
 
@@ -66,7 +67,7 @@ export function LoginScreen({ loading, error, onLogin }: LoginScreenProps) {
 
         <View style={styles.signupRow}>
           <Text style={styles.signupText}>New to Trainly? </Text>
-          <Pressable accessibilityRole="button">
+          <Pressable accessibilityRole="button" onPress={onSignUp}>
             <Text style={styles.link}>Sign Up</Text>
           </Pressable>
         </View>
