@@ -65,6 +65,58 @@ dotnet run
 En ambiente Development, Scalar se publica en la raíz de la aplicación y el
 documento OpenAPI está disponible en `/openapi/v1.json`.
 
+## Docker
+
+El `Dockerfile` utiliza compilación multi-stage con .NET SDK 10 y ejecuta la API
+como usuario no root sobre ASP.NET Runtime 10.
+
+Construir desde `apps/api/Trainly.Api`:
+
+```bash
+docker build -t trainly-api .
+```
+
+Antes de desplegar una versión nueva, aplicar migraciones desde un entorno con
+acceso a PostgreSQL:
+
+```bash
+dotnet ef database update
+```
+
+Ejecutar la imagen usando variables de entorno:
+
+```bash
+docker run --rm \
+  --name trainly-api \
+  --env-file .env.production \
+  -p 8080:8080 \
+  trainly-api
+```
+
+Variables requeridas en `.env.production`:
+
+```dotenv
+Database__Host=postgres.example.com
+Database__Port=5432
+Database__Database=trainly
+Database__Username=trainly
+Database__Password=replace-with-a-secret
+Jwt__Key=replace-with-a-long-random-secret-of-at-least-32-bytes
+Jwt__Issuer=TrainlyApi
+Jwt__Audience=TrainlyClient
+Jwt__ExpiresInMinutes=60
+AdminBootstrap__Email=
+```
+
+No copies `.env.production` dentro de la imagen ni lo confirmes en Git. Si
+PostgreSQL se ejecuta en otro contenedor, `Database__Host` debe ser el nombre de
+ese servicio. `localhost` dentro del contenedor apunta al propio contenedor, no a
+la computadora ni a PostgreSQL.
+
+La API escucha HTTP en el puerto `8080`. En producción debe publicarse detrás de
+un reverse proxy o plataforma que termine HTTPS y envíe headers `X-Forwarded-*`.
+Scalar/OpenAPI se exponen únicamente en ambiente Development.
+
 ## Autenticación
 
 La autorización se aplica globalmente. Los endpoints de registro, login y
