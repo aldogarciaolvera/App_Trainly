@@ -76,12 +76,9 @@ Construir desde `apps/api/Trainly.Api`:
 docker build -t trainly-api .
 ```
 
-Antes de desplegar una versión nueva, aplicar migraciones desde un entorno con
-acceso a PostgreSQL:
-
-```bash
-dotnet ef database update
-```
+Durante el build se genera un EF migration bundle. Al iniciar el contenedor se
+aplican automáticamente las migraciones pendientes antes de arrancar la API.
+El bundle utiliza las mismas variables `Database__*` del contenedor.
 
 Ejecutar la imagen usando variables de entorno:
 
@@ -89,6 +86,21 @@ Ejecutar la imagen usando variables de entorno:
 docker run --rm \
   --name trainly-api \
   --env-file .env.production \
+  -p 8080:8080 \
+  trainly-api
+```
+
+La ejecución automática está habilitada por defecto con:
+
+```dotenv
+RUN_MIGRATIONS=true
+```
+
+Para una plataforma donde las migraciones se ejecuten en un job separado:
+
+```bash
+docker run --rm --env-file .env.production \
+  -e RUN_MIGRATIONS=false \
   -p 8080:8080 \
   trainly-api
 ```
@@ -106,6 +118,7 @@ Jwt__Issuer=TrainlyApi
 Jwt__Audience=TrainlyClient
 Jwt__ExpiresInMinutes=60
 AdminBootstrap__Email=
+RUN_MIGRATIONS=true
 ```
 
 No copies `.env.production` dentro de la imagen ni lo confirmes en Git. Si
@@ -116,6 +129,11 @@ la computadora ni a PostgreSQL.
 La API escucha HTTP en el puerto `8080`. En producción debe publicarse detrás de
 un reverse proxy o plataforma que termine HTTPS y envíe headers `X-Forwarded-*`.
 Scalar/OpenAPI se exponen únicamente en ambiente Development.
+
+Si arrancan varias réplicas simultáneamente, EF Core serializa la aplicación de
+migraciones mediante su bloqueo de migraciones. Para despliegues de gran escala,
+se recomienda ejecutar una sola réplica migradora o un job previo y establecer
+`RUN_MIGRATIONS=false` en las réplicas de la API.
 
 ## Autenticación
 
