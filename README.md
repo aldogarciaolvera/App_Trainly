@@ -21,8 +21,8 @@ El desarrollo activo está concentrado en la API:
 - documentación OpenAPI visualizada con Scalar;
 - manejo global y registro de excepciones.
 
-La infraestructura mobile está iniciada; la interfaz mobile y la aplicación web
-aún no están implementadas.
+La infraestructura mobile y las pantallas iniciales Login/Home están implementadas;
+la aplicación web aún no está iniciada.
 
 ## Estructura
 
@@ -100,6 +100,6 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Revisar con el usuario los archivos `DESIGN.md` antes de iniciar UI.
-2. Definir navegación y pantallas móviles de Auth.
-3. Implementar las pantallas móviles de Workouts y Exercises.
+1. Definir navegación móvil definitiva y pantalla Register.
+2. Implementar las pantallas móviles de Workouts y Exercises.
+3. Sustituir datos dummy de Home conforme se agreguen módulos de actividad/nutrición.

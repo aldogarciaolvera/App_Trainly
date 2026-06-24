@@ -1,8 +1,8 @@
 # Trainly Mobile
 
-Aplicación mobile-first de Trainly basada en Expo y React Native. Actualmente
-contiene únicamente infraestructura de autenticación; el diseño visual todavía
-no ha comenzado.
+Aplicación mobile-first de Trainly basada en Expo y React Native. Incluye
+infraestructura de autenticación y las primeras pantallas Login/Home basadas en
+`docs/DESING.md` y las referencias de `resources/`.
 
 ## Configuración
 
@@ -27,6 +27,15 @@ Configura `EXPO_PUBLIC_API_URL` con una URL accesible desde el dispositivo:
 Register entrega solamente access token; Login y Refresh entregan access y
 refresh token. El store soporta ambos contratos actuales.
 
+## Modo dummy
+
+```dotenv
+EXPO_PUBLIC_USE_DUMMY_DATA=true
+```
+
+Con este valor, Sign In abre Home sin consultar la API y muestra datos de ejemplo.
+Usa `false` para probar el login real mediante Zustand y Trainly API.
+
 ## Ejecutar
 
 Desde la raíz:
@@ -43,6 +52,7 @@ pnpm typecheck
 
 ## Diseño
 
-Antes de implementar pantallas, navegación visual o componentes UI se deben
-revisar los archivos `DESIGN.md` definidos para el proyecto. El `App.tsx` actual
-no renderiza interfaz; solo inicia la hidratación de autenticación.
+Antes de implementar nuevas pantallas, navegación visual o componentes UI se
+deben revisar los archivos `DESIGN.md` o `DESING.md` definidos para el proyecto.
+Los componentes actuales centralizan colores, tipografía, radios y espaciado en
+`src/theme/tokens.ts`.

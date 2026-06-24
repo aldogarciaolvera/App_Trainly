@@ -5,5 +5,6 @@ if (!apiUrl) {
 }
 
 export const environment = {
-  apiUrl
+  apiUrl,
+  useDummyData: process.env.EXPO_PUBLIC_USE_DUMMY_DATA !== "false"
 } as const;

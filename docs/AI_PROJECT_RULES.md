@@ -609,7 +609,7 @@ Nunca exponer:
 Antes de crear o modificar pantallas, navegación visual, componentes UI, estilos,
 colores, tipografía, iconografía o layouts:
 
-1. Buscar todos los archivos `DESIGN.md` aplicables.
+1. Buscar todos los archivos `DESIGN.md` o `DESING.md` aplicables.
 2. Leerlos y respetar sus tokens, patrones y restricciones.
 3. Avisar explícitamente al usuario antes de comenzar trabajo de diseño.
 4. No asumir una dirección visual cuando falte una decisión documentada.
