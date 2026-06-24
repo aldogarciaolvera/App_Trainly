@@ -13,25 +13,22 @@ public static class OpenApiExtensions
 
   public static WebApplication UseOpenApiDocumentation(this WebApplication app)
   {
-    if (app.Environment.IsDevelopment())
+    app.MapOpenApi();
+    app.MapScalarApiReference("/", options =>
     {
-      app.MapOpenApi();
-      app.MapScalarApiReference("/", options =>
-      {
-        options.WithTitle("Trainly API");
-        options.Layout = ScalarLayout.Modern;
-        options.DarkMode = true;
-        options.ShowSidebar = true;
-        options.PersistentAuthentication = true;
-        options.DocumentDownloadType = DocumentDownloadType.None;
-        options.HideModels = true;
-        options.HideSearch = true;
-        options.HideClientButton = true;
-        options.ShowDeveloperTools = DeveloperToolsVisibility.Never;
-        options.DisableMcp();
-        options.ExpandAllResponses();
-      });
-    }
+      options.WithTitle("Trainly API");
+      options.Layout = ScalarLayout.Modern;
+      options.DarkMode = true;
+      options.ShowSidebar = true;
+      options.PersistentAuthentication = true;
+      options.DocumentDownloadType = DocumentDownloadType.None;
+      options.HideModels = true;
+      options.HideSearch = true;
+      options.HideClientButton = true;
+      options.ShowDeveloperTools = DeveloperToolsVisibility.Never;
+      options.DisableMcp();
+      options.ExpandAllResponses();
+    });
 
     return app;
   }
