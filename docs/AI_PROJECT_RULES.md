@@ -604,6 +604,19 @@ Nunca exponer:
 
 # Development Rules
 
+## Design gate
+
+Antes de crear o modificar pantallas, navegación visual, componentes UI, estilos,
+colores, tipografía, iconografía o layouts:
+
+1. Buscar todos los archivos `DESIGN.md` aplicables.
+2. Leerlos y respetar sus tokens, patrones y restricciones.
+3. Avisar explícitamente al usuario antes de comenzar trabajo de diseño.
+4. No asumir una dirección visual cuando falte una decisión documentada.
+
+El scaffolding técnico, almacenamiento, servicios y estado pueden implementarse
+antes de este punto siempre que no introduzcan decisiones visuales.
+
 ## Frontend
 
 Toda nueva funcionalidad debe incluir:

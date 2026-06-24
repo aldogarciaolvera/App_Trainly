@@ -21,14 +21,15 @@ El desarrollo activo está concentrado en la API:
 - documentación OpenAPI visualizada con Scalar;
 - manejo global y registro de excepciones.
 
-Las aplicaciones mobile/web y el estado compartido aún no están implementados.
+La infraestructura mobile está iniciada; la interfaz mobile y la aplicación web
+aún no están implementadas.
 
 ## Estructura
 
 ```text
 apps/
   api/Trainly.Api/   API ASP.NET Core
-  mobile/            Aplicación React Native/Expo (pendiente)
+  mobile/            Expo, SecureStore y estado Auth con Zustand
   web/               Aplicación web (pendiente)
 packages/
   types/             Contratos TypeScript compartidos
@@ -99,6 +100,6 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Implementar almacenamiento seguro y estado de autenticación con Zustand.
-2. Crear la aplicación Expo/React Native.
-3. Diseñar las primeras pantallas móviles de Auth y Workouts.
+1. Revisar con el usuario los archivos `DESIGN.md` antes de iniciar UI.
+2. Definir navegación y pantallas móviles de Auth.
+3. Implementar las pantallas móviles de Workouts y Exercises.
