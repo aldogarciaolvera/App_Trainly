@@ -14,7 +14,7 @@ interface BottomNavigationProps {
   onSelect: (item: BottomNavigationItem) => void;
 }
 
-const enabledItems: ReadonlySet<BottomNavigationItem> = new Set(["Home", "Profile"]);
+const enabledItems: ReadonlySet<BottomNavigationItem> = new Set(["Home", "Workouts", "Profile"]);
 
 export function BottomNavigation({ activeItem, onSelect }: BottomNavigationProps) {
   return (

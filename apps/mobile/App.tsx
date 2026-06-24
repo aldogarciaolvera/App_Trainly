@@ -22,13 +22,22 @@ import { HomeScreen } from "./src/screens/HomeScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
 import { ProfileScreen } from "./src/screens/ProfileScreen";
 import { RegisterScreen } from "./src/screens/RegisterScreen";
+import { CreateWorkoutScreen } from "./src/screens/CreateWorkoutScreen";
+import { EditWorkoutScreen } from "./src/screens/EditWorkoutScreen";
+import { WorkoutDetailScreen } from "./src/screens/WorkoutDetailScreen";
+import { WorkoutsScreen } from "./src/screens/WorkoutsScreen";
 import { useAuthStore } from "./src/store/auth.store";
+import { useWorkoutStore } from "./src/store/workout.store";
 import { colors } from "./src/theme/tokens";
 
 type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   Home: undefined;
+  Workouts: undefined;
+  CreateWorkout: undefined;
+  WorkoutDetails: { workoutId: string };
+  EditWorkout: { workoutId: string };
   Profile: undefined;
 };
 
@@ -50,6 +59,7 @@ export default function App() {
   const register = useAuthStore((state) => state.register);
   const logout = useAuthStore((state) => state.logout);
   const clearError = useAuthStore((state) => state.clearError);
+  const resetWorkouts = useWorkoutStore((state) => state.reset);
 
   useEffect(() => {
     void hydrate();
@@ -88,6 +98,43 @@ export default function App() {
                     />
                   )}
                 </Stack.Screen>
+                <Stack.Screen name="Workouts">
+                  {({ navigation }) => (
+                    <WorkoutsScreen
+                      onCreate={() => navigation.navigate("CreateWorkout")}
+                      onNavigate={(item) => navigateToAppItem(item, navigation)}
+                      onOpenWorkout={(workoutId) => navigation.navigate("WorkoutDetails", { workoutId })}
+                      userName={profile.name.split(" ")[0] ?? profile.name}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="CreateWorkout">
+                  {({ navigation }) => (
+                    <CreateWorkoutScreen
+                      onBack={() => navigation.goBack()}
+                      onCreated={() => navigation.goBack()}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="WorkoutDetails">
+                  {({ navigation, route }) => (
+                    <WorkoutDetailScreen
+                      onBack={() => navigation.goBack()}
+                      onDeleted={() => navigation.popTo("Workouts")}
+                      onEdit={() => navigation.navigate("EditWorkout", { workoutId: route.params.workoutId })}
+                      workoutId={route.params.workoutId}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="EditWorkout">
+                  {({ navigation, route }) => (
+                    <EditWorkoutScreen
+                      onBack={() => navigation.goBack()}
+                      onUpdated={() => navigation.goBack()}
+                      workoutId={route.params.workoutId}
+                    />
+                  )}
+                </Stack.Screen>
                 <Stack.Screen name="Profile">
                   {({ navigation }) => (
                     <ProfileScreen
@@ -96,10 +143,12 @@ export default function App() {
                       name={profile.name}
                       onLogout={async () => {
                         if (demoAuthenticated) {
+                          resetWorkouts();
                           setDemoAuthenticated(false);
                           return;
                         }
                         await logout();
+                        resetWorkouts();
                       }}
                       onNavigate={(item) => navigateToAppItem(item, navigation)}
                       role={profile.role}
@@ -166,9 +215,9 @@ export default function App() {
 
 function navigateToAppItem(
   item: BottomNavigationItem,
-  navigation: { navigate: (screen: "Home" | "Profile") => void }
+  navigation: { navigate: (screen: "Home" | "Workouts" | "Profile") => void }
 ): void {
-  if (item === "Home" || item === "Profile") navigation.navigate(item);
+  if (item === "Home" || item === "Workouts" || item === "Profile") navigation.navigate(item);
 }
 
 const styles = StyleSheet.create({

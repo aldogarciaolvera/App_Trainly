@@ -15,8 +15,8 @@ interface LoginScreenProps {
 }
 
 export function LoginScreen({ loading, error, onLogin, onSignUp }: LoginScreenProps) {
-  const [email, setEmail] = useState("athlete@trainly.com");
-  const [password, setPassword] = useState("password");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <KeyboardAvoidingView
@@ -33,8 +33,8 @@ export function LoginScreen({ loading, error, onLogin, onSignUp }: LoginScreenPr
             <Ionicons color="#ffffff" name="flash" size={48} />
           </View>
           <Text style={styles.brand}>Trainly</Text>
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Ready to crush your goals?</Text>
+          <Text style={styles.title}>Bienvenido de vuelta!</Text>
+          <Text style={styles.subtitle}>¿Listo para alcanzar tus objetivos?</Text>
         </View>
 
         <View style={styles.formCard}>
@@ -59,7 +59,7 @@ export function LoginScreen({ loading, error, onLogin, onSignUp }: LoginScreenPr
           </Pressable>
           {error ? <Text style={styles.error}>{error}</Text> : null}
           <PrimaryButton
-            label="Sign In"
+            label="Iniciar sesión"
             loading={loading}
             onPress={() => void onLogin(email, password)}
           />

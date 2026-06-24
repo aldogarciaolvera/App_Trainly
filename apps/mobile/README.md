@@ -67,3 +67,24 @@ Antes de implementar nuevas pantallas, navegación visual o componentes UI se
 deben revisar los archivos `DESIGN.md` o `DESING.md` definidos para el proyecto.
 Los componentes actuales centralizan colores, tipografía, radios y espaciado en
 `src/theme/tokens.ts`.
+
+### Workouts
+
+La pestaña Workouts implementa el listado paginado del usuario mediante Zustand
+y `WorkoutService`. Incluye carga inicial, actualización al deslizar, carga
+incremental, estados vacío/error y creación de rutinas. Cada tarjeta abre el
+detalle obtenido mediante `GET /api/workouts/{id}`; desde allí se puede editar o
+eliminar la rutina con confirmación previa.
+
+Las mutaciones reutilizan el store global para mantener sincronizados el detalle
+y la colección paginada:
+
+- crear inserta la rutina al inicio;
+- editar reemplaza la rutina en detalle y listado;
+- eliminar quita la rutina y reduce el total;
+- cerrar sesión reinicia todo el estado de workouts.
+
+La composición visual se basa en `resources/Workouts_Page.png`. Los campos de la
+referencia que aún no existen en el contrato —día programado, categoría, duración
+y dificultad— no se simulan en modo real. La interfaz muestra nombre y descripción
+hasta que esos conceptos se modelen formalmente en la API y PostgreSQL.
