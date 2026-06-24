@@ -1,11 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { BottomNavigation } from "../components/BottomNavigation";
+import { BottomNavigation, type BottomNavigationItem } from "../components/BottomNavigation";
 import { colors, fonts, radius, spacing } from "../theme/tokens";
 
-interface HomeScreenProps { userName: string; }
+interface HomeScreenProps {
+  userName: string;
+  onNavigate: (item: BottomNavigationItem) => void;
+}
 
-export function HomeScreen({ userName }: HomeScreenProps) {
+export function HomeScreen({ userName, onNavigate }: HomeScreenProps) {
   return (
     <View style={styles.screen}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -49,7 +52,7 @@ export function HomeScreen({ userName }: HomeScreenProps) {
           <ActivityRow icon="fitness" title="Leg Day Grind" meta="Oct 24 • 60 min" value="580" accent />
         </View>
       </ScrollView>
-      <BottomNavigation />
+      <BottomNavigation activeItem="Home" onSelect={onNavigate} />
     </View>
   );
 }

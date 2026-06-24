@@ -7,15 +7,35 @@ const items = [
   ["Progress", "analytics"], ["Profile", "person"]
 ] as const;
 
-export function BottomNavigation() {
+export type BottomNavigationItem = (typeof items)[number][0];
+
+interface BottomNavigationProps {
+  activeItem: BottomNavigationItem;
+  onSelect: (item: BottomNavigationItem) => void;
+}
+
+const enabledItems: ReadonlySet<BottomNavigationItem> = new Set(["Home", "Profile"]);
+
+export function BottomNavigation({ activeItem, onSelect }: BottomNavigationProps) {
   return (
     <View style={styles.bar}>
-      {items.map(([label, icon], index) => (
-        <Pressable key={label} style={[styles.item, index === 0 && styles.active]}>
-          <Ionicons color={index === 0 ? colors.primary : colors.textMuted} name={icon} size={22} />
-          <Text style={[styles.label, index === 0 && styles.activeLabel]}>{label}</Text>
-        </Pressable>
-      ))}
+      {items.map(([label, icon]) => {
+        const active = label === activeItem;
+        const enabled = enabledItems.has(label);
+
+        return (
+          <Pressable
+            accessibilityRole="button"
+            disabled={!enabled}
+            key={label}
+            onPress={() => onSelect(label)}
+            style={[styles.item, active && styles.active, !enabled && styles.disabled]}
+          >
+            <Ionicons color={active ? colors.primary : colors.textMuted} name={icon} size={22} />
+            <Text style={[styles.label, active && styles.activeLabel]}>{label}</Text>
+          </Pressable>
+        );
+      })}
     </View>
   );
 }
@@ -32,6 +52,7 @@ const styles = StyleSheet.create({
   },
   item: { alignItems: "center", flex: 1, gap: 3, paddingVertical: 6 },
   active: { backgroundColor: "#2d447f", borderRadius: radius.md },
+  disabled: { opacity: 0.55 },
   label: { color: colors.textMuted, fontFamily: fonts.bodyMedium, fontSize: 11 },
   activeLabel: { color: colors.primary }
 });

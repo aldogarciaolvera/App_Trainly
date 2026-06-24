@@ -69,6 +69,7 @@ export function RegisterScreen({
 
         <View style={styles.formCard}>
           <FormField
+            autoCapitalize="words"
             icon="person-outline"
             label="Name"
             onChangeText={setName}

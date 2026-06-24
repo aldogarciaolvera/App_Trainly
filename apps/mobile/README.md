@@ -24,6 +24,10 @@ Configura `EXPO_PUBLIC_API_URL` con una URL accesible desde el dispositivo:
 - iOS/Android: tokens persistidos mediante `expo-secure-store`.
 - Web: sesión únicamente en memoria; no se persiste en `localStorage`.
 - Zustand administra hidratación, perfil, login, register, refresh y logout.
+- React Navigation separa las rutas anónimas Login/Register de las rutas
+  autenticadas Home/Profile.
+- Profile muestra la identidad de la sesión y permite cerrarla localmente aunque
+  la API no esté disponible.
 - Los servicios compartidos obtienen el access token desde el storage, sin
   importar directamente el store.
 

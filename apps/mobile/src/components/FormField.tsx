@@ -11,11 +11,12 @@ interface FormFieldProps {
   placeholder?: string;
   secure?: boolean;
   keyboardType?: "default" | "email-address";
+  autoCapitalize?: "none" | "words";
 }
 
 export function FormField({
   label, value, onChangeText, icon, placeholder, secure = false,
-  keyboardType = "default"
+  keyboardType = "default", autoCapitalize = "none"
 }: FormFieldProps) {
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(secure);
@@ -26,7 +27,7 @@ export function FormField({
       <View style={[styles.inputShell, focused && styles.inputFocused]}>
         <Ionicons color={colors.outline} name={icon} size={23} />
         <TextInput
-          autoCapitalize="none"
+          autoCapitalize={autoCapitalize}
           keyboardType={keyboardType}
           onBlur={() => setFocused(false)}
           onChangeText={onChangeText}
