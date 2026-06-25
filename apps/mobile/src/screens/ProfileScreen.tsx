@@ -25,8 +25,8 @@ export function ProfileScreen({
     <View style={styles.screen}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.title}>Profile</Text>
-          <Text style={styles.subtitle}>Your Trainly account</Text>
+          <Text style={styles.title}>Perfil</Text>
+          <Text style={styles.subtitle}>Tu cuenta de Trainly</Text>
         </View>
 
         <View style={styles.profileCard}>
@@ -41,9 +41,9 @@ export function ProfileScreen({
         </View>
 
         <View style={styles.settingsCard}>
-          <ProfileRow icon="person-outline" label="Personal information" />
+          <ProfileRow icon="person-outline" label="Información personal" />
           <View style={styles.divider} />
-          <ProfileRow icon="shield-checkmark-outline" label="Security" />
+          <ProfileRow icon="shield-checkmark-outline" label="Seguridad" />
         </View>
 
         <Pressable
@@ -53,7 +53,7 @@ export function ProfileScreen({
           style={({ pressed }) => [styles.logout, pressed && styles.pressed]}
         >
           <Ionicons color={colors.error} name="log-out-outline" size={22} />
-          <Text style={styles.logoutText}>{loading ? "Signing out..." : "Sign Out"}</Text>
+          <Text style={styles.logoutText}>{loading ? "Cerrando sesión..." : "Cerrar sesión"}</Text>
         </Pressable>
       </ScrollView>
 

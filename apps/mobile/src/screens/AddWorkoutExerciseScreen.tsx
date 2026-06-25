@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import type { ExerciseSummary, WorkoutExerciseWriteRequest } from "@trainly/types";
 import { useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { FormField } from "../components/FormField";
 import { WorkoutExerciseForm } from "../components/WorkoutExerciseForm";
 import { useExerciseStore } from "../store/exercise.store";
@@ -9,12 +9,20 @@ import { useWorkoutExerciseStore } from "../store/workout-exercise.store";
 import { colors, fonts, radius, spacing } from "../theme/tokens";
 
 interface AddWorkoutExerciseScreenProps {
-  workoutId: string;
+  initialSelectedExerciseId: string | undefined;
   onAdded: () => void;
   onBack: () => void;
+  onCreateCustom: () => void;
+  workoutId: string;
 }
 
-export function AddWorkoutExerciseScreen({ workoutId, onAdded, onBack }: AddWorkoutExerciseScreenProps) {
+export function AddWorkoutExerciseScreen({
+  initialSelectedExerciseId,
+  onAdded,
+  onBack,
+  onCreateCustom,
+  workoutId
+}: AddWorkoutExerciseScreenProps) {
   const exercises = useExerciseStore((state) => state.items);
   const catalogStatus = useExerciseStore((state) => state.status);
   const catalogError = useExerciseStore((state) => state.error);
@@ -26,11 +34,15 @@ export function AddWorkoutExerciseScreen({ workoutId, onAdded, onBack }: AddWork
   const mutationError = useWorkoutExerciseStore((state) => state.mutationError);
   const add = useWorkoutExerciseStore((state) => state.add);
   const [search, setSearch] = useState("");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(initialSelectedExerciseId ?? null);
 
   useEffect(() => {
     void loadCatalog();
   }, [loadCatalog]);
+
+  useEffect(() => {
+    if (initialSelectedExerciseId) setSelectedId(initialSelectedExerciseId);
+  }, [initialSelectedExerciseId]);
 
   const selectedExercise = exercises.find((exercise) => exercise.id === selectedId) ?? null;
   const nextOrder = useMemo(
@@ -43,22 +55,27 @@ export function AddWorkoutExerciseScreen({ workoutId, onAdded, onBack }: AddWork
       await add(workoutId, request);
       onAdded();
     } catch {
-      // The assignment store exposes the API error to the form.
+      // El store de asignaciones expone el error de la API en el formulario.
     }
   };
 
   return (
-    <View style={styles.screen}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.screen}>
       <Header onBack={onBack} />
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+      <ScrollView automaticallyAdjustKeyboardInsets contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <View style={styles.heading}>
-          <Text style={styles.title}>Choose Exercise</Text>
-          <Text style={styles.subtitle}>Global exercises and your custom exercises are both available.</Text>
+          <Text style={styles.title}>Elegir ejercicio</Text>
+          <Text style={styles.subtitle}>Puedes usar ejercicios globales o crear tus propios ejercicios personalizados.</Text>
         </View>
+
+        <Pressable accessibilityRole="button" onPress={onCreateCustom} style={styles.createCustomButton}>
+          <Ionicons color={colors.onPrimary} name="add" size={22} />
+          <Text style={styles.createCustomText}>Crear ejercicio personalizado</Text>
+        </Pressable>
 
         <View style={styles.searchRow}>
           <View style={styles.searchField}>
-            <FormField icon="search-outline" label="Search" onChangeText={setSearch} placeholder="Bench press" value={search} />
+            <FormField icon="search-outline" label="Buscar" onChangeText={setSearch} placeholder="Press banca" value={search} />
           </View>
           <Pressable accessibilityRole="button" onPress={() => void loadCatalog(search)} style={styles.searchButton}>
             <Ionicons color={colors.text} name="search" size={22} />
@@ -84,14 +101,14 @@ export function AddWorkoutExerciseScreen({ workoutId, onAdded, onBack }: AddWork
             {catalogStatus === "loadingMore" ? (
               <ActivityIndicator color={colors.primary} />
             ) : (
-              <Text style={styles.loadMoreText}>Load more exercises</Text>
+              <Text style={styles.loadMoreText}>Cargar más ejercicios</Text>
             )}
           </Pressable>
         ) : null}
 
         {selectedExercise ? (
           <View style={styles.prescriptionSection}>
-            <Text style={styles.prescriptionTitle}>Prescription</Text>
+            <Text style={styles.prescriptionTitle}>Prescripción</Text>
             <Text style={styles.selectedName}>{selectedExercise.name}</Text>
             <WorkoutExerciseForm
               error={mutationError}
@@ -100,12 +117,12 @@ export function AddWorkoutExerciseScreen({ workoutId, onAdded, onBack }: AddWork
               key={selectedExercise.id}
               loading={saving}
               onSubmit={submit}
-              submitLabel="Add to Workout"
+              submitLabel="Agregar a la rutina"
             />
           </View>
         ) : null}
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -115,7 +132,7 @@ function ExerciseOption({ exercise, onPress, selected }: { exercise: ExerciseSum
       <View style={styles.exerciseIcon}><Ionicons color={colors.primary} name="fitness-outline" size={22} /></View>
       <View style={styles.exerciseCopy}>
         <Text style={styles.exerciseName}>{exercise.name}</Text>
-        <Text style={styles.exerciseMeta}>{exercise.muscleGroup} · {exercise.isGlobal ? "Global" : "Custom"}</Text>
+        <Text style={styles.exerciseMeta}>{translateMuscleGroup(exercise.muscleGroup)} · {exercise.isGlobal ? "Global" : "Personalizado"}</Text>
       </View>
       <Ionicons color={selected ? colors.primary : colors.outline} name={selected ? "checkmark-circle" : "chevron-forward"} size={22} />
     </Pressable>
@@ -125,13 +142,33 @@ function ExerciseOption({ exercise, onPress, selected }: { exercise: ExerciseSum
 function Header({ onBack }: { onBack: () => void }) {
   return (
     <View style={styles.header}>
-      <Pressable accessibilityLabel="Back to workout exercises" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
+      <Pressable accessibilityLabel="Volver a ejercicios de la rutina" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
         <Ionicons color={colors.primary} name="arrow-back" size={24} />
       </Pressable>
-      <Text style={styles.headerTitle}>Add Exercise</Text>
+      <Text style={styles.headerTitle}>Agregar ejercicio</Text>
       <View style={styles.headerSpacer} />
     </View>
   );
+}
+
+function translateMuscleGroup(value: string): string {
+  const labels: Record<string, string> = {
+    Chest: "Pecho",
+    Back: "Espalda",
+    Shoulders: "Hombros",
+    Biceps: "Bíceps",
+    Triceps: "Tríceps",
+    Forearms: "Antebrazos",
+    Core: "Core",
+    Quadriceps: "Cuádriceps",
+    Hamstrings: "Isquiotibiales",
+    Glutes: "Glúteos",
+    Calves: "Pantorrillas",
+    FullBody: "Cuerpo completo",
+    Cardio: "Cardio",
+    Other: "Otro"
+  };
+  return labels[value] ?? value;
 }
 
 const styles = StyleSheet.create({
@@ -144,6 +181,8 @@ const styles = StyleSheet.create({
   heading: { gap: spacing.xs },
   title: { color: colors.text, fontFamily: fonts.heading, fontSize: 28 },
   subtitle: { color: colors.textMuted, fontFamily: fonts.body, fontSize: 14, lineHeight: 21 },
+  createCustomButton: { alignItems: "center", backgroundColor: colors.primary, borderRadius: radius.md, flexDirection: "row", gap: spacing.sm, justifyContent: "center", padding: spacing.md },
+  createCustomText: { color: colors.onPrimary, fontFamily: fonts.bodyBold, fontSize: 14 },
   searchRow: { alignItems: "flex-end", flexDirection: "row", gap: spacing.sm },
   searchField: { flex: 1 },
   searchButton: { alignItems: "center", backgroundColor: colors.primaryStrong, borderRadius: radius.md, height: 54, justifyContent: "center", width: 54 },

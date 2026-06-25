@@ -39,11 +39,11 @@ export function EditWorkoutScreen({ workoutId, onBack, onUpdated }: EditWorkoutS
     const trimmedName = name.trim();
     const trimmedDescription = description.trim();
     if (!trimmedName) {
-      setValidationError("Enter a workout name.");
+      setValidationError("Ingresa un nombre para la rutina.");
       return;
     }
     if (trimmedName.length > 100 || trimmedDescription.length > 1000) {
-      setValidationError("The workout name or description is too long.");
+      setValidationError("El nombre o la descripción son demasiado largos.");
       return;
     }
 
@@ -52,7 +52,7 @@ export function EditWorkoutScreen({ workoutId, onBack, onUpdated }: EditWorkoutS
       await updateWorkout(workoutId, { name: trimmedName, description: trimmedDescription });
       onUpdated();
     } catch {
-      // The workout store exposes the API error to the screen.
+      // El store de workouts expone el error de la API en pantalla.
     }
   };
 
@@ -67,33 +67,33 @@ export function EditWorkoutScreen({ workoutId, onBack, onUpdated }: EditWorkoutS
   if (detailStatus === "error" || workout?.id !== workoutId) {
     return (
       <View style={styles.loadingScreen}>
-        <Text style={styles.error}>{detailError ?? "Workout unavailable."}</Text>
+        <Text style={styles.error}>{detailError ?? "Rutina no disponible."}</Text>
         <Pressable accessibilityRole="button" onPress={onBack} style={styles.backTextButton}>
-          <Text style={styles.backText}>Go Back</Text>
+          <Text style={styles.backText}>Volver</Text>
         </Pressable>
       </View>
     );
   }
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.screen}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.screen}>
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Pressable accessibilityLabel="Back to workout details" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
+        <Pressable accessibilityLabel="Volver al detalle de rutina" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
           <Ionicons color={colors.primary} name="arrow-back" size={24} />
         </Pressable>
 
         <View style={styles.heading}>
-          <Text style={styles.title}>Edit Workout</Text>
-          <Text style={styles.subtitle}>Keep the routine name and purpose up to date.</Text>
+          <Text style={styles.title}>Editar rutina</Text>
+          <Text style={styles.subtitle}>Mantén actualizado el nombre y el objetivo de la rutina.</Text>
         </View>
 
         <View style={styles.formCard}>
-          <FormField autoCapitalize="words" icon="barbell-outline" label="Workout name" onChangeText={setName} value={name} />
-          <FormField icon="document-text-outline" label="Description" onChangeText={setDescription} value={description} />
+          <FormField autoCapitalize="words" icon="barbell-outline" label="Nombre de la rutina" onChangeText={setName} value={name} />
+          <FormField icon="document-text-outline" label="Descripción" onChangeText={setDescription} value={description} />
           {validationError || mutationError ? (
             <Text accessibilityRole="alert" style={styles.error}>{validationError ?? mutationError}</Text>
           ) : null}
-          <PrimaryButton label="Save Changes" loading={saving} onPress={() => void submit()} />
+          <PrimaryButton label="Guardar cambios" loading={saving} onPress={() => void submit()} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

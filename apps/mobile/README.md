@@ -68,6 +68,18 @@ deben revisar los archivos `DESIGN.md` o `DESING.md` definidos para el proyecto.
 Los componentes actuales centralizan colores, tipografía, radios y espaciado en
 `src/theme/tokens.ts`.
 
+### Home
+
+Home reutiliza el estado global de autenticación y workouts. El saludo toma el
+nombre real de `/api/users/me`; el plan principal, contador de rutinas y
+actividad reciente se construyen desde el listado paginado de workouts del
+usuario. El botón principal abre el detalle del primer workout disponible o lleva
+a Workouts cuando la cuenta todavía no tiene rutinas.
+
+Las métricas que aún no existen en el backend, como calorías, pasos, sesiones
+completadas o historial real de entrenamiento, no se simulan en modo real. Esos
+datos se modelarán cuando exista el bloque de sesiones/historial.
+
 ### Workouts
 
 La pestaña Workouts implementa el listado paginado del usuario mediante Zustand
@@ -88,6 +100,7 @@ El detalle permite administrar los ejercicios asignados al workout. El flujo:
 
 - obtiene las asignaciones ordenadas desde `/api/workouts/{workoutId}/exercises`;
 - busca globales y personalizados mediante el catálogo paginado `/api/exercises`;
+- permite crear ejercicios personalizados desde mobile con `POST /api/exercises`;
 - agrega un ejercicio con orden, series, repeticiones, descanso y notas;
 - edita la prescripción reutilizando los contratos compartidos;
 - elimina la asignación después de una confirmación;
@@ -95,6 +108,10 @@ El detalle permite administrar los ejercicios asignados al workout. El flujo:
 
 La interfaz valida los mismos límites que la API y muestra conflictos de orden o
 ejercicio duplicado sin modificar optimistamente el listado.
+
+Las pantallas de formularios usan `KeyboardAvoidingView`, `ScrollView` con ajuste
+de teclado y `softwareKeyboardLayoutMode=resize` en Android para que el campo
+activo siga visible al escribir.
 
 La composición visual se basa en `resources/Workouts_Page.png`. Los campos de la
 referencia que aún no existen en el contrato —día programado, categoría, duración

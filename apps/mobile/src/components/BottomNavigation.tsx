@@ -3,8 +3,11 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { colors, fonts, radius, spacing } from "../theme/tokens";
 
 const items = [
-  ["Home", "home"], ["Workouts", "barbell"], ["Nutrition", "restaurant"],
-  ["Progress", "analytics"], ["Profile", "person"]
+  ["Home", "Inicio", "home"],
+  ["Workouts", "Rutinas", "barbell"],
+  ["Nutrition", "Nutrición", "restaurant"],
+  ["Progress", "Progreso", "analytics"],
+  ["Profile", "Perfil", "person"]
 ] as const;
 
 export type BottomNavigationItem = (typeof items)[number][0];
@@ -19,16 +22,16 @@ const enabledItems: ReadonlySet<BottomNavigationItem> = new Set(["Home", "Workou
 export function BottomNavigation({ activeItem, onSelect }: BottomNavigationProps) {
   return (
     <View style={styles.bar}>
-      {items.map(([label, icon]) => {
-        const active = label === activeItem;
-        const enabled = enabledItems.has(label);
+      {items.map(([key, label, icon]) => {
+        const active = key === activeItem;
+        const enabled = enabledItems.has(key);
 
         return (
           <Pressable
             accessibilityRole="button"
             disabled={!enabled}
-            key={label}
-            onPress={() => onSelect(label)}
+            key={key}
+            onPress={() => onSelect(key)}
             style={[styles.item, active && styles.active, !enabled && styles.disabled]}
           >
             <Ionicons color={active ? colors.primary : colors.textMuted} name={icon} size={22} />

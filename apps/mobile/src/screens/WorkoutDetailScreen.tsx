@@ -27,12 +27,12 @@ export function WorkoutDetailScreen({ workoutId, onBack, onDeleted, onEdit, onMa
 
   const confirmDelete = (): void => {
     Alert.alert(
-      "Delete workout?",
-      "This will permanently remove the workout and its exercise assignments.",
+      "¿Eliminar rutina?",
+      "Esto eliminará permanentemente la rutina y sus ejercicios asignados.",
       [
-        { text: "Cancel", style: "cancel" },
+        { text: "Cancelar", style: "cancel" },
         {
-          text: "Delete",
+          text: "Eliminar",
           style: "destructive",
           onPress: () => {
             void deleteWorkout(workoutId).then(onDeleted).catch(() => undefined);
@@ -49,13 +49,13 @@ export function WorkoutDetailScreen({ workoutId, onBack, onDeleted, onEdit, onMa
   if (status === "error" || !workout) {
     return (
       <View style={styles.screen}>
-        <Header onBack={onBack} title="Workout" />
+        <Header onBack={onBack} title="Rutina" />
         <View style={styles.centerState}>
           <Ionicons color={colors.error} name="alert-circle-outline" size={44} />
-          <Text style={styles.errorTitle}>Workout unavailable</Text>
-          <Text style={styles.errorCopy}>{detailError ?? "The workout could not be found."}</Text>
+          <Text style={styles.errorTitle}>Rutina no disponible</Text>
+          <Text style={styles.errorCopy}>{detailError ?? "No se pudo encontrar la rutina."}</Text>
           <Pressable accessibilityRole="button" onPress={() => void loadById(workoutId)} style={styles.primaryButton}>
-            <Text style={styles.primaryButtonText}>Try Again</Text>
+            <Text style={styles.primaryButtonText}>Reintentar</Text>
           </Pressable>
         </View>
       </View>
@@ -64,19 +64,19 @@ export function WorkoutDetailScreen({ workoutId, onBack, onDeleted, onEdit, onMa
 
   return (
     <View style={styles.screen}>
-      <Header onBack={onBack} title="Workout Details" />
+      <Header onBack={onBack} title="Detalle de rutina" />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.heroCard}>
           <View style={styles.heroIcon}>
             <Ionicons color={colors.primary} name="barbell" size={30} />
           </View>
           <Text style={styles.workoutName}>{workout.name}</Text>
-          <View style={styles.chip}><Text style={styles.chipText}>PERSONAL WORKOUT</Text></View>
+          <View style={styles.chip}><Text style={styles.chipText}>RUTINA PERSONAL</Text></View>
         </View>
 
         <View style={styles.detailCard}>
-          <Text style={styles.sectionLabel}>DESCRIPTION</Text>
-          <Text style={styles.description}>{workout.description || "No description yet."}</Text>
+          <Text style={styles.sectionLabel}>DESCRIPCIÓN</Text>
+          <Text style={styles.description}>{workout.description || "Sin descripción todavía."}</Text>
         </View>
 
         <Pressable accessibilityRole="button" onPress={onManageExercises} style={({ pressed }) => [styles.detailCard, pressed && styles.pressed]}>
@@ -85,8 +85,8 @@ export function WorkoutDetailScreen({ workoutId, onBack, onDeleted, onEdit, onMa
               <Ionicons color={colors.primary} name="list-outline" size={22} />
             </View>
             <View style={styles.sectionCopy}>
-              <Text style={styles.sectionTitle}>Exercises</Text>
-              <Text style={styles.sectionDescription}>Manage exercise order, sets, reps, rest and notes.</Text>
+              <Text style={styles.sectionTitle}>Ejercicios</Text>
+              <Text style={styles.sectionDescription}>Administra orden, series, repeticiones, descanso y notas.</Text>
             </View>
             <Ionicons color={colors.primary} name="chevron-forward" size={22} />
           </View>
@@ -97,7 +97,7 @@ export function WorkoutDetailScreen({ workoutId, onBack, onDeleted, onEdit, onMa
         <View style={styles.actions}>
           <Pressable accessibilityRole="button" onPress={onEdit} style={({ pressed }) => [styles.primaryButton, styles.flexButton, pressed && styles.pressed]}>
             <Ionicons color={colors.text} name="create-outline" size={20} />
-            <Text style={styles.primaryButtonText}>Edit</Text>
+            <Text style={styles.primaryButtonText}>Editar</Text>
           </Pressable>
           <Pressable
             accessibilityRole="button"
@@ -106,7 +106,7 @@ export function WorkoutDetailScreen({ workoutId, onBack, onDeleted, onEdit, onMa
             style={({ pressed }) => [styles.deleteButton, styles.flexButton, pressed && styles.pressed]}
           >
             <Ionicons color={colors.error} name="trash-outline" size={20} />
-            <Text style={styles.deleteButtonText}>{deleting ? "Deleting..." : "Delete"}</Text>
+            <Text style={styles.deleteButtonText}>{deleting ? "Eliminando..." : "Eliminar"}</Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -117,7 +117,7 @@ export function WorkoutDetailScreen({ workoutId, onBack, onDeleted, onEdit, onMa
 function Header({ onBack, title }: { onBack: () => void; title: string }) {
   return (
     <View style={styles.header}>
-      <Pressable accessibilityLabel="Back to workouts" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
+      <Pressable accessibilityLabel="Volver a rutinas" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
         <Ionicons color={colors.primary} name="arrow-back" size={24} />
       </Pressable>
       <Text style={styles.headerTitle}>{title}</Text>
@@ -129,10 +129,10 @@ function Header({ onBack, title }: { onBack: () => void; title: string }) {
 function DetailLoading({ onBack }: { onBack: () => void }) {
   return (
     <View style={styles.screen}>
-      <Header onBack={onBack} title="Workout Details" />
+      <Header onBack={onBack} title="Detalle de rutina" />
       <View style={styles.centerState}>
         <ActivityIndicator color={colors.primary} size="large" />
-        <Text style={styles.errorCopy}>Loading workout...</Text>
+        <Text style={styles.errorCopy}>Cargando rutina...</Text>
       </View>
     </View>
   );

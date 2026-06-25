@@ -11,7 +11,8 @@
       "bundleIdentifier": "com.trainly.app"
     },
     "android": {
-      "package": "com.trainly.app"
+      "package": "com.trainly.app",
+      "softwareKeyboardLayoutMode": "resize"
     }
   }
 }

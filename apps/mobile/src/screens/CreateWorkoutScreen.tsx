@@ -23,11 +23,11 @@ export function CreateWorkoutScreen({ onBack, onCreated }: CreateWorkoutScreenPr
     const trimmedName = name.trim();
     const trimmedDescription = description.trim();
     if (!trimmedName) {
-      setValidationError("Enter a workout name.");
+      setValidationError("Ingresa un nombre para la rutina.");
       return;
     }
     if (trimmedName.length > 100 || trimmedDescription.length > 1000) {
-      setValidationError("The workout name or description is too long.");
+      setValidationError("El nombre o la descripción son demasiado largos.");
       return;
     }
 
@@ -36,34 +36,34 @@ export function CreateWorkoutScreen({ onBack, onCreated }: CreateWorkoutScreenPr
       await createWorkout({ name: trimmedName, description: trimmedDescription });
       onCreated();
     } catch {
-      // The workout store exposes the API error to the screen.
+      // El store de workouts expone el error de la API en pantalla.
     }
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.screen}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.screen}>
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Pressable accessibilityLabel="Back to workouts" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
+        <Pressable accessibilityLabel="Volver a rutinas" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
           <Ionicons color={colors.primary} name="arrow-back" size={24} />
         </Pressable>
 
         <View style={styles.heading}>
-          <Text style={styles.title}>Create Workout</Text>
-          <Text style={styles.subtitle}>Give your new routine a clear name and purpose.</Text>
+          <Text style={styles.title}>Crear rutina</Text>
+          <Text style={styles.subtitle}>Dale a tu nueva rutina un nombre claro y un objetivo.</Text>
         </View>
 
         <View style={styles.formCard}>
           <FormField
             autoCapitalize="words"
             icon="barbell-outline"
-            label="Workout name"
+            label="Nombre de la rutina"
             onChangeText={setName}
             placeholder="Upper Body Power"
             value={name}
           />
           <FormField
             icon="document-text-outline"
-            label="Description"
+            label="Descripción"
             onChangeText={setDescription}
             placeholder="Chest and back strength routine"
             value={description}
@@ -71,7 +71,7 @@ export function CreateWorkoutScreen({ onBack, onCreated }: CreateWorkoutScreenPr
           {validationError || error ? (
             <Text accessibilityRole="alert" style={styles.error}>{validationError ?? error}</Text>
           ) : null}
-          <PrimaryButton label="Create Workout" loading={saving} onPress={() => void submit()} />
+          <PrimaryButton label="Crear rutina" loading={saving} onPress={() => void submit()} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

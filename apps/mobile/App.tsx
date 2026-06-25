@@ -23,6 +23,7 @@ import { LoginScreen } from "./src/screens/LoginScreen";
 import { ProfileScreen } from "./src/screens/ProfileScreen";
 import { RegisterScreen } from "./src/screens/RegisterScreen";
 import { CreateWorkoutScreen } from "./src/screens/CreateWorkoutScreen";
+import { CreateCustomExerciseScreen } from "./src/screens/CreateCustomExerciseScreen";
 import { AddWorkoutExerciseScreen } from "./src/screens/AddWorkoutExerciseScreen";
 import { EditWorkoutScreen } from "./src/screens/EditWorkoutScreen";
 import { EditWorkoutExerciseScreen } from "./src/screens/EditWorkoutExerciseScreen";
@@ -44,7 +45,8 @@ type RootStackParamList = {
   WorkoutDetails: { workoutId: string };
   EditWorkout: { workoutId: string };
   WorkoutExercises: { workoutId: string };
-  AddWorkoutExercise: { workoutId: string };
+  AddWorkoutExercise: { workoutId: string; selectedExerciseId?: string };
+  CreateCustomExercise: { workoutId: string };
   EditWorkoutExercise: { workoutId: string; assignmentId: string };
   Profile: undefined;
 };
@@ -104,6 +106,7 @@ export default function App() {
                   {({ navigation }) => (
                     <HomeScreen
                       onNavigate={(item) => navigateToAppItem(item, navigation)}
+                      onOpenWorkout={(workoutId) => navigation.navigate("WorkoutDetails", { workoutId })}
                       userName={profile.name.split(" ")[0] ?? profile.name}
                     />
                   )}
@@ -165,9 +168,22 @@ export default function App() {
                 <Stack.Screen name="AddWorkoutExercise">
                   {({ navigation, route }) => (
                     <AddWorkoutExerciseScreen
+                      initialSelectedExerciseId={route.params.selectedExerciseId}
                       onAdded={() => navigation.goBack()}
                       onBack={() => navigation.goBack()}
+                      onCreateCustom={() => navigation.navigate("CreateCustomExercise", { workoutId: route.params.workoutId })}
                       workoutId={route.params.workoutId}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="CreateCustomExercise">
+                  {({ navigation, route }) => (
+                    <CreateCustomExerciseScreen
+                      onBack={() => navigation.goBack()}
+                      onCreated={(exerciseId) => navigation.navigate("AddWorkoutExercise", {
+                        workoutId: route.params.workoutId,
+                        selectedExerciseId: exerciseId
+                      })}
                     />
                   )}
                 </Stack.Screen>

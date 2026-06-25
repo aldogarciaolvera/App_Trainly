@@ -29,11 +29,11 @@ export function WorkoutExercisesScreen({ workoutId, onAdd, onBack, onEdit }: Wor
 
   const confirmDelete = (assignment: WorkoutExercise): void => {
     Alert.alert(
-      "Remove exercise?",
-      `${assignment.exerciseName} will be removed from this workout.`,
+      "¿Quitar ejercicio?",
+      `${assignment.exerciseName} se quitará de esta rutina.`,
       [
-        { text: "Cancel", style: "cancel" },
-        { text: "Remove", style: "destructive", onPress: () => void remove(workoutId, assignment.id).catch(() => undefined) }
+        { text: "Cancelar", style: "cancel" },
+        { text: "Quitar", style: "destructive", onPress: () => void remove(workoutId, assignment.id).catch(() => undefined) }
       ]
     );
   };
@@ -44,15 +44,15 @@ export function WorkoutExercisesScreen({ workoutId, onAdd, onBack, onEdit }: Wor
       {status === "idle" || status === "loading" ? (
         <View style={styles.centerState}>
           <ActivityIndicator color={colors.primary} size="large" />
-          <Text style={styles.stateCopy}>Loading exercises...</Text>
+          <Text style={styles.stateCopy}>Cargando ejercicios...</Text>
         </View>
       ) : status === "error" ? (
         <View style={styles.centerState}>
           <Ionicons color={colors.error} name="alert-circle-outline" size={42} />
-          <Text style={styles.stateTitle}>Unable to load exercises</Text>
+          <Text style={styles.stateTitle}>No se pudieron cargar los ejercicios</Text>
           <Text style={styles.stateCopy}>{error}</Text>
           <Pressable accessibilityRole="button" onPress={() => void load(workoutId)} style={styles.primaryButton}>
-            <Text style={styles.primaryText}>Try Again</Text>
+            <Text style={styles.primaryText}>Reintentar</Text>
           </Pressable>
         </View>
       ) : (
@@ -60,17 +60,17 @@ export function WorkoutExercisesScreen({ workoutId, onAdd, onBack, onEdit }: Wor
           ListEmptyComponent={(
             <View style={styles.emptyState}>
               <View style={styles.emptyIcon}><Ionicons color={colors.primary} name="barbell-outline" size={30} /></View>
-              <Text style={styles.stateTitle}>No exercises yet</Text>
-              <Text style={styles.stateCopy}>Add exercises and define sets, reps and rest.</Text>
+              <Text style={styles.stateTitle}>Aún no hay ejercicios</Text>
+              <Text style={styles.stateCopy}>Agrega ejercicios y define series, repeticiones y descanso.</Text>
               <Pressable accessibilityRole="button" onPress={onAdd} style={styles.primaryButton}>
-                <Text style={styles.primaryText}>Add Exercise</Text>
+                <Text style={styles.primaryText}>Agregar ejercicio</Text>
               </Pressable>
             </View>
           )}
           ListHeaderComponent={(
             <View style={styles.intro}>
-              <Text style={styles.workoutName}>{workout?.name ?? "Workout"}</Text>
-              <Text style={styles.subtitle}>{items.length} {items.length === 1 ? "exercise" : "exercises"} in this routine</Text>
+              <Text style={styles.workoutName}>{workout?.name ?? "Rutina"}</Text>
+              <Text style={styles.subtitle}>{items.length} {items.length === 1 ? "ejercicio" : "ejercicios"} en esta rutina</Text>
               {mutationError ? <Text accessibilityRole="alert" style={styles.error}>{mutationError}</Text> : null}
             </View>
           )}
@@ -83,7 +83,7 @@ export function WorkoutExercisesScreen({ workoutId, onAdd, onBack, onEdit }: Wor
           showsVerticalScrollIndicator={false}
         />
       )}
-      <Pressable accessibilityLabel="Add exercise" accessibilityRole="button" onPress={onAdd} style={({ pressed }) => [styles.fab, pressed && styles.pressed]}>
+      <Pressable accessibilityLabel="Agregar ejercicio" accessibilityRole="button" onPress={onAdd} style={({ pressed }) => [styles.fab, pressed && styles.pressed]}>
         <Ionicons color={colors.onPrimary} name="add" size={32} />
       </Pressable>
     </View>
@@ -93,10 +93,10 @@ export function WorkoutExercisesScreen({ workoutId, onAdd, onBack, onEdit }: Wor
 function Header({ onBack }: { onBack: () => void }) {
   return (
     <View style={styles.header}>
-      <Pressable accessibilityLabel="Back to workout details" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
+      <Pressable accessibilityLabel="Volver al detalle de rutina" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
         <Ionicons color={colors.primary} name="arrow-back" size={24} />
       </Pressable>
-      <Text style={styles.headerTitle}>Workout Exercises</Text>
+      <Text style={styles.headerTitle}>Ejercicios de rutina</Text>
       <View style={styles.headerSpacer} />
     </View>
   );

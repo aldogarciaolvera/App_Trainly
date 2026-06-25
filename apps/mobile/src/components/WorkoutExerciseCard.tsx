@@ -17,12 +17,12 @@ export function WorkoutExerciseCard({ assignment, onDelete, onEdit }: WorkoutExe
         <View style={styles.titleRow}>
           <Text numberOfLines={1} style={styles.title}>{assignment.exerciseName}</Text>
           <View style={styles.scopeChip}>
-            <Text style={styles.scopeText}>{assignment.isGlobal ? "GLOBAL" : "CUSTOM"}</Text>
+            <Text style={styles.scopeText}>{assignment.isGlobal ? "GLOBAL" : "PROPIO"}</Text>
           </View>
         </View>
         <Text style={styles.muscle}>{assignment.muscleGroup}</Text>
         <View style={styles.metrics}>
-          <Metric icon="layers-outline" text={`${assignment.sets} sets`} />
+          <Metric icon="layers-outline" text={`${assignment.sets} series`} />
           <Metric icon="repeat-outline" text={`${assignment.reps} reps`} />
           <Metric icon="timer-outline" text={`${assignment.restSeconds}s`} />
         </View>
@@ -30,7 +30,7 @@ export function WorkoutExerciseCard({ assignment, onDelete, onEdit }: WorkoutExe
         <View style={styles.actions}>
           <Pressable accessibilityRole="button" onPress={onEdit} style={styles.editButton}>
             <Ionicons color={colors.primary} name="create-outline" size={18} />
-            <Text style={styles.editText}>Edit</Text>
+            <Text style={styles.editText}>Editar</Text>
           </Pressable>
           <Pressable accessibilityRole="button" onPress={onDelete} style={styles.deleteButton}>
             <Ionicons color={colors.error} name="trash-outline" size={18} />

@@ -1,4 +1,4 @@
-import type { ExerciseSummary } from "@trainly/types";
+import type { ExerciseDetails, ExerciseSummary, ExerciseWriteRequest } from "@trainly/types";
 import { create } from "zustand";
 import { environment } from "../config/environment";
 import { services } from "../services/trainly.services";
@@ -15,6 +15,7 @@ interface ExerciseCatalogState {
   error: string | null;
   load: (search?: string) => Promise<void>;
   loadMore: () => Promise<void>;
+  createCustom: (request: ExerciseWriteRequest) => Promise<ExerciseSummary>;
   reset: () => void;
 }
 
@@ -61,6 +62,24 @@ export const useExerciseStore = create<ExerciseCatalogState>((set, get) => ({
     }
   },
 
+  async createCustom(request: ExerciseWriteRequest): Promise<ExerciseSummary> {
+    try {
+      const exercise = environment.useDummyData
+        ? createDummyCustomExercise(request)
+        : toSummary(await services.exercises.createCustom(request));
+      set((state) => ({
+        items: [exercise, ...state.items.filter((item) => item.id !== exercise.id)],
+        total: state.total + 1,
+        status: "ready",
+        error: null
+      }));
+      return exercise;
+    } catch (error: unknown) {
+      set({ error: getErrorMessage(error) });
+      throw error;
+    }
+  },
+
   reset(): void {
     set(initialState);
   }
@@ -89,7 +108,31 @@ async function getCatalogPage(page: number, pageSize: number, search: string) {
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
-  return "Unable to load the exercise catalog.";
+  return "No se pudo cargar el catálogo de ejercicios.";
+}
+
+function toSummary(exercise: ExerciseDetails): ExerciseSummary {
+  return {
+    id: exercise.id,
+    name: exercise.name,
+    muscleGroup: exercise.muscleGroup,
+    description: exercise.description,
+    instructions: exercise.instructions,
+    isGlobal: exercise.isGlobal
+  };
+}
+
+function createDummyCustomExercise(request: ExerciseWriteRequest): ExerciseSummary {
+  const exercise: ExerciseSummary = {
+    id: `demo-custom-${Date.now()}`,
+    name: request.name,
+    muscleGroup: request.muscleGroup,
+    description: request.description,
+    instructions: request.instructions,
+    isGlobal: false
+  };
+  dummyExercises.unshift(exercise);
+  return exercise;
 }
 
 const dummyExercises: ExerciseSummary[] = [

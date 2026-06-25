@@ -12,11 +12,12 @@ interface FormFieldProps {
   secure?: boolean;
   keyboardType?: "default" | "email-address" | "numeric";
   autoCapitalize?: "none" | "words";
+  multiline?: boolean;
 }
 
 export function FormField({
   label, value, onChangeText, icon, placeholder, secure = false,
-  keyboardType = "default", autoCapitalize = "none"
+  keyboardType = "default", autoCapitalize = "none", multiline = false
 }: FormFieldProps) {
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(secure);
@@ -29,13 +30,15 @@ export function FormField({
         <TextInput
           autoCapitalize={autoCapitalize}
           keyboardType={keyboardType}
+          multiline={multiline}
           onBlur={() => setFocused(false)}
           onChangeText={onChangeText}
           onFocus={() => setFocused(true)}
           placeholder={placeholder}
           placeholderTextColor={colors.outline}
           secureTextEntry={hidden}
-          style={styles.input}
+          style={[styles.input, multiline && styles.inputMultiline]}
+          textAlignVertical={multiline ? "top" : "center"}
           value={value}
         />
         {secure ? (
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     borderWidth: 1,
     flexDirection: "row",
-    height: 54,
+    minHeight: 54,
     paddingHorizontal: spacing.gutter
   },
   inputFocused: { borderColor: colors.primary, borderWidth: 2 },
@@ -72,7 +75,8 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: fonts.body,
     fontSize: 16,
-    height: "100%",
+    minHeight: 54,
     paddingHorizontal: spacing.sm
-  }
+  },
+  inputMultiline: { minHeight: 96, paddingVertical: spacing.sm }
 });
