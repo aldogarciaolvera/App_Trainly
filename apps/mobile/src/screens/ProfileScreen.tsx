@@ -10,6 +10,7 @@ interface ProfileScreenProps {
   name: string;
   role: UserRole;
   onLogout: () => Promise<void>;
+  onManageExercises: () => void;
   onNavigate: (item: BottomNavigationItem) => void;
 }
 
@@ -19,6 +20,7 @@ export function ProfileScreen({
   name,
   role,
   onLogout,
+  onManageExercises,
   onNavigate
 }: ProfileScreenProps) {
   return (
@@ -43,6 +45,8 @@ export function ProfileScreen({
         <View style={styles.settingsCard}>
           <ProfileRow icon="person-outline" label="Información personal" />
           <View style={styles.divider} />
+          <ProfileRow icon="fitness-outline" label="Mis ejercicios" onPress={onManageExercises} />
+          <View style={styles.divider} />
           <ProfileRow icon="shield-checkmark-outline" label="Seguridad" />
         </View>
 
@@ -62,15 +66,15 @@ export function ProfileScreen({
   );
 }
 
-function ProfileRow({ icon, label }: { icon: keyof typeof Ionicons.glyphMap; label: string }) {
+function ProfileRow({ icon, label, onPress }: { icon: keyof typeof Ionicons.glyphMap; label: string; onPress?: () => void }) {
   return (
-    <View style={styles.row}>
+    <Pressable accessibilityRole="button" disabled={!onPress} onPress={onPress} style={styles.row}>
       <View style={styles.rowIcon}>
         <Ionicons color={colors.primary} name={icon} size={21} />
       </View>
       <Text style={styles.rowLabel}>{label}</Text>
       <Ionicons color={colors.outline} name="chevron-forward" size={20} />
-    </View>
+    </Pressable>
   );
 }
 
