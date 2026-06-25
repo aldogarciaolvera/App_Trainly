@@ -101,6 +101,8 @@ El detalle permite administrar los ejercicios asignados al workout. El flujo:
 - obtiene las asignaciones ordenadas desde `/api/workouts/{workoutId}/exercises`;
 - busca globales y personalizados mediante el catálogo paginado `/api/exercises`;
 - permite crear ejercicios personalizados desde mobile con `POST /api/exercises`;
+- permite administrar ejercicios personalizados desde Perfil o desde el flujo de
+  agregar ejercicio;
 - agrega un ejercicio con orden, series, repeticiones, descanso y notas;
 - edita la prescripción reutilizando los contratos compartidos;
 - elimina la asignación después de una confirmación;
@@ -112,6 +114,14 @@ ejercicio duplicado sin modificar optimistamente el listado.
 Las pantallas de formularios usan `KeyboardAvoidingView`, `ScrollView` con ajuste
 de teclado y `softwareKeyboardLayoutMode=resize` en Android para que el campo
 activo siga visible al escribir.
+
+### Mis ejercicios
+
+La pantalla Mis ejercicios lista solo ejercicios personalizados (`scope=custom`).
+Desde ahí el usuario puede buscar, crear, editar y eliminar sus ejercicios
+propios. La creación y edición reutilizan el mismo formulario y el store evita
+duplicados por nombre + grupo muscular antes de enviar; la API refuerza la misma
+regla con `409 Conflict`.
 
 La composición visual se basa en `resources/Workouts_Page.png`. Los campos de la
 referencia que aún no existen en el contrato —día programado, categoría, duración

@@ -24,7 +24,9 @@ import { ProfileScreen } from "./src/screens/ProfileScreen";
 import { RegisterScreen } from "./src/screens/RegisterScreen";
 import { CreateWorkoutScreen } from "./src/screens/CreateWorkoutScreen";
 import { CreateCustomExerciseScreen } from "./src/screens/CreateCustomExerciseScreen";
+import { CustomExercisesScreen } from "./src/screens/CustomExercisesScreen";
 import { AddWorkoutExerciseScreen } from "./src/screens/AddWorkoutExerciseScreen";
+import { EditCustomExerciseScreen } from "./src/screens/EditCustomExerciseScreen";
 import { EditWorkoutScreen } from "./src/screens/EditWorkoutScreen";
 import { EditWorkoutExerciseScreen } from "./src/screens/EditWorkoutExerciseScreen";
 import { WorkoutDetailScreen } from "./src/screens/WorkoutDetailScreen";
@@ -46,7 +48,9 @@ type RootStackParamList = {
   EditWorkout: { workoutId: string };
   WorkoutExercises: { workoutId: string };
   AddWorkoutExercise: { workoutId: string; selectedExerciseId?: string };
-  CreateCustomExercise: { workoutId: string };
+  CustomExercises: undefined;
+  CreateCustomExercise: { returnTo: "AddWorkoutExercise" | "CustomExercises"; workoutId?: string };
+  EditCustomExercise: { exerciseId: string };
   EditWorkoutExercise: { workoutId: string; assignmentId: string };
   Profile: undefined;
 };
@@ -171,8 +175,21 @@ export default function App() {
                       initialSelectedExerciseId={route.params.selectedExerciseId}
                       onAdded={() => navigation.goBack()}
                       onBack={() => navigation.goBack()}
-                      onCreateCustom={() => navigation.navigate("CreateCustomExercise", { workoutId: route.params.workoutId })}
+                      onCreateCustom={() => navigation.navigate("CreateCustomExercise", {
+                        returnTo: "AddWorkoutExercise",
+                        workoutId: route.params.workoutId
+                      })}
+                      onManageCustom={() => navigation.navigate("CustomExercises")}
                       workoutId={route.params.workoutId}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="CustomExercises">
+                  {({ navigation }) => (
+                    <CustomExercisesScreen
+                      onBack={() => navigation.goBack()}
+                      onCreate={() => navigation.navigate("CreateCustomExercise", { returnTo: "CustomExercises" })}
+                      onEdit={(exerciseId) => navigation.navigate("EditCustomExercise", { exerciseId })}
                     />
                   )}
                 </Stack.Screen>
@@ -180,10 +197,25 @@ export default function App() {
                   {({ navigation, route }) => (
                     <CreateCustomExerciseScreen
                       onBack={() => navigation.goBack()}
-                      onCreated={(exerciseId) => navigation.navigate("AddWorkoutExercise", {
-                        workoutId: route.params.workoutId,
-                        selectedExerciseId: exerciseId
-                      })}
+                      onCreated={(exerciseId) => {
+                        if (route.params.returnTo === "AddWorkoutExercise" && route.params.workoutId) {
+                          navigation.popTo("AddWorkoutExercise", {
+                            workoutId: route.params.workoutId,
+                            selectedExerciseId: exerciseId
+                          });
+                          return;
+                        }
+                        navigation.popTo("CustomExercises");
+                      }}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="EditCustomExercise">
+                  {({ navigation, route }) => (
+                    <EditCustomExerciseScreen
+                      exerciseId={route.params.exerciseId}
+                      onBack={() => navigation.goBack()}
+                      onUpdated={() => navigation.goBack()}
                     />
                   )}
                 </Stack.Screen>
@@ -217,6 +249,7 @@ export default function App() {
                         resetWorkoutExercises();
                       }}
                       onNavigate={(item) => navigateToAppItem(item, navigation)}
+                      onManageExercises={() => navigation.navigate("CustomExercises")}
                       role={profile.role}
                     />
                   )}

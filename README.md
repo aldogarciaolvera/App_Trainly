@@ -105,6 +105,6 @@ nuevas funcionalidades.
 ## Próximos pasos
 
 1. Modelar sesiones reales de entrenamiento e historial.
-2. Completar edición/listado independiente de ejercicios personalizados.
+2. Conectar Home con sesiones reales cuando exista historial.
 3. Modelar programación, duración, categoría y dificultad cuando se definan sus
    reglas de dominio.

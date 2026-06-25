@@ -29,10 +29,22 @@ public sealed class UpdateExerciseHandler
       throw new NotFoundException("Ejercicio personalizado no encontrado.");
     }
 
-    exercise.Name = request.Name;
-    exercise.MuscleGroup = request.MuscleGroup!.Value;
-    exercise.Description = request.Description;
-    exercise.Instructions = request.Instructions;
+    var muscleGroup = request.MuscleGroup!.Value;
+    var normalizedName = request.Name.Trim().ToLower();
+    var alreadyExists = await _db.Exercises.AnyAsync(
+      x => x.Id != id &&
+           x.UserId == userId &&
+           x.MuscleGroup == muscleGroup &&
+           x.Name.ToLower() == normalizedName,
+      cancellationToken);
+
+    if (alreadyExists)
+      throw new ConflictException("Ya existe otro ejercicio personalizado con ese nombre y grupo muscular.");
+
+    exercise.Name = request.Name.Trim();
+    exercise.MuscleGroup = muscleGroup;
+    exercise.Description = request.Description.Trim();
+    exercise.Instructions = request.Instructions.Trim();
     await _db.SaveChangesAsync(cancellationToken);
 
     return exercise.ToDetails();

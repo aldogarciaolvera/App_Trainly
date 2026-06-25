@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Trainly.Api.Common.Authentication;
+using Trainly.Api.Common.Exceptions;
 using Trainly.Api.Database;
 using Trainly.Api.Features.Models;
 
@@ -17,13 +19,25 @@ public sealed class CreateExerciseHandler
 
   public async Task<ExerciseDetailsResponse> HandleAsync(ExerciseWriteRequest request, CancellationToken cancellationToken)
   {
+    var userId = _userContext.GetUserId();
+    var muscleGroup = request.MuscleGroup!.Value;
+    var normalizedName = request.Name.Trim().ToLower();
+    var alreadyExists = await _db.Exercises.AnyAsync(
+      x => x.UserId == userId &&
+           x.MuscleGroup == muscleGroup &&
+           x.Name.ToLower() == normalizedName,
+      cancellationToken);
+
+    if (alreadyExists)
+      throw new ConflictException("Ya existe un ejercicio personalizado con ese nombre y grupo muscular.");
+
     var exercise = new Exercise
     {
-      UserId = _userContext.GetUserId(),
-      Name = request.Name,
-      MuscleGroup = request.MuscleGroup!.Value,
-      Description = request.Description,
-      Instructions = request.Instructions
+      UserId = userId,
+      Name = request.Name.Trim(),
+      MuscleGroup = muscleGroup,
+      Description = request.Description.Trim(),
+      Instructions = request.Instructions.Trim()
     };
 
     _db.Exercises.Add(exercise);

@@ -13,6 +13,7 @@ interface AddWorkoutExerciseScreenProps {
   onAdded: () => void;
   onBack: () => void;
   onCreateCustom: () => void;
+  onManageCustom: () => void;
   workoutId: string;
 }
 
@@ -21,6 +22,7 @@ export function AddWorkoutExerciseScreen({
   onAdded,
   onBack,
   onCreateCustom,
+  onManageCustom,
   workoutId
 }: AddWorkoutExerciseScreenProps) {
   const exercises = useExerciseStore((state) => state.items);
@@ -71,6 +73,10 @@ export function AddWorkoutExerciseScreen({
         <Pressable accessibilityRole="button" onPress={onCreateCustom} style={styles.createCustomButton}>
           <Ionicons color={colors.onPrimary} name="add" size={22} />
           <Text style={styles.createCustomText}>Crear ejercicio personalizado</Text>
+        </Pressable>
+        <Pressable accessibilityRole="button" onPress={onManageCustom} style={styles.manageButton}>
+          <Ionicons color={colors.primary} name="list-outline" size={20} />
+          <Text style={styles.manageText}>Administrar mis ejercicios</Text>
         </Pressable>
 
         <View style={styles.searchRow}>
@@ -183,6 +189,8 @@ const styles = StyleSheet.create({
   subtitle: { color: colors.textMuted, fontFamily: fonts.body, fontSize: 14, lineHeight: 21 },
   createCustomButton: { alignItems: "center", backgroundColor: colors.primary, borderRadius: radius.md, flexDirection: "row", gap: spacing.sm, justifyContent: "center", padding: spacing.md },
   createCustomText: { color: colors.onPrimary, fontFamily: fonts.bodyBold, fontSize: 14 },
+  manageButton: { alignItems: "center", borderColor: colors.outlineVariant, borderRadius: radius.md, borderWidth: 1, flexDirection: "row", gap: spacing.sm, justifyContent: "center", padding: spacing.gutter },
+  manageText: { color: colors.primary, fontFamily: fonts.bodyMedium, fontSize: 14 },
   searchRow: { alignItems: "flex-end", flexDirection: "row", gap: spacing.sm },
   searchField: { flex: 1 },
   searchButton: { alignItems: "center", backgroundColor: colors.primaryStrong, borderRadius: radius.md, height: 54, justifyContent: "center", width: 54 },
