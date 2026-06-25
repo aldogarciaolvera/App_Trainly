@@ -7,6 +7,7 @@ using Trainly.Api.Configuration.Authentication;
 using Trainly.Api.Configuration.Seed;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Text.Json.Serialization;
 
 Env.Load();
 
@@ -20,6 +21,9 @@ builder.Services.AddControllers(options =>
 		.Build();
 
 	options.Filters.Add(new AuthorizeFilter(policy));
+}).AddJsonOptions(options =>
+{
+  options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
 // Authorization

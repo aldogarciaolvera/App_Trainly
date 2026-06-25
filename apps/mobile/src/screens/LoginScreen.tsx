@@ -19,11 +19,9 @@ export function LoginScreen({ loading, error, onLogin, onSignUp }: LoginScreenPr
   const [password, setPassword] = useState("");
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-      style={styles.screen}
-    >
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.screen}>
       <ScrollView
+        automaticallyAdjustKeyboardInsets
         contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
@@ -33,7 +31,7 @@ export function LoginScreen({ loading, error, onLogin, onSignUp }: LoginScreenPr
             <Ionicons color="#ffffff" name="flash" size={48} />
           </View>
           <Text style={styles.brand}>Trainly</Text>
-          <Text style={styles.title}>Bienvenido de vuelta!</Text>
+          <Text style={styles.title}>¡Bienvenido de vuelta!</Text>
           <Text style={styles.subtitle}>¿Listo para alcanzar tus objetivos?</Text>
         </View>
 
@@ -41,21 +39,21 @@ export function LoginScreen({ loading, error, onLogin, onSignUp }: LoginScreenPr
           <FormField
             icon="mail-outline"
             keyboardType="email-address"
-            label="Email"
+            label="Correo"
             onChangeText={setEmail}
-            placeholder="athlete@trainly.com"
+            placeholder="atleta@trainly.com"
             value={email}
           />
           <FormField
             icon="lock-closed-outline"
-            label="Password"
+            label="Contraseña"
             onChangeText={setPassword}
             placeholder="••••••••"
             secure
             value={password}
           />
           <Pressable accessibilityRole="button" style={styles.forgot}>
-            <Text style={styles.link}>Forgot Password?</Text>
+            <Text style={styles.link}>¿Olvidaste tu contraseña?</Text>
           </Pressable>
           {error ? <Text style={styles.error}>{error}</Text> : null}
           <PrimaryButton
@@ -66,9 +64,9 @@ export function LoginScreen({ loading, error, onLogin, onSignUp }: LoginScreenPr
         </View>
 
         <View style={styles.signupRow}>
-          <Text style={styles.signupText}>New to Trainly? </Text>
+          <Text style={styles.signupText}>¿Nuevo en Trainly? </Text>
           <Pressable accessibilityRole="button" onPress={onSignUp}>
-            <Text style={styles.link}>Sign Up</Text>
+            <Text style={styles.link}>Crear cuenta</Text>
           </Pressable>
         </View>
       </ScrollView>

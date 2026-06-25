@@ -43,10 +43,10 @@ export function WorkoutExerciseForm({
     <View style={styles.formCard}>
       <View style={styles.numericRow}>
         <View style={styles.numericField}>
-          <FormField icon="reorder-three-outline" keyboardType="numeric" label="Order" onChangeText={setOrder} value={order} />
+          <FormField icon="reorder-three-outline" keyboardType="numeric" label="Orden" onChangeText={setOrder} value={order} />
         </View>
         <View style={styles.numericField}>
-          <FormField icon="layers-outline" keyboardType="numeric" label="Sets" onChangeText={setSets} value={sets} />
+          <FormField icon="layers-outline" keyboardType="numeric" label="Series" onChangeText={setSets} value={sets} />
         </View>
       </View>
       <View style={styles.numericRow}>
@@ -54,10 +54,10 @@ export function WorkoutExerciseForm({
           <FormField icon="repeat-outline" keyboardType="numeric" label="Reps" onChangeText={setReps} value={reps} />
         </View>
         <View style={styles.numericField}>
-          <FormField icon="timer-outline" keyboardType="numeric" label="Rest (sec)" onChangeText={setRestSeconds} value={restSeconds} />
+          <FormField icon="timer-outline" keyboardType="numeric" label="Descanso (seg)" onChangeText={setRestSeconds} value={restSeconds} />
         </View>
       </View>
-      <FormField icon="document-text-outline" label="Notes" onChangeText={setNotes} placeholder="Optional coaching notes" value={notes} />
+      <FormField icon="document-text-outline" label="Notas" onChangeText={setNotes} placeholder="Notas opcionales de entrenamiento" value={notes} />
       {validationError || error ? (
         <Text accessibilityRole="alert" style={styles.error}>{validationError ?? error}</Text>
       ) : null}
@@ -81,11 +81,11 @@ function parseRequest(values: RawValues): WorkoutExerciseWriteRequest | string {
   const reps = Number(values.reps);
   const restSeconds = Number(values.restSeconds);
 
-  if (!Number.isInteger(order) || order < 1 || order > 1000) return "Order must be between 1 and 1000.";
-  if (!Number.isInteger(sets) || sets < 1 || sets > 100) return "Sets must be between 1 and 100.";
-  if (!Number.isInteger(reps) || reps < 1 || reps > 1000) return "Reps must be between 1 and 1000.";
-  if (!Number.isInteger(restSeconds) || restSeconds < 0 || restSeconds > 3600) return "Rest must be between 0 and 3600 seconds.";
-  if (values.notes.length > 500) return "Notes cannot exceed 500 characters.";
+  if (!Number.isInteger(order) || order < 1 || order > 1000) return "El orden debe estar entre 1 y 1000.";
+  if (!Number.isInteger(sets) || sets < 1 || sets > 100) return "Las series deben estar entre 1 y 100.";
+  if (!Number.isInteger(reps) || reps < 1 || reps > 1000) return "Las repeticiones deben estar entre 1 y 1000.";
+  if (!Number.isInteger(restSeconds) || restSeconds < 0 || restSeconds > 3600) return "El descanso debe estar entre 0 y 3600 segundos.";
+  if (values.notes.length > 500) return "Las notas no pueden superar 500 caracteres.";
 
   return { exerciseId: values.exerciseId, order, sets, reps, restSeconds, notes: values.notes.trim() };
 }

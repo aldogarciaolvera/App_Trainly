@@ -13,7 +13,7 @@ interface WorkoutCardProps {
 export function WorkoutCard({ featured = false, index, onPress, workout }: WorkoutCardProps) {
   return (
     <Pressable
-      accessibilityLabel={`Open ${workout.name}`}
+      accessibilityLabel={`Abrir ${workout.name}`}
       accessibilityRole="button"
       onPress={onPress}
       style={({ pressed }) => [styles.card, featured && styles.featuredCard, pressed && styles.pressed]}
@@ -21,7 +21,7 @@ export function WorkoutCard({ featured = false, index, onPress, workout }: Worko
       <View style={styles.topRow}>
         <View style={[styles.labelChip, featured && styles.featuredChip]}>
           <Text style={[styles.label, featured && styles.featuredLabel]}>
-            {featured ? "LATEST" : `ROUTINE ${String(index + 1).padStart(2, "0")}`}
+            {featured ? "RECIENTE" : `RUTINA ${String(index + 1).padStart(2, "0")}`}
           </Text>
         </View>
         <Ionicons color={featured ? colors.primary : colors.textMuted} name="arrow-forward" size={24} />
@@ -29,12 +29,12 @@ export function WorkoutCard({ featured = false, index, onPress, workout }: Worko
 
       <Text numberOfLines={2} style={styles.name}>{workout.name}</Text>
       <Text numberOfLines={3} style={styles.description}>
-        {workout.description || "No description yet."}
+        {workout.description || "Sin descripción todavía."}
       </Text>
 
       <View style={styles.metaRow}>
         <Ionicons color={colors.textMuted} name="barbell-outline" size={19} />
-        <Text style={styles.meta}>Personal workout</Text>
+        <Text style={styles.meta}>Rutina personal</Text>
       </View>
     </Pressable>
   );

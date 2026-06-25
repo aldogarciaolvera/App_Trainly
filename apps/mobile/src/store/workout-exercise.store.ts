@@ -110,7 +110,7 @@ function sortAssignments(items: WorkoutExercise[]): WorkoutExercise[] {
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
-  return "Unable to update the workout exercises.";
+  return "No se pudieron actualizar los ejercicios de la rutina.";
 }
 
 function getDummyAssignments(workoutId: string): WorkoutExercise[] {
@@ -145,7 +145,7 @@ function updateDummyAssignment(
   const current = dummyAssignments[workoutId] ?? [];
   const index = current.findIndex((item) => item.id === assignmentId);
   const existing = current[index];
-  if (!existing) throw new Error("Workout exercise not found.");
+  if (!existing) throw new Error("Ejercicio de rutina no encontrado.");
   assertNoConflict(current, request, assignmentId);
   const exercise = getDummyExercise(request.exerciseId);
   const assignment: WorkoutExercise = {
@@ -163,7 +163,7 @@ function updateDummyAssignment(
 function deleteDummyAssignment(workoutId: string, assignmentId: string): void {
   const current = dummyAssignments[workoutId] ?? [];
   const index = current.findIndex((item) => item.id === assignmentId);
-  if (index < 0) throw new Error("Workout exercise not found.");
+  if (index < 0) throw new Error("Ejercicio de rutina no encontrado.");
   current.splice(index, 1);
   dummyAssignments[workoutId] = current;
 }
@@ -174,16 +174,16 @@ function assertNoConflict(
   ignoredId?: string
 ): void {
   if (items.some((item) => item.id !== ignoredId && item.exerciseId === request.exerciseId)) {
-    throw new Error("This exercise is already in the workout.");
+    throw new Error("Este ejercicio ya está en la rutina.");
   }
   if (items.some((item) => item.id !== ignoredId && item.order === request.order)) {
-    throw new Error("Another exercise already uses this order.");
+    throw new Error("Otro ejercicio ya usa ese orden.");
   }
 }
 
 const dummyAssignments: Record<string, WorkoutExercise[]> = {
   "demo-upper-body": [
-    { id: "demo-assignment-bench", exerciseId: "demo-bench-press", exerciseName: "Bench Press", muscleGroup: "Chest", isGlobal: true, order: 1, sets: 4, reps: 8, restSeconds: 120, notes: "Controlled tempo" },
-    { id: "demo-assignment-row", exerciseId: "demo-row", exerciseName: "Barbell Row", muscleGroup: "Back", isGlobal: true, order: 2, sets: 4, reps: 10, restSeconds: 90, notes: "Keep the torso stable" }
+    { id: "demo-assignment-bench", exerciseId: "demo-bench-press", exerciseName: "Press banca", muscleGroup: "Chest", isGlobal: true, order: 1, sets: 4, reps: 8, restSeconds: 120, notes: "Tempo controlado" },
+    { id: "demo-assignment-row", exerciseId: "demo-row", exerciseName: "Remo con barra", muscleGroup: "Back", isGlobal: true, order: 2, sets: 4, reps: 10, restSeconds: 90, notes: "Mantén el torso estable" }
   ]
 };

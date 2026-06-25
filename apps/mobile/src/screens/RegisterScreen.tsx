@@ -41,11 +41,9 @@ export function RegisterScreen({
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-      style={styles.screen}
-    >
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.screen}>
       <ScrollView
+        automaticallyAdjustKeyboardInsets
         contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
@@ -63,15 +61,15 @@ export function RegisterScreen({
           <View style={styles.logo}>
             <Ionicons color="#ffffff" name="flash" size={38} />
           </View>
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Start building a stronger you.</Text>
+          <Text style={styles.title}>Crear cuenta</Text>
+          <Text style={styles.subtitle}>Empieza a construir una versión más fuerte de ti.</Text>
         </View>
 
         <View style={styles.formCard}>
           <FormField
             autoCapitalize="words"
             icon="person-outline"
-            label="Name"
+            label="Nombre"
             onChangeText={setName}
             placeholder="Alex Morgan"
             value={name}
@@ -79,24 +77,24 @@ export function RegisterScreen({
           <FormField
             icon="mail-outline"
             keyboardType="email-address"
-            label="Email"
+            label="Correo"
             onChangeText={setEmail}
-            placeholder="athlete@trainly.com"
+            placeholder="atleta@trainly.com"
             value={email}
           />
           <FormField
             icon="lock-closed-outline"
-            label="Password"
+            label="Contraseña"
             onChangeText={setPassword}
-            placeholder="At least 8 characters"
+            placeholder="Mínimo 8 caracteres"
             secure
             value={password}
           />
           <FormField
             icon="shield-checkmark-outline"
-            label="Confirm Password"
+            label="Confirmar contraseña"
             onChangeText={setConfirmPassword}
-            placeholder="Repeat your password"
+            placeholder="Repite tu contraseña"
             secure
             value={confirmPassword}
           />
@@ -107,13 +105,13 @@ export function RegisterScreen({
             </Text>
           ) : null}
 
-          <PrimaryButton label="Create Account" loading={loading} onPress={submit} />
+          <PrimaryButton label="Crear cuenta" loading={loading} onPress={submit} />
         </View>
 
         <View style={styles.loginRow}>
-          <Text style={styles.loginText}>Already have an account? </Text>
+          <Text style={styles.loginText}>¿Ya tienes cuenta? </Text>
           <Pressable accessibilityRole="button" onPress={onBackToLogin}>
-            <Text style={styles.link}>Sign In</Text>
+            <Text style={styles.link}>Iniciar sesión</Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -127,10 +125,10 @@ function validate(
   password: string,
   confirmPassword: string
 ): string | null {
-  if (!name.trim()) return "Enter your name.";
-  if (!/^\S+@\S+\.\S+$/.test(email.trim())) return "Enter a valid email address.";
-  if (password.length < 8) return "Password must contain at least 8 characters.";
-  if (password !== confirmPassword) return "Passwords do not match.";
+  if (!name.trim()) return "Ingresa tu nombre.";
+  if (!/^\S+@\S+\.\S+$/.test(email.trim())) return "Ingresa un correo válido.";
+  if (password.length < 8) return "La contraseña debe tener al menos 8 caracteres.";
+  if (password !== confirmPassword) return "Las contraseñas no coinciden.";
   return null;
 }
 
@@ -178,7 +176,8 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     fontFamily: fonts.body,
     fontSize: 16,
-    marginTop: spacing.xs
+    marginTop: spacing.xs,
+    textAlign: "center"
   },
   formCard: {
     backgroundColor: colors.surfaceLow,

@@ -215,7 +215,7 @@ function mergeUnique(current: Workout[], next: Workout[]): Workout[] {
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
-  return "Unable to load your workouts.";
+  return "No se pudieron cargar tus rutinas.";
 }
 
 function createDummyWorkout(request: WorkoutWriteRequest): Workout {
@@ -231,14 +231,14 @@ function createDummyWorkout(request: WorkoutWriteRequest): Workout {
 
 function getDummyWorkout(id: string): Workout {
   const workout = dummyWorkouts.find((item) => item.id === id);
-  if (!workout) throw new Error("Workout not found.");
+  if (!workout) throw new Error("Rutina no encontrada.");
   return workout;
 }
 
 function updateDummyWorkout(id: string, request: WorkoutWriteRequest): Workout {
   const index = dummyWorkouts.findIndex((item) => item.id === id);
   const currentWorkout = dummyWorkouts[index];
-  if (!currentWorkout) throw new Error("Workout not found.");
+  if (!currentWorkout) throw new Error("Rutina no encontrada.");
 
   const workout: Workout = { ...currentWorkout, ...request };
   dummyWorkouts[index] = workout;
@@ -247,7 +247,7 @@ function updateDummyWorkout(id: string, request: WorkoutWriteRequest): Workout {
 
 function deleteDummyWorkout(id: string): void {
   const index = dummyWorkouts.findIndex((item) => item.id === id);
-  if (index < 0) throw new Error("Workout not found.");
+  if (index < 0) throw new Error("Rutina no encontrada.");
   dummyWorkouts.splice(index, 1);
 }
 
@@ -255,25 +255,25 @@ const dummyWorkouts: Workout[] = [
   {
     id: "demo-upper-body",
     userId: "demo-user",
-    name: "Upper Body Power",
-    description: "Strength workout focused on chest and back."
+    name: "Potencia de torso",
+    description: "Rutina de fuerza enfocada en pecho y espalda."
   },
   {
     id: "demo-core",
     userId: "demo-user",
-    name: "Core & Conditioning",
-    description: "A balanced routine for core strength and conditioning."
+    name: "Core y acondicionamiento",
+    description: "Rutina equilibrada para fuerza de core y acondicionamiento."
   },
   {
     id: "demo-lower-body",
     userId: "demo-user",
-    name: "Lower Body Drive",
-    description: "Lower-body strength with emphasis on legs and glutes."
+    name: "Pierna fuerte",
+    description: "Fuerza de tren inferior con énfasis en piernas y glúteos."
   },
   {
     id: "demo-recovery",
     userId: "demo-user",
-    name: "Active Recovery",
-    description: "Mobility and light movement for recovery days."
+    name: "Recuperación activa",
+    description: "Movilidad y movimiento ligero para días de recuperación."
   }
 ];

@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import type { WorkoutExerciseWriteRequest } from "@trainly/types";
 import { useEffect } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { WorkoutExerciseForm } from "../components/WorkoutExerciseForm";
 import { useWorkoutExerciseStore } from "../store/workout-exercise.store";
 import { colors, fonts, radius, spacing } from "../theme/tokens";
@@ -38,7 +38,7 @@ export function EditWorkoutExerciseScreen({
       await update(workoutId, assignmentId, request);
       onUpdated();
     } catch {
-      // The assignment store exposes the API error to the form.
+      // El store de asignaciones expone el error de la API en el formulario.
     }
   };
 
@@ -49,29 +49,29 @@ export function EditWorkoutExerciseScreen({
   if (!assignment) {
     return (
       <View style={styles.centerState}>
-        <Text style={styles.error}>{error ?? "Workout exercise unavailable."}</Text>
+        <Text style={styles.error}>{error ?? "Ejercicio no disponible."}</Text>
         <Pressable accessibilityRole="button" onPress={onBack} style={styles.backTextButton}>
-          <Text style={styles.backText}>Go Back</Text>
+          <Text style={styles.backText}>Volver</Text>
         </Pressable>
       </View>
     );
   }
 
   return (
-    <View style={styles.screen}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.screen}>
       <View style={styles.header}>
-        <Pressable accessibilityLabel="Back to workout exercises" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
+        <Pressable accessibilityLabel="Volver a ejercicios de la rutina" accessibilityRole="button" onPress={onBack} style={styles.backButton}>
           <Ionicons color={colors.primary} name="arrow-back" size={24} />
         </Pressable>
-        <Text style={styles.headerTitle}>Edit Exercise</Text>
+        <Text style={styles.headerTitle}>Editar ejercicio</Text>
         <View style={styles.headerSpacer} />
       </View>
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      <ScrollView automaticallyAdjustKeyboardInsets contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <View style={styles.exerciseHeader}>
           <View style={styles.exerciseIcon}><Ionicons color={colors.primary} name="fitness-outline" size={26} /></View>
           <View style={styles.exerciseCopy}>
             <Text style={styles.exerciseName}>{assignment.exerciseName}</Text>
-            <Text style={styles.exerciseMeta}>{assignment.muscleGroup} · {assignment.isGlobal ? "Global" : "Custom"}</Text>
+            <Text style={styles.exerciseMeta}>{translateMuscleGroup(assignment.muscleGroup)} · {assignment.isGlobal ? "Global" : "Personalizado"}</Text>
           </View>
         </View>
         <WorkoutExerciseForm
@@ -86,11 +86,31 @@ export function EditWorkoutExerciseScreen({
           }}
           loading={saving}
           onSubmit={submit}
-          submitLabel="Save Prescription"
+          submitLabel="Guardar prescripción"
         />
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
+}
+
+function translateMuscleGroup(value: string): string {
+  const labels: Record<string, string> = {
+    Chest: "Pecho",
+    Back: "Espalda",
+    Shoulders: "Hombros",
+    Biceps: "Bíceps",
+    Triceps: "Tríceps",
+    Forearms: "Antebrazos",
+    Core: "Core",
+    Quadriceps: "Cuádriceps",
+    Hamstrings: "Isquiotibiales",
+    Glutes: "Glúteos",
+    Calves: "Pantorrillas",
+    FullBody: "Cuerpo completo",
+    Cardio: "Cardio",
+    Other: "Otro"
+  };
+  return labels[value] ?? value;
 }
 
 const styles = StyleSheet.create({

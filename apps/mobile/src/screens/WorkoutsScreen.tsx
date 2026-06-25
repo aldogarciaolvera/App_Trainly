@@ -76,7 +76,7 @@ export function WorkoutsScreen({ onCreate, onNavigate, onOpenWorkout, userName }
       )}
 
       <Pressable
-        accessibilityLabel="Create workout"
+        accessibilityLabel="Crear rutina"
         accessibilityRole="button"
         onPress={onCreate}
         style={({ pressed }) => [styles.fab, pressed && styles.pressed]}
@@ -94,19 +94,19 @@ function ListHeader({ error, total, userName }: { error: string | null; total: n
       <View style={styles.topBar}>
         <View style={styles.avatar}><Text style={styles.avatarText}>{userName.charAt(0)}</Text></View>
         <Text style={styles.brand}>Trainly</Text>
-        <Pressable accessibilityLabel="Notifications">
+        <Pressable accessibilityLabel="Notificaciones">
           <Ionicons color={colors.primary} name="notifications-outline" size={26} />
         </Pressable>
       </View>
 
       <View style={styles.intro}>
-        <Text style={styles.title}>Your Workouts</Text>
-        <Text style={styles.subtitle}>Stay focused. Hit your targets.</Text>
+        <Text style={styles.title}>Tus rutinas</Text>
+        <Text style={styles.subtitle}>Mantente enfocado. Cumple tus objetivos.</Text>
       </View>
 
       <View style={styles.chips}>
-        <View style={[styles.chip, styles.activeChip]}><Text style={styles.activeChipText}>All</Text></View>
-        <View style={styles.chip}><Text style={styles.chipText}>{total} routines</Text></View>
+        <View style={[styles.chip, styles.activeChip]}><Text style={styles.activeChipText}>Todas</Text></View>
+        <View style={styles.chip}><Text style={styles.chipText}>{total} rutinas</Text></View>
       </View>
 
       {error ? (
@@ -123,7 +123,7 @@ function LoadingState() {
   return (
     <View style={styles.centerState}>
       <ActivityIndicator color={colors.primary} size="large" />
-      <Text style={styles.stateCopy}>Loading your workouts...</Text>
+      <Text style={styles.stateCopy}>Cargando tus rutinas...</Text>
     </View>
   );
 }
@@ -132,10 +132,10 @@ function ErrorState({ message, onRetry }: { message: string | null; onRetry: () 
   return (
     <View style={styles.centerState}>
       <Ionicons color={colors.error} name="cloud-offline-outline" size={42} />
-      <Text style={styles.stateTitle}>We couldn't load your workouts</Text>
-      <Text style={styles.stateCopy}>{message ?? "Check your connection and try again."}</Text>
+      <Text style={styles.stateTitle}>No pudimos cargar tus rutinas</Text>
+      <Text style={styles.stateCopy}>{message ?? "Revisa tu conexión e intenta de nuevo."}</Text>
       <Pressable accessibilityRole="button" onPress={onRetry} style={styles.retryButton}>
-        <Text style={styles.retryText}>Try Again</Text>
+        <Text style={styles.retryText}>Reintentar</Text>
       </Pressable>
     </View>
   );
@@ -145,10 +145,10 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
     <View style={styles.emptyState}>
       <View style={styles.emptyIcon}><Ionicons color={colors.primary} name="barbell-outline" size={30} /></View>
-      <Text style={styles.stateTitle}>Build your first workout</Text>
-      <Text style={styles.stateCopy}>Create a routine and add exercises when you're ready.</Text>
+      <Text style={styles.stateTitle}>Crea tu primera rutina</Text>
+      <Text style={styles.stateCopy}>Crea una rutina y agrega ejercicios cuando estés listo.</Text>
       <Pressable accessibilityRole="button" onPress={onCreate} style={styles.retryButton}>
-        <Text style={styles.retryText}>Create Workout</Text>
+        <Text style={styles.retryText}>Crear rutina</Text>
       </Pressable>
     </View>
   );

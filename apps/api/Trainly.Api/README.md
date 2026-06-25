@@ -296,6 +296,10 @@ ejercicios propios. Usuarios normales no pueden modificar globales ni ejercicios
 ajenos. Al eliminar un usuario, sus ejercicios personalizados se eliminan en
 cascada y nunca se convierten en globales accidentalmente.
 
+Los enums del contrato JSON se envían y reciben como texto para mantenerse
+alineados con los tipos TypeScript compartidos. Por ejemplo:
+`"muscleGroup": "Chest"`.
+
 ## Respuestas y errores
 
 El middleware global traduce errores conocidos a códigos HTTP y registra las
