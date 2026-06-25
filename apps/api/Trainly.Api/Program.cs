@@ -4,6 +4,7 @@ using Trainly.Api.Configuration.Validation;
 using Trainly.Api.Configuration;
 using Trainly.Api.Middleware;
 using Trainly.Api.Configuration.Authentication;
+using Trainly.Api.Configuration.Seed;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
@@ -36,6 +37,7 @@ builder.Services.AddApplicationServices();
 // Autenticación JWT
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAdminBootstrap(builder.Configuration);
+builder.Services.AddExerciseCatalogSeed();
 
 // OpenAPI
 builder.Services.AddOpenApi();

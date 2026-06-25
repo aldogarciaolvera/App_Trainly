@@ -13,6 +13,7 @@ El desarrollo activo está concentrado en la API:
 - registro, login, renovación de sesión y logout;
 - perfil del usuario autenticado y consultas administrativas protegidas;
 - CRUD paginado de workouts asociado al usuario autenticado;
+- seed idempotente del catálogo global inicial de ejercicios;
 - catálogo global administrable y CRUD de ejercicios personalizados por usuario;
 - composición ordenada de workouts con ejercicios, series, repeticiones y descanso;
 - contratos y servicios TypeScript compartidos para todos los módulos actuales;
@@ -103,7 +104,7 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Implementar el catálogo mobile independiente de Exercises personalizados.
-2. Conectar Home con los workouts reales del usuario.
+1. Conectar Home con los workouts reales del usuario.
+2. Crear experiencia mobile para ejercicios personalizados.
 3. Modelar programación, duración, categoría y dificultad cuando se definan sus
    reglas de dominio.

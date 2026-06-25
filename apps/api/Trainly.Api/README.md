@@ -45,6 +45,11 @@ Todos los cambios de esquema se administran mediante migraciones:
 dotnet ef database update
 ```
 
+Al iniciar la API se ejecuta un seed idempotente del catálogo global de
+ejercicios. El seed solo inserta ejercicios globales faltantes comparando
+`MuscleGroup + Name`; no duplica registros existentes, no modifica ejercicios
+personalizados y no reemplaza los cambios hechos por administradores.
+
 Para crear una migración nueva:
 
 ```bash
@@ -259,6 +264,9 @@ Administración del catálogo global:
 La lectura administrativa reutiliza `GET /api/exercises?scope=global`, con los
 mismos filtros y paginación. Los handlers administrativos solo operan sobre filas
 con `UserId = null` y nunca convierten ejercicios personalizados en globales.
+Además, la API carga un catálogo global inicial al arrancar para que clientes
+como mobile tengan ejercicios disponibles sin crearlos manualmente. Si un admin
+agrega más ejercicios globales, esos registros conviven con el seed.
 
 El listado acepta:
 

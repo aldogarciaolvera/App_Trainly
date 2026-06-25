@@ -80,7 +80,7 @@ function filterDummyExercises(search: string): ExerciseSummary[] {
 
 async function getCatalogPage(page: number, pageSize: number, search: string) {
   if (!environment.useDummyData) {
-    return services.exercises.getAll({ page, pageSize, search: search || undefined, scope: "all" });
+    return services.exercises.getAll({ page, pageSize, scope: "all", ...(search ? { search } : {}) });
   }
   const filtered = filterDummyExercises(search);
   const start = (page - 1) * pageSize;
