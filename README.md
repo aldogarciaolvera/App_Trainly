@@ -13,6 +13,7 @@ El desarrollo activo está concentrado en la API:
 - registro, login, renovación de sesión y logout;
 - perfil del usuario autenticado y consultas administrativas protegidas;
 - CRUD paginado de workouts asociado al usuario autenticado;
+- seed idempotente del catálogo global inicial de ejercicios;
 - catálogo global administrable y CRUD de ejercicios personalizados por usuario;
 - composición ordenada de workouts con ejercicios, series, repeticiones y descanso;
 - contratos y servicios TypeScript compartidos para todos los módulos actuales;
@@ -21,7 +22,10 @@ El desarrollo activo está concentrado en la API:
 - documentación OpenAPI visualizada con Scalar;
 - manejo global y registro de excepciones.
 
-La infraestructura mobile y las pantallas iniciales Login/Home están implementadas;
+La infraestructura mobile, navegación autenticada y las pantallas
+Login/Register/Home/Workouts/Profile están implementadas. Workouts consume el
+CRUD real y permite administrar sus ejercicios, orden, series, repeticiones,
+descanso y notas;
 la aplicación web aún no está iniciada.
 
 ## Estructura
@@ -100,6 +104,7 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Definir navegación móvil definitiva y pantalla Register.
-2. Implementar las pantallas móviles de Workouts y Exercises.
-3. Sustituir datos dummy de Home conforme se agreguen módulos de actividad/nutrición.
+1. Conectar Home con los workouts reales del usuario.
+2. Crear experiencia mobile para ejercicios personalizados.
+3. Modelar programación, duración, categoría y dificultad cuando se definan sus
+   reglas de dominio.

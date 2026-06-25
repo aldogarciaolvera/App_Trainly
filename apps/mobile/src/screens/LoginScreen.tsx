@@ -11,11 +11,12 @@ interface LoginScreenProps {
   loading: boolean;
   error: string | null;
   onLogin: (email: string, password: string) => Promise<void>;
+  onSignUp: () => void;
 }
 
-export function LoginScreen({ loading, error, onLogin }: LoginScreenProps) {
-  const [email, setEmail] = useState("athlete@trainly.com");
-  const [password, setPassword] = useState("password");
+export function LoginScreen({ loading, error, onLogin, onSignUp }: LoginScreenProps) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <KeyboardAvoidingView
@@ -32,8 +33,8 @@ export function LoginScreen({ loading, error, onLogin }: LoginScreenProps) {
             <Ionicons color="#ffffff" name="flash" size={48} />
           </View>
           <Text style={styles.brand}>Trainly</Text>
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Ready to crush your goals?</Text>
+          <Text style={styles.title}>Bienvenido de vuelta!</Text>
+          <Text style={styles.subtitle}>¿Listo para alcanzar tus objetivos?</Text>
         </View>
 
         <View style={styles.formCard}>
@@ -58,7 +59,7 @@ export function LoginScreen({ loading, error, onLogin }: LoginScreenProps) {
           </Pressable>
           {error ? <Text style={styles.error}>{error}</Text> : null}
           <PrimaryButton
-            label="Sign In"
+            label="Iniciar sesión"
             loading={loading}
             onPress={() => void onLogin(email, password)}
           />
@@ -66,7 +67,7 @@ export function LoginScreen({ loading, error, onLogin }: LoginScreenProps) {
 
         <View style={styles.signupRow}>
           <Text style={styles.signupText}>New to Trainly? </Text>
-          <Pressable accessibilityRole="button">
+          <Pressable accessibilityRole="button" onPress={onSignUp}>
             <Text style={styles.link}>Sign Up</Text>
           </Pressable>
         </View>
