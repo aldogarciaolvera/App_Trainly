@@ -84,6 +84,18 @@ y la colección paginada:
 - eliminar quita la rutina y reduce el total;
 - cerrar sesión reinicia todo el estado de workouts.
 
+El detalle permite administrar los ejercicios asignados al workout. El flujo:
+
+- obtiene las asignaciones ordenadas desde `/api/workouts/{workoutId}/exercises`;
+- busca globales y personalizados mediante el catálogo paginado `/api/exercises`;
+- agrega un ejercicio con orden, series, repeticiones, descanso y notas;
+- edita la prescripción reutilizando los contratos compartidos;
+- elimina la asignación después de una confirmación;
+- mantiene catálogo y asignaciones en stores separados y los reinicia al cerrar sesión.
+
+La interfaz valida los mismos límites que la API y muestra conflictos de orden o
+ejercicio duplicado sin modificar optimistamente el listado.
+
 La composición visual se basa en `resources/Workouts_Page.png`. Los campos de la
 referencia que aún no existen en el contrato —día programado, categoría, duración
 y dificultad— no se simulan en modo real. La interfaz muestra nombre y descripción

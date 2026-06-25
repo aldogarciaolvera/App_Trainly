@@ -23,10 +23,15 @@ import { LoginScreen } from "./src/screens/LoginScreen";
 import { ProfileScreen } from "./src/screens/ProfileScreen";
 import { RegisterScreen } from "./src/screens/RegisterScreen";
 import { CreateWorkoutScreen } from "./src/screens/CreateWorkoutScreen";
+import { AddWorkoutExerciseScreen } from "./src/screens/AddWorkoutExerciseScreen";
 import { EditWorkoutScreen } from "./src/screens/EditWorkoutScreen";
+import { EditWorkoutExerciseScreen } from "./src/screens/EditWorkoutExerciseScreen";
 import { WorkoutDetailScreen } from "./src/screens/WorkoutDetailScreen";
+import { WorkoutExercisesScreen } from "./src/screens/WorkoutExercisesScreen";
 import { WorkoutsScreen } from "./src/screens/WorkoutsScreen";
 import { useAuthStore } from "./src/store/auth.store";
+import { useExerciseStore } from "./src/store/exercise.store";
+import { useWorkoutExerciseStore } from "./src/store/workout-exercise.store";
 import { useWorkoutStore } from "./src/store/workout.store";
 import { colors } from "./src/theme/tokens";
 
@@ -38,6 +43,9 @@ type RootStackParamList = {
   CreateWorkout: undefined;
   WorkoutDetails: { workoutId: string };
   EditWorkout: { workoutId: string };
+  WorkoutExercises: { workoutId: string };
+  AddWorkoutExercise: { workoutId: string };
+  EditWorkoutExercise: { workoutId: string; assignmentId: string };
   Profile: undefined;
 };
 
@@ -60,6 +68,8 @@ export default function App() {
   const logout = useAuthStore((state) => state.logout);
   const clearError = useAuthStore((state) => state.clearError);
   const resetWorkouts = useWorkoutStore((state) => state.reset);
+  const resetExercises = useExerciseStore((state) => state.reset);
+  const resetWorkoutExercises = useWorkoutExerciseStore((state) => state.reset);
 
   useEffect(() => {
     void hydrate();
@@ -120,8 +130,12 @@ export default function App() {
                   {({ navigation, route }) => (
                     <WorkoutDetailScreen
                       onBack={() => navigation.goBack()}
-                      onDeleted={() => navigation.popTo("Workouts")}
+                      onDeleted={() => {
+                        resetWorkoutExercises();
+                        navigation.popTo("Workouts");
+                      }}
                       onEdit={() => navigation.navigate("EditWorkout", { workoutId: route.params.workoutId })}
+                      onManageExercises={() => navigation.navigate("WorkoutExercises", { workoutId: route.params.workoutId })}
                       workoutId={route.params.workoutId}
                     />
                   )}
@@ -129,6 +143,38 @@ export default function App() {
                 <Stack.Screen name="EditWorkout">
                   {({ navigation, route }) => (
                     <EditWorkoutScreen
+                      onBack={() => navigation.goBack()}
+                      onUpdated={() => navigation.goBack()}
+                      workoutId={route.params.workoutId}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="WorkoutExercises">
+                  {({ navigation, route }) => (
+                    <WorkoutExercisesScreen
+                      onAdd={() => navigation.navigate("AddWorkoutExercise", { workoutId: route.params.workoutId })}
+                      onBack={() => navigation.goBack()}
+                      onEdit={(assignmentId) => navigation.navigate("EditWorkoutExercise", {
+                        workoutId: route.params.workoutId,
+                        assignmentId
+                      })}
+                      workoutId={route.params.workoutId}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="AddWorkoutExercise">
+                  {({ navigation, route }) => (
+                    <AddWorkoutExerciseScreen
+                      onAdded={() => navigation.goBack()}
+                      onBack={() => navigation.goBack()}
+                      workoutId={route.params.workoutId}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="EditWorkoutExercise">
+                  {({ navigation, route }) => (
+                    <EditWorkoutExerciseScreen
+                      assignmentId={route.params.assignmentId}
                       onBack={() => navigation.goBack()}
                       onUpdated={() => navigation.goBack()}
                       workoutId={route.params.workoutId}
@@ -144,11 +190,15 @@ export default function App() {
                       onLogout={async () => {
                         if (demoAuthenticated) {
                           resetWorkouts();
+                          resetExercises();
+                          resetWorkoutExercises();
                           setDemoAuthenticated(false);
                           return;
                         }
                         await logout();
                         resetWorkouts();
+                        resetExercises();
+                        resetWorkoutExercises();
                       }}
                       onNavigate={(item) => navigateToAppItem(item, navigation)}
                       role={profile.role}

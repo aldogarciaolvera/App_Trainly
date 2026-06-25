@@ -23,7 +23,8 @@ El desarrollo activo está concentrado en la API:
 
 La infraestructura mobile, navegación autenticada y las pantallas
 Login/Register/Home/Workouts/Profile están implementadas. Workouts consume el
-CRUD real: listado paginado, detalle, creación, edición y eliminación;
+CRUD real y permite administrar sus ejercicios, orden, series, repeticiones,
+descanso y notas;
 la aplicación web aún no está iniciada.
 
 ## Estructura
@@ -102,7 +103,7 @@ nuevas funcionalidades.
 
 ## Próximos pasos
 
-1. Implementar la selección y administración mobile de Exercises por workout.
+1. Implementar el catálogo mobile independiente de Exercises personalizados.
 2. Conectar Home con los workouts reales del usuario.
 3. Modelar programación, duración, categoría y dificultad cuando se definan sus
    reglas de dominio.

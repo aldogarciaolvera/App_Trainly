@@ -10,7 +10,7 @@ interface FormFieldProps {
   icon: keyof typeof Ionicons.glyphMap;
   placeholder?: string;
   secure?: boolean;
-  keyboardType?: "default" | "email-address";
+  keyboardType?: "default" | "email-address" | "numeric";
   autoCapitalize?: "none" | "words";
 }
 

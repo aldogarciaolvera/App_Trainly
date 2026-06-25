@@ -9,9 +9,10 @@ interface WorkoutDetailScreenProps {
   onBack: () => void;
   onDeleted: () => void;
   onEdit: () => void;
+  onManageExercises: () => void;
 }
 
-export function WorkoutDetailScreen({ workoutId, onBack, onDeleted, onEdit }: WorkoutDetailScreenProps) {
+export function WorkoutDetailScreen({ workoutId, onBack, onDeleted, onEdit, onManageExercises }: WorkoutDetailScreenProps) {
   const workout = useWorkoutStore((state) => state.selectedWorkout);
   const status = useWorkoutStore((state) => state.detailStatus);
   const detailError = useWorkoutStore((state) => state.detailError);
@@ -78,17 +79,18 @@ export function WorkoutDetailScreen({ workoutId, onBack, onDeleted, onEdit }: Wo
           <Text style={styles.description}>{workout.description || "No description yet."}</Text>
         </View>
 
-        <View style={styles.detailCard}>
+        <Pressable accessibilityRole="button" onPress={onManageExercises} style={({ pressed }) => [styles.detailCard, pressed && styles.pressed]}>
           <View style={styles.sectionRow}>
             <View style={styles.smallIcon}>
               <Ionicons color={colors.primary} name="list-outline" size={22} />
             </View>
             <View style={styles.sectionCopy}>
               <Text style={styles.sectionTitle}>Exercises</Text>
-              <Text style={styles.sectionDescription}>Exercise management will be available in the next block.</Text>
+              <Text style={styles.sectionDescription}>Manage exercise order, sets, reps, rest and notes.</Text>
             </View>
+            <Ionicons color={colors.primary} name="chevron-forward" size={22} />
           </View>
-        </View>
+        </Pressable>
 
         {mutationError ? <Text accessibilityRole="alert" style={styles.mutationError}>{mutationError}</Text> : null}
 
